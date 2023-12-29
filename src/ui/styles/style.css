@@ -1,0 +1,165 @@
+* {
+  box-sizing: border-box;
+  font-family: 'Roboto', sans-serif;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+div.title-bar {
+  display: flex;
+  flex-direction: row;
+  height: 2rem;
+  align-self: baseline;
+  flex-grow: 1;
+  width: 100%;
+  user-select: none;
+  -webkit-app-region: drag;
+}
+
+div.title-bar > div.information-container {
+  display: flex;
+  flex-grow: 1;
+}
+
+div.information-container > span.title {
+  font-size: 14px;
+  align-self: center;
+  margin-left: 1rem;
+}
+
+div.window-controls {
+  margin-left: auto;
+  display: flex;
+  gap: 0;
+}
+
+div.window-controls > button.control {
+  width: 3rem;
+  height: 100%;
+  border: none;
+  border-radius: 0rem;
+  background-color: transparent;
+  transition: all 150ms cubic-bezier(0.2, 0, 0, 1);
+  -webkit-app-region: no-drag;
+}
+
+div.window-controls > button.control:hover {
+  background-color: #E0E0E0;
+}
+
+div.window-controls > button.control[data-type="close"]:hover {
+  background-color: #e81123;
+  color: white;
+}
+
+div.blocker {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #1f2630;
+  min-width: 40rem;
+  width: 60%;
+}
+
+div.blocker > div.header {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(1, 1fr);
+}
+
+div.blocker > div.header > .status-label {
+  color: white;
+  background-color: #44546a;
+  font-weight: 500;
+  font-size: 14px;
+  padding: 0.5rem 1rem;
+}
+
+div.blocker > div.header > .status {
+  color: white;
+  font-weight: 500;
+  font-size: 14px;
+  padding: 0.5rem;
+  text-align: center;
+  background-color: red;
+}
+
+div.blocker > div.header > .progress-label {
+  color: white;
+  background-color: #44546a;
+  font-weight: 500;
+  font-size: 14px;
+  padding: 0.5rem 1rem;
+}
+
+div.blocker > div.header .progress {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.2rem;
+  border-bottom: 1px solid #44546a;
+}
+
+div.blocker > div.header .progress-bar {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.progress-bar.on-time {
+  background: linear-gradient(90deg, rgba(99,195,132,1) 0%, rgba(255,255,255,1) var(--progress));
+  border: 1px solid #63c384;
+}
+
+.progress-bar.behind {
+  background: linear-gradient(90deg, rgba(255,182,40,1) 0%, rgba(255,244,214,1) 100%);
+  border: 1px solid #ffb628;
+}
+
+.progress-bar.out-of-track {
+  background: linear-gradient(90deg, rgba(255, 85, 90, 1) 0%, rgba(255, 228, 229, 1)100%);
+  border: 1px solid #ff555a;
+}
+
+div.blocker > div.header .progress-bar > span {
+  font-size: 15px;
+  font-weight: 500;
+  padding-left: 1rem;
+}
+
+div.blocker > div.body {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+}
+
+div.blocker > span.title {
+  font-size: 20px;
+  padding: 0.5rem;
+  text-align: center;
+  font-weight: 500;
+  background-color: #44546a;
+  color: white;
+}
+
+div.blocker > div.body > div.section {
+  min-height: 4rem;
+}
+
+div.blocker > div.body > div.section:first-child {
+  border-right: 1px solid #44546a;
+  border-bottom: 1px solid #44546a;
+}
+
+div.blocker > div.body > div.section:nth-child(2) {
+  border-bottom: 1px solid #44546a;
+}
+
+div.blocker > div.body > div.section:nth-child(3) {
+  border-right: 1px solid #44546a;
+}

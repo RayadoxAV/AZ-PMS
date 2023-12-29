@@ -1,0 +1,19 @@
+{
+  "name": "az-pms",
+  "version": "1.0.0",
+  "description": "A Javascript port for the Excel Summary Macro",
+  "main": "src/main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "electron ."
+  },
+  "author": "Raymundo Paz",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^28.1.0",
+    "electron-reload": "^2.0.0-alpha.1"
+  },
+  "dependencies": {
+    "dotenv": "^16.3.1"
+  }
+}
