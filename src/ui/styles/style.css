@@ -8,14 +8,18 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  height: 100vh;
+  overflow: hidden;
 }
+
+
 
 div.title-bar {
   display: flex;
   flex-direction: row;
   height: 2rem;
+  min-height: 2rem;
   align-self: baseline;
-  flex-grow: 1;
   width: 100%;
   user-select: none;
   -webkit-app-region: drag;
@@ -55,6 +59,17 @@ div.window-controls > button.control:hover {
 div.window-controls > button.control[data-type="close"]:hover {
   background-color: #e81123;
   color: white;
+}
+
+div.main-container {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow: auto;
+  max-height: 100%;
 }
 
 div.blocker {
@@ -102,34 +117,7 @@ div.blocker > div.header .progress {
   align-items: center;
   padding: 0.2rem;
   border-bottom: 1px solid #44546a;
-}
-
-div.blocker > div.header .progress-bar {
-  height: 100%;
-  width: 100%;
-  display: flex;
-  align-items: center;
-}
-
-.progress-bar.on-time {
-  background: linear-gradient(90deg, rgba(99,195,132,1) 0%, rgba(255,255,255,1) var(--progress));
-  border: 1px solid #63c384;
-}
-
-.progress-bar.behind {
-  background: linear-gradient(90deg, rgba(255,182,40,1) 0%, rgba(255,244,214,1) 100%);
-  border: 1px solid #ffb628;
-}
-
-.progress-bar.out-of-track {
-  background: linear-gradient(90deg, rgba(255, 85, 90, 1) 0%, rgba(255, 228, 229, 1)100%);
-  border: 1px solid #ff555a;
-}
-
-div.blocker > div.header .progress-bar > span {
-  font-size: 15px;
-  font-weight: 500;
-  padding-left: 1rem;
+  background-color: #FFFFFF;
 }
 
 div.blocker > div.body {
@@ -149,6 +137,18 @@ div.blocker > span.title {
 
 div.blocker > div.body > div.section {
   min-height: 4rem;
+  background-color: white;
+}
+
+div.blocker > div.body > div.section > span.section-title {
+  font-weight: 500;
+  font-size: 14px;
+  padding: 0.25rem;
+}
+
+div.blocker > div.body > div.section > div.section-body {
+  background-color: red;
+  white-space: nowrap;
 }
 
 div.blocker > div.body > div.section:first-child {
@@ -162,4 +162,157 @@ div.blocker > div.body > div.section:nth-child(2) {
 
 div.blocker > div.body > div.section:nth-child(3) {
   border-right: 1px solid #44546a;
+}
+
+div.report {
+  display: flex;
+  flex-direction: column;
+  min-width: 40rem;
+  width: 60%;
+  margin-top: 2rem;
+  border: 1px solid #44546a;
+}
+
+div.report > div.header {
+  display: flex;
+  flex-direction: row;
+  background-color: #44546a;
+  
+}
+
+div.report > div.header > span.title {
+  font-size: 18px;
+  padding: 0.5rem;
+  text-align: center;
+  font-weight: 500;
+  background-color: #44546a;
+  color: white;
+}
+
+div.report > div.header > div.status-container {
+  font-size: 14px;
+  font-weight: 500;
+  background-color: red;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 20%;
+  color: #FFFFFF;
+  margin-left: auto;
+}
+
+div.report > div.header > div.progress-container {
+  width: 10%;
+  background-color: #FFFFFF;
+  display: flex;
+  padding: 0.25rem;
+}
+
+div.report > div.header > div.progress-container > div.progress-bar {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+div.report > div.information {
+  display: flex;
+  flex-direction: column;
+}
+
+div.report > div.information > span {
+  font-size: 15px;
+  font-weight: 500;
+  padding: 0.25rem 0.5rem;
+  background-color: #d2dbe7; 
+}
+
+div.report > div.information > textarea {
+  resize: vertical;
+  min-height: 1.5rem;
+  border: none;
+}
+
+div.report > table.milestone-container {
+  border-collapse: collapse;
+}
+
+table.milestone-container > thead th {
+  background-color: #d2dbe7;
+  font-size: 15px;
+  padding: 0.25rem 0.5rem;
+}
+
+table.milestone-container > thead th:first-child {
+  width: 50%;
+  text-align: start;
+}
+
+table.milestone-container > tbody > tr {
+  font-size: 14px;
+}
+
+table.milestone-container > tbody > tr.milestone {
+  background-color: #efefef;
+  font-size: 15px;
+  font-weight: 500;
+}
+table.milestone-container > tbody > tr.milestone > td {
+  padding: 0.25rem 0.5rem;
+}
+
+table.milestone-container > tbody > tr > td {
+  text-align: center;
+  padding: 0rem 0.5rem;
+}
+
+table.milestone-container > tbody > tr > td:first-child {
+  text-align: start;
+}
+
+table.milestone-container > tbody > tr > td:last-child {
+  padding: 0.125rem;
+}
+
+table.milestone-container > tbody > tr > td > div.progress-bar > span {
+  font-size: 13px;
+}
+
+div.progress-bar {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: flex;
+}
+
+div.progress-bar > span {
+  position: relative;
+  font-weight: 500;
+  padding: 0.25rem;
+  z-index: 1;
+}
+
+div.progress-bar > div.progress-background {
+  width: var(--progress);
+  position: absolute;
+  z-index: 0;
+  height: 100%;
+  top: 0;
+  max-width: 100%;
+}
+
+div.progress-bar.on-track > div.progress-background {
+  background: linear-gradient(90deg, rgba(99,195,132,1) 0%, rgba(255,255,255,1) 100%);
+  border: 1px solid #63c384;
+}
+
+div.progress-bar.behind > div.progress-background {
+  background: linear-gradient(90deg, rgba(255,182,40,1) 0%, rgba(255,255,255,1) 100%);
+  border: 1px solid #ffb628;
+}
+
+div.progress-bar.out-of-track > div.progress-background {
+  background: linear-gradient(90deg, rgba(255, 85, 90, 1) 0%, rgba(255, 255, 255, 1) 100%);
+  border: 1px solid #ff555a;
 }

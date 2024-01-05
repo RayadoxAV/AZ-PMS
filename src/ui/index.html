@@ -20,46 +20,124 @@
       <span id="window-title" class="title">Some titlte</span>
     </div>
     <div class="window-controls">
-      <button class="control codicon codicon-chrome-minimize"></button>
-      <button class="control codicon codicon-chrome-maximize"></button>
-      <button data-type="close" class="control codicon codicon-chrome-close"></button>
+      <button id="titlebar-minimize-button" class="control codicon codicon-chrome-minimize"></button>
+      <button id="titlebar-maximize-button" class="control codicon codicon-chrome-maximize"></button>
+      <button id="titlebar-close-button" data-type="close" class="control codicon codicon-chrome-close"></button>
     </div>
   </div>
-  <div class="blocker">
-    <span id="blocker-title" class="title">MDM MX Implementation</span>
-    <div class="header">
-      <div class="status-label">Status</div>
-      <div class="status">Behind</div>
-      <div class="progress-label">Progress</div>
-      <div class="progress">
-        <div class="progress-bar out-of-track" style="--progress: 50%">
-          <span>100%</span>
+  <div class="main-container">
+    <div class="blocker">
+      <span id="blocker-title" class="title">MDM MX Implementation</span>
+      <div class="header">
+        <div class="status-label">Status</div>
+        <div id="blocker-status" class="status">Behind</div>
+        <div class="progress-label">Progress</div>
+        <div class="progress">
+          <!-- <div class="progress-bar out-of-track" style="--progress: 100%">
+            <span>100%</span>
+          </div> -->
+          <div class="progress-bar out-of-track" style="--progress: 50%">
+            <span>50%</span>
+            <div class="progress-background"></div>
+          </div>
+        </div>
+      </div>
+      <div class="body">
+        <div class="section">
+          <span class="section-title">Accomplishments</span>
+          <div class="section-body">
+          </div>
+        </div>
+        <div class="section">
+          <span class="section-title">Risks</span>
+          <div class="section-body"></div>
+        </div>
+        <div class="section">
+          <span class="section-title">Remarks</span>
+          <div class="section-body"></div>
+        </div>
+        <div class="section">
+          <span class="section-title">On Hold</span>
+          <div class="section-body"></div>
         </div>
       </div>
     </div>
-    <div class="body">
-      <div class="section">
-        <span class="section-title">Some tiotle</span>
-        <div class="section-body"></div>
+    <div class="report">
+
+      <div class="header">
+        <span class="title">MDM MX Implementation</span>
+        <div class="status-container">Behind</div>
+        <div class="progress-container">
+          <div class="progress-bar on-track" style="--progress: 50%;">
+            <span>50%</span>
+            <div class="progress-background"></div>
+          </div>
+        </div>
       </div>
-      <div class="section">
-        <span class="section-title">Some tiotle</span>
-        <div class="section-body"></div>
+      <div class="information">
+        <span>Accomplishments &lpar;WK18&rpar;</span>
+        <textarea name="" id="" rows="4"></textarea>
       </div>
-      <div class="section">
-        <span class="section-title">Some tiotle</span>
-        <div class="section-body"></div>
+      <div class="information">
+        <span>Risks</span>
+        <textarea name="" id="" rows="4"></textarea>
       </div>
-      <div class="section">
-        <span class="section-title">Some tiotle</span>
-        <div class="section-body"></div>
-      </div>
+      <table class="milestone-container">
+        <thead>
+          <tr>
+            <th>Milestones</th>
+            <th>Start date</th>
+            <th>Finish date</th>
+            <th>Target</th>
+            <th>Remaining</th>
+            <th>Progress</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="milestone">
+            <td>1</td>
+            <td>2</td>
+            <td>3</td>
+            <td>4</td>
+            <td>5</td>
+            <td>6</td>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>2</td>
+            <td>3</td>
+            <td>4</td>
+            <td>5</td>
+            <td>
+              <div class="progress-bar on-track" style="--progress: 75%">
+                <span>75%</span>
+                <div class="progress-background"></div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>2</td>
+            <td>3</td>
+            <td>4</td>
+            <td>5</td>
+            <td>
+              <!-- <div class="progress-bar out-of-track" style="--progress: 75%">
+              <span>75%</span>
+            </div> -->
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
-  <div class="report">
-    report
-  </div>
+
+  <!-- <div class="progress-bar out-of-track" style="--progress: 50%;">
+    <span>50%</span>
+    <div class="progress-background"></div>
+  </div> -->
   <script type="module" src="./code/index.js"></script>
+  <script type="module" src="./code/titlebar.js"></script>
 </body>
 
 </html>

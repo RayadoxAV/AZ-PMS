@@ -4,7 +4,7 @@
   "description": "A Javascript port for the Excel Summary Macro",
   "main": "src/main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "node src/tests/test.js",
     "dev": "electron ."
   },
   "author": "Raymundo Paz",
@@ -14,6 +14,9 @@
     "electron-reload": "^2.0.0-alpha.1"
   },
   "dependencies": {
-    "dotenv": "^16.3.1"
+    "@microsoft/microsoft-graph-client": "^3.0.7",
+    "dotenv": "^16.3.1",
+    "exceljs": "^4.4.0",
+    "isomorphic-fetch": "^3.0.0"
   }
 }

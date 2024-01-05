@@ -6,9 +6,11 @@ require('dotenv').config();
 
 const { app, BrowserWindow } = require('electron');
 const Logger = require('./util/Logger');
+const DataExtractor = require('./data/dataExtractor');
+const WorkbookProvider = require('./data/workbookProvider');
 
 if (process.env.CURR_ENV === 'dev') {
-  Logger.Log('INFO: Initializing in debug mode', 0 /* Info */)
+  Logger.Log('Initializing in debug mode', 0 /* Info */)
 
   const path = require('path');
 
@@ -53,3 +55,5 @@ app.on('window-all-closed', () => {
     app.quit();
   }
 });
+
+require('./events/ipcEvents');
