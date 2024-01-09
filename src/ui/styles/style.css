@@ -12,8 +12,6 @@ body {
   overflow: hidden;
 }
 
-
-
 div.title-bar {
   display: flex;
   flex-direction: row;
@@ -77,7 +75,7 @@ div.blocker {
   flex-direction: column;
   border: 1px solid #1f2630;
   min-width: 40rem;
-  width: 60%;
+  width: calc(100% - 10rem);
 }
 
 div.blocker > div.header {
@@ -100,6 +98,17 @@ div.blocker > div.header > .status {
   font-size: 14px;
   padding: 0.5rem;
   text-align: center;
+}
+
+div.blocker .status.on-track {
+  background-color: #70ad47;
+}
+
+div.blocker .status.behind {
+  background-color: #ffc000;
+}
+
+div.blocker .status.out-of-track {
   background-color: red;
 }
 
@@ -147,8 +156,7 @@ div.blocker > div.body > div.section > span.section-title {
 }
 
 div.blocker > div.body > div.section > div.section-body {
-  background-color: red;
-  white-space: nowrap;
+  padding: 0.5rem;
 }
 
 div.blocker > div.body > div.section:first-child {
@@ -168,7 +176,7 @@ div.report {
   display: flex;
   flex-direction: column;
   min-width: 40rem;
-  width: 60%;
+  width: 90%;
   margin-top: 2rem;
   border: 1px solid #44546a;
 }
@@ -192,7 +200,6 @@ div.report > div.header > span.title {
 div.report > div.header > div.status-container {
   font-size: 14px;
   font-weight: 500;
-  background-color: red;
   display: flex;
   justify-content: center;
   align-items: center;

@@ -33,10 +33,7 @@
         <div id="blocker-status" class="status">Behind</div>
         <div class="progress-label">Progress</div>
         <div class="progress">
-          <!-- <div class="progress-bar out-of-track" style="--progress: 100%">
-            <span>100%</span>
-          </div> -->
-          <div class="progress-bar out-of-track" style="--progress: 50%">
+          <div id="blocker-progress-bar" class="progress-bar">
             <span>50%</span>
             <div class="progress-background"></div>
           </div>
@@ -45,30 +42,29 @@
       <div class="body">
         <div class="section">
           <span class="section-title">Accomplishments</span>
-          <div class="section-body">
+          <div class="section-body" id="blocker-acc">
           </div>
         </div>
         <div class="section">
           <span class="section-title">Risks</span>
-          <div class="section-body"></div>
+          <div class="section-body" id="blocker-risks"></div>
         </div>
         <div class="section">
           <span class="section-title">Remarks</span>
-          <div class="section-body"></div>
+          <div class="section-body" id="blocker-remarks"></div>
         </div>
         <div class="section">
           <span class="section-title">On Hold</span>
-          <div class="section-body"></div>
+          <div class="section-body" id="blocker-onhold"></div>
         </div>
       </div>
     </div>
-    <div class="report">
-
+    <!-- <div class="report">
       <div class="header">
-        <span class="title">MDM MX Implementation</span>
-        <div class="status-container">Behind</div>
+        <span id="report-title" class="title">MDM MX Implementation</span>
+        <div id="report-status-container" class="status-container">Behind</div>
         <div class="progress-container">
-          <div class="progress-bar on-track" style="--progress: 50%;">
+          <div dir="report-progress-bar" class="progress-bar on-track" style="--progress: 50%;">
             <span>50%</span>
             <div class="progress-background"></div>
           </div>
@@ -122,20 +118,12 @@
             <td>4</td>
             <td>5</td>
             <td>
-              <!-- <div class="progress-bar out-of-track" style="--progress: 75%">
-              <span>75%</span>
-            </div> -->
-            </td>
           </tr>
         </tbody>
       </table>
-    </div>
+    </div> -->
   </div>
 
-  <!-- <div class="progress-bar out-of-track" style="--progress: 50%;">
-    <span>50%</span>
-    <div class="progress-background"></div>
-  </div> -->
   <script type="module" src="./code/index.js"></script>
   <script type="module" src="./code/titlebar.js"></script>
 </body>

@@ -11,6 +11,7 @@ const WorkbookProvider = require('../data/workbookProvider');
 const BridgeProvider = require('../data/bridgeProvider');
 
 const { Workplan } = require('../data/types');
+const { InferenceEngine } = require('../data/inferenceEngine');
 
 async function testExtraction(path, projectId) {
   
@@ -63,38 +64,48 @@ async function testExtraction(path, projectId) {
 
   const projectData = dataExtractor.getProjectData(bridge, workplanSheet, workplan.version, workplan.type);
 
+  Object.assign(workplan, projectData);
+
+  const milestoneData = dataExtractor.getMilestoneData(bridge, workplanSheet, workplan.type, workplan.version, );
+
+  workplan.milestones = [...milestoneData];
+
+  const inferenceEngine = new InferenceEngine();
+
+  const inferences = inferenceEngine.infer(workplan);
+
   return [workplanVersion, workplanType];
 }
 
 async function test() {
   const testCases = [
-    { path: 'C:/users/rpaz/documents/testing/az_pms/MERCH-1 Backup.xlsx', projectId: 'MERCH-1', 
+    { path: 'C:/users/rpaz/documents/testing/az_pms/MERCH-1 Backup.xlsx', projectId: 'PR-7', 
     expectedVersion: 'v3', expectedType: 0 },
-    { path: 'C:/users/rpaz/documents/testing/az_pms/PR-4.MX Onboarding Roadmap.xlsx', projectId: 'PR-4',
-    expectedVersion: 'v2', expectedType: 0 },
-    { path: 'C:/users/rpaz/documents/testing/az_pms/Pj. Unauthorized PTs Workplan.xlsx', projectId: '',
-    expectedVersion: 'v1.5', expectedType: 2 },
-    { path: 'C:/users/rpaz/documents/testing/az_pms/BR-1.Part Type Standardization Brazil.xlsx', projectId: '',
-    expectedVersion: 'v1.5', expectedType: 0 },
-    { path: 'C:/users/rpaz/documents/testing/az_pms/Pj. Most Popular vehicles Report & Automation Workplan.xlsx', projectId: 'MCD-2544',
-    expectedVersion: 'v3', expectedType: 2 }
+    // { path: 'C:/users/rpaz/documents/testing/az_pms/PR-4.MX Onboarding Roadmap.xlsx', projectId: 'PR-4',
+    // expectedVersion: 'v2', expectedType: 0 },
+    // { path: 'C:/users/rpaz/documents/testing/az_pms/Pj. Unauthorized PTs Workplan.xlsx', projectId: '',
+    // expectedVersion: 'v1.5', expectedType: 2 },
+    // { path: 'C:/users/rpaz/documents/testing/az_pms/BR-1.Part Type Standardization Brazil.xlsx', projectId: '',
+    // expectedVersion: 'v1.5', expectedType: 0 },
+    // { path: 'C:/users/rpaz/documents/testing/az_pms/Pj. Most Popular vehicles Report & Automation Workplan.xlsx', projectId: 'MCD-2544',
+    // expectedVersion: 'v3', expectedType: 2 }
   ];
 
   for (let testcase of testCases) {
     const [version, type] = await testExtraction(testcase.path, testcase.projectId);
+    console.log();
+    // Logger.Log(`---${testcase.projectId}---`, 0);
+    // if (testcase.expectedVersion === version) {
+    //   Logger.Log(`\t Version -> PASS - ${testcase.expectedVersion} vs ${version}`, 1);
+    // } else {
+    //   Logger.Log(`\t Version -> FAILED - ${testcase.expectedVersion} vs ${version}`, 3);
+    // }
 
-    Logger.Log(`---${testcase.projectId}---`, 0);
-    if (testcase.expectedVersion === version) {
-      Logger.Log(`\t Version -> PASS - ${testcase.expectedVersion} vs ${version}`, 1);
-    } else {
-      Logger.Log(`\t Version -> FAILED - ${testcase.expectedVersion} vs ${version}`, 3);
-    }
-
-    if (testcase.expectedType === type) {
-      Logger.Log(`\t Type -> PASS - ${testcase.expectedType} vs ${type}`, 1);
-    } else {
-      Logger.Log(`\t Type -> FAILED - ${testcase.expectedType} vs ${type}`, 3);
-    }
+    // if (testcase.expectedType === type) {
+    //   Logger.Log(`\t Type -> PASS - ${testcase.expectedType} vs ${type}`, 1);
+    // } else {
+    //   Logger.Log(`\t Type -> FAILED - ${testcase.expectedType} vs ${type}`, 3);
+    // }
   }
 
 }

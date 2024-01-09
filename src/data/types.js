@@ -19,7 +19,8 @@ class Task {
   comments = '';
 
 
-  constructor(name, flag, responsible, status, progress, duration, startDate, finishDate, newFinishDate, actualDate, completeed, target, remaining, remarks, comments) {
+
+  constructor(name, flag, responsible, status, progress, duration, startDate, finishDate, newFinishDate, actualDate, completed, target, remaining, remarks, comments) {
     this.name = name;
     this.flag = flag;
     this.responsible = responsible;
@@ -60,6 +61,9 @@ class Milestone {
 
   row = -1;
 
+  // Metadata
+  workStatus = -1;
+
   constructor(name, flag, row) {
     this.name = name;
     this.flag = flag;
@@ -83,6 +87,14 @@ class Workplan {
   milestones = [];
   type = -1;
   version = '';
+
+  /* Metadata */
+  accomplishments = '';
+  risks = '';
+  remarks = '';
+  onHold = '';
+
+  reportingMilestones = [];
 
   constructor(pathOrURL, projectId, projectName, projectObjective, projectOwner, projectStartDate, projectRemarks, projectProgress) {
     this.pathOrURL = pathOrURL;
