@@ -5,7 +5,7 @@
   "main": "src/main.js",
   "scripts": {
     "test": "node src/tests/test.js",
-    "dev": "electron . \"C:/users/rpaz/documents/testing/az_pms/MERCH-1 Backup.xlsx\" \"PR-7\""
+    "dev": "electron . \"C:/users/rpaz/documents/testing/az_pms/MERCH-1 Backup.xlsx\" \"MERCH-1\""
   },
   "author": "Raymundo Paz",
   "license": "ISC",

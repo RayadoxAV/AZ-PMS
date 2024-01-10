@@ -107,6 +107,8 @@ class DataManager {
 
     workplan.projectStatus = workStatus;
 
+    workplan.report = inferenceEngine.generateReport(workplan);
+
     BrowserWindow.getAllWindows()[0].webContents.send('data-events', { name: 'project-loaded', data: JSON.stringify(workplan) });
 
     return workplan;

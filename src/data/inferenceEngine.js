@@ -223,6 +223,11 @@ class InferenceEngine {
   }
 
   static inferMilestoneProgress(milestone) {
+
+    if (milestone.tasks.length === 0) {
+      return 0;
+    }
+
     let progress = 0;
     for (let i = 0; i < milestone.tasks.length; i++) {
       const task = milestone.tasks[i];
@@ -288,10 +293,30 @@ class InferenceEngine {
             }
           }
 
+          // console.log(task.progress, task.name);
+
+
           if (task.flag === 1) {
-            accomplishmentsString += `- [${task.name}] is completed. (WK${task.actualDate.week})\n`;
+
+            if (task.actualDate) {
+              accomplishmentsString += `- [${task.name}] is completed. (WK${task.actualDate.week})\n`;
+            } else if (task.finishDate) {
+              accomplishmentsString += `- [${task.name}] is completed. (WK${task.finishDate.week})\n`;
+            } else {
+              accomplishmentsString += `- [${task.name}] is completed.\n`;
+            }
+
           } else if (task.status === 2) {
-            accomplishmentsString += `- [${task.name}] is completed. (WK${task.actualDate.week})\n`;
+
+            if (task.actualDate) {
+              accomplishmentsString += `- [${task.name}] is completed. (WK${task.actualDate.week})\n`;
+            } else if (task.finishDate) {
+              accomplishmentsString += `- [${task.name}] is completed. (WK${task.finishDate.week})\n`;
+            } else {
+              accomplishmentsString += `- [${task.name}] is completed.\n`;
+            }
+
+
           } else if (task.status === 1 && task.progress >= 0.75 && dateDifference < 2) {
             accomplishmentsString += `- [${task.name}] is at ${(task.progress * 100).toFixed(0)}% progress.\n`;
           }
@@ -316,15 +341,24 @@ class InferenceEngine {
         const task = milestone.tasks[j];
 
         if (task.flag === 2) {
+          // console.log(milestone.tasks);
           risksString += `- [${task.name}] ${task.remarks}\n`;
         } else {
           const timeResult = Util.isOnTime(task, workplan.type);
-          if (task.status !== 4 && task.status !== 3 && !timeResult.onTime) {
+          // console.log(task.name, timeResult);
 
+
+          // console.log(timeResult, task.name);
+
+          if (task.status !== 4 && task.status !== 3 && !timeResult.onTime) {
             if (task.target > 0) {
-              risksString = `- [${task.name}] is behind plan (${task.completed} vs ${task.target})\n`;
+              if (task.completed === -1) {
+                task.completed = 0;
+              }
+
+              risksString += `- [${task.name}] is behind plan (${task.completed} vs ${task.target})\n`;
             } else {
-              risksString = `- [${task.name}] is behind plan (${timeResult.timeBehind} ${timeResult.unit})\n`;
+              risksString += `- [${task.name}] is behind plan (${timeResult.timeBehind} ${timeResult.unit})\n`;
             }
           }
         }
@@ -361,9 +395,99 @@ class InferenceEngine {
     return onHoldString;
   }
 
-  generateReportMilestones() {
+  generateReport(workplan) {
+    const accomplishments = this.generateReportAccomplishments(workplan)
+    const risks = this.generateReportRisks(workplan);
+    const reportingItems = this.generateReportingItems(workplan);
+
+    return {
+      accomplishments,
+      reportingItems
+    };
+  }
+
+  generateReportAccomplishments(workplan) {
+    let accomplishmentsString = '';
+
+    const currentDate = Util.dateToWeek(new Date());
+
+
+    for (let i = 0; i < workplan.milestones.length; i++) {
+      const milestone = workplan.milestones[i];
+
+      const currentWeek = Util.dateToWeek(new Date());
+
+      for (let j = 0; j < milestone.tasks.length; j++) {
+        const task = milestone.tasks[j];
+
+        let dateDifference = undefined;
+
+        if (task.newFinishDate) {
+          dateDifference = task.newFinishDate.week - currentDate;
+        } else if (task.finishDate) {
+          dateDifference = task.finishDate.week - currentDate;
+        } else {
+          dateDifference = 10000;
+        }
+
+        if (task.flag === 1) {
+          if (task.actualDate) {
+            if (task.actualDate.week === currentWeek) {
+              accomplishmentsString += `- [${task.name}] is completed.\n`;
+            }
+          }
+        } else if (task.status === 1 && task.progress >= 0.75 && dateDifference < 2) {
+          accomplishmentsString += `- [${task.name}] is at ${(task.progress * 100).toFixed(0)}% progress.\n`;
+        }
+      }
+    }
+
+    return accomplishmentsString;
+  }
+
+  generateReportRisks(workplan) {
 
   }
+
+  generateReportingItems(workplan) {
+
+    const reportingItems = [];
+
+    let addedMilestone = false;
+
+    for (let i = 0; i < workplan.milestones.length; i++) {
+      addedMilestone = false;
+      const milestone = workplan.milestones[i];
+
+      if (milestone.flag = 0) {
+        reportingItems.push(milestone);
+
+        for (let j = 0; j < milestone.tasks.length; j++) {
+          const task = milestone.tasks[j];
+
+          if (task.target > 0 || task.flag === 0) {
+            reportingItems.push(task);
+          }
+        }
+
+      } else {
+        for (let j = 0; j < milestone.tasks.length; j++) {
+          const task = milestone.tasks[j];
+
+          if (task.flag === 0 || task.target > 0) {
+            if (!addedMilestone) {
+              reportingItems.push(milestone);
+              addedMilestone = true;
+            }
+
+            reportingItems.push(task);
+          }
+        }
+      }
+    }
+    return reportingItems;
+  }
+  
 }
 
 module.exports = { InferenceEngine };

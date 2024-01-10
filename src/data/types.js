@@ -69,6 +69,10 @@ class Milestone {
     this.flag = flag;
     this.row = row;
   }
+
+  toString() {
+    return `Milestone { name: ${this.name}, flag: ${this.flag}, status: ${this.status}, progress: ${this.progress}, tasks: ${this.tasks}, startDate: ${this.startDate}, finishDate: ${this.finishDate}}`;
+  }
 }
 
 class Workplan {

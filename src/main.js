@@ -26,8 +26,8 @@ function createWindow() {
   const window = new BrowserWindow({
     width: 800,
     height: 700,
-    minWidth: 400,
-    minHeight: 400,
+    minWidth: 750,
+    minHeight: 700,
     frame: false,
     title: 'Summary for [project]',
     webPreferences: {

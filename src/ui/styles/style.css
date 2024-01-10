@@ -64,10 +64,10 @@ div.main-container {
   width: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
   overflow: auto;
-  max-height: 100%;
+  max-height: calc(100vh - 2rem);
+  padding: 3rem;
 }
 
 div.blocker {
@@ -75,7 +75,7 @@ div.blocker {
   flex-direction: column;
   border: 1px solid #1f2630;
   min-width: 40rem;
-  width: calc(100% - 10rem);
+  width: calc(100% - 15rem);
 }
 
 div.blocker > div.header {
@@ -147,12 +147,19 @@ div.blocker > span.title {
 div.blocker > div.body > div.section {
   min-height: 4rem;
   background-color: white;
+  max-height: 15rem;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
 }
 
 div.blocker > div.body > div.section > span.section-title {
   font-weight: 500;
   font-size: 14px;
   padding: 0.25rem;
+  position: sticky;
+  top: 0;
+  background-color: white;
 }
 
 div.blocker > div.body > div.section > div.section-body {
@@ -172,13 +179,47 @@ div.blocker > div.body > div.section:nth-child(3) {
   border-right: 1px solid #44546a;
 }
 
+button.copy-button {
+  position: absolute;
+  right: -4rem;
+  top: 0rem;
+  width: 3rem;
+  aspect-ratio: 1;
+  border: none;
+  outline: none;
+  background-color: #E0E0E0;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  transition: all 150ms cubic-bezier(0.2, 0, 0, 1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+button.copy-button > svg {
+  background-image: ('/ui/assets/icons/copy.svg');
+  width: 2rem;
+  height: 2rem;
+}
+
+button.copy-button:hover {
+  background-color: #eaeaea;
+}
+
+button.copy-button:active {
+  background-color: #CCCCCC;
+}
+
 div.report {
+  position: relative;
   display: flex;
   flex-direction: column;
   min-width: 40rem;
   width: 90%;
   margin-top: 2rem;
   border: 1px solid #44546a;
+  width: calc(100% - 15rem);
+
 }
 
 div.report > div.header {

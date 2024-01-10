@@ -10,6 +10,7 @@ const blockerStatus = document.getElementById('blocker-status');
 const blockerProgressBar = document.getElementById('blocker-progress-bar');
 /* Report */
 const reportTitle = document.getElementById('report-title');
+const reportAccomplishmentsTextArea = document.getElementById('report-acc-textarea');
 
 function init() {
   listenForEvents();
@@ -87,7 +88,9 @@ function loadProjectData(workplanString) {
 
 
   /* Report */
-  // reportTitle.innerText = workplan.projectName;
+  reportTitle.innerText = workplan.projectName;
+
+  reportAccomplishmentsTextArea.innerText = workplan.report.accomplishments;
 }
 
 

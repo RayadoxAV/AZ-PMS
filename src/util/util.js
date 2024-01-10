@@ -1,4 +1,4 @@
-const { Worksheet } = require('exceljs');
+const ExcelJS = require('exceljs');
 const Logger = require('./Logger');
 
 class Util {
@@ -57,51 +57,6 @@ class Util {
 
   static v1_5Fields = [1, 2, 4, 6, 9, 10, 11, 12, 13, 17, 19, 20, 21, 22];
   static v1_5RequiredMatches = 14;
-
-  /* static weeklyTypeFields = {
-    'v3': {
-      fields: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27],
-      minMatches: 0,
-    },
-    'v2': {
-      fields: [0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14, 17, 19, 20, 21, 22, 23, 24, 25, 26, 27],
-      minMatches: 0
-    },
-    'v1.5': {
-      fields: [1, 2, 4, 6, 9, 10, 11, 12, 13, 17, 19, 20, 21, 22, 27, 31],
-      minMatches: 0
-    }
-  };
-
-  static dailyTypeFields = {
-    'v3': {
-      fields: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 17, 19, 20, 21, 22, 23, 24, 25, 26, 27],
-      minMatches: 0
-    },
-    'v2': {
-      fields: [],
-      minMatches: 0
-    },
-    'v1.5': {
-      fields: [],
-      minMatches: 0
-    }
-  };
-
-  static scrumTypeFields = {
-    'v3': {
-      fields: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 17, 19, 20, 21, 22, 23, 24, 25, 26, 27, 29, 30],
-      minMatches: 0
-    },
-    'v2': {
-      fields: [],
-      minMatches: 0
-    },
-    'v1.5': {
-      fields: [1, 2, 4, 6, 9, 10, 11, 12, 13, 17, 19, 20, 21, 22, 27, 29, 30, 32],
-      minMatches: 18
-    }
-  }; */
 
   static isPath(testString) {
     if (!testString) {
@@ -219,6 +174,248 @@ class Util {
     }
     return '';
   }
+
+
+  static getValue(worksheet, address, type) {
+    const cellValue = worksheet.getCell(address).value;
+    const cellType = Util.determineValueType(cellValue);
+
+    if (cellType === 'Null') {
+      if (type === 'number') {
+        return -1;
+      }
+
+      if (type === 'string') {
+        return '';
+      }
+
+      if (type === 'boolean') {
+        return false;
+      }
+
+      if (type === 'date') {
+        return undefined;
+      }
+    }
+
+    if (cellType === 'Number') {
+      if (type === 'number') {
+        return cellValue;
+      }
+
+      if (type === 'string') {
+        return `${cellValue}`;
+      }
+
+      if (type === 'boolean') {
+        if (cellType === 0) {
+          return false;
+        } else {
+          return true;
+        }
+      }
+
+      if (type === 'date') {
+        return undefined;
+      }
+    }
+
+    if (cellType === 'String') {
+      if (type === 'number') {
+        let result = -1;
+        try {
+          result = Number.parseInt(cellValue);
+          if (isNaN(result)) {
+            return -1;
+          }
+
+        } catch (error) {
+          result = -1;
+        }
+
+        return result;
+      }
+
+      if (type == 'string') {
+        return cellValue;
+      }
+
+      if (type === 'boolean') {
+        if (cellValue.toLowerCase() === 'false') {
+          return false;
+        } else {
+          return true;
+        }
+      }
+
+      if (type === 'date') {
+        return undefined;
+      }
+    }
+
+    if (cellType === 'Date') {
+
+      if (type === 'number') {
+        return cellValue.getTime();
+      }
+
+      if (type === 'string') {
+        const date = cellValue;
+
+        return `${date.getFullYear()}/${date.getMonth() + 1}${date.getDate()}`;
+      }
+
+      if (type === 'boolean') {
+        return cellValue;
+      }
+
+      if (type === 'date') {
+        return cellValue;
+      }
+    }
+
+    if (cellType === 'Hyperlink') {
+      if (type === 'number') {
+        let result = -1;
+        try {
+          result = Number.parseInt(cellValue);
+          if (isNaN(result)) {
+            return -1;
+          }
+        } catch (error) {
+          result = -1;
+        }
+
+        return result;
+      }
+      if (type === 'string') {
+        return cellValue.text;
+      }
+      if (type === 'boolean') {
+        return false;
+      }
+      if (type === 'date') {
+        return undefined;
+      }
+    }
+
+    if (cellType === 'RichText') {
+      if (type === 'number') {
+        return -1;
+      }
+      if (type === 'string') {
+        let text = '';
+        cellValue.richText.forEach((value) => {
+          text += value.text;
+        });
+
+        return text;
+      }
+      if (type === 'boolean') {
+        return false;
+      }
+      if (type === 'date') {
+        return undefined;
+      }
+    }
+
+    if (cellType === 'Formula') {
+      if (type === 'number') {
+        if (cellValue.result) {
+          if (cellValue.result.error) {
+            return -1;
+          } else {
+            return cellValue.result;
+          }
+        } else {
+          return -1;
+        }
+      }
+      if (type === 'string') {
+        if (cellValue.result) {
+          if (cellValue.result.error) {
+            return '';
+          } else {
+            return cellValue.result;
+          }
+        } else {
+          return '';
+        }
+      }
+      if (type === 'boolean') {
+        if (cellValue.result) {
+          if (cellValue.result.error) {
+            return false;
+          } else {
+            if (cellValue.result === 0) {
+              return false;
+            } else {
+              return true;
+            }
+          }
+        } else {
+          return false;
+        }
+      }
+      if (type === 'date') {
+        if (cellValue.result) {
+          if (cellValue.result.error) {
+            return undefined;
+          } else {
+            return cellValue.result;
+          }
+        } else {
+          return undefined;
+        }
+      }
+    }
+
+    if (cellType === 'SharedFormula') {
+      if (cellValue.result) {
+
+        if (type === 'number') {
+          if (cellValue.result.error) {
+            return -1;
+          } else {
+            return cellValue.result;
+          }
+        }
+
+        if (type === 'string') {
+          if (cellValue.result.error) {
+            return '';
+          } else {
+            return cellValue.result;
+          }
+        }
+
+        if (type === 'boolean') {
+          if (cellValue.result.error) {
+            return false;
+          } else if (cellValue.result === 'false') {
+            return false;
+          } else {
+            return true;
+          }
+        }
+
+        if (type === 'date') {
+          if (cellValue.result.error) {
+            return undefined;
+          } else {
+            return cellValue.result;
+          }
+        }
+
+      } else {
+        return Util.getValue(worksheet, cellValue.sharedFormula, type);
+      }
+      // const realValue = worksheet.getCell(cellValue.sharedFormula).value;
+      // const realType = Util.determineValueType(cellValue);
+
+    }
+  }
+
   /**
    * 
    * @param {Number} fieldIndex 
@@ -268,7 +465,6 @@ class Util {
    * @param {Date} date 
    */
   static dateToWeek(date) {
-
     const searchString = `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
     const week = Util.dates[searchString];
     return week;
@@ -405,6 +601,7 @@ class Util {
 
   static isOnTime(task, type) {
 
+    
     const timeResult = {
       onTime: false,
       timeBehind: 0,
@@ -423,10 +620,16 @@ class Util {
       return timeResult;
     }
 
+    if (!task.startDate) {
+      timeResult.onTime = true;
+      timeResult.timeBehind = 0;
+      return timeResult;
+    }    
+
     if (type === 0) {
 
       const currentWeek = Util.dateToWeek(new Date());
-      
+
       const ranges = [];
 
       const expectedProgress = 1 / task.duration;
@@ -468,6 +671,9 @@ class Util {
 
     } else {
 
+      // Dia = 9 horas
+      // 
+
       const dayUnit = 1000 * 60 * 60 * 24;
 
       const currentDate = new Date();
@@ -498,7 +704,7 @@ class Util {
           progressStage = i;
         }
       }
-      
+
       const relativeDate = Math.ceil((currentDate - task.startDate.date) / dayUnit);
 
       if (progressStage < relativeDate) {
@@ -514,6 +720,48 @@ class Util {
 
 
     return timeResult;
+  }
+
+  static determineValueType(value) {
+    if (value === false || value === true) {
+      return 'Boolean';
+    }
+
+    if (!value) {
+      return 'Null';
+    }
+
+    if (typeof value === 'number') {
+      return 'Number';
+    }
+
+    if (typeof value === 'string') {
+      return 'String';
+    }
+
+    if (typeof value === 'object') {
+      if (value.getTime) {
+        return 'Date';
+      }
+
+      if (value.hyperlink) {
+        return 'Hyperlink';
+      }
+
+      if (value.richText) {
+        return 'RichText';
+      }
+
+      if (value.formula) {
+        return 'Formula';
+      }
+
+      if (value.sharedFormula) {
+        return 'SharedFormula';
+      }
+    }
+
+    return 'Unknown';
   }
 }
 

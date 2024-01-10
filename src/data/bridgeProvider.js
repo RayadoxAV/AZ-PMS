@@ -54,7 +54,7 @@ class BridgeProvider {
       }
     }
 
-    Logger.Log('Bridge generated for workplan', 0);
+    // Logger.Log('Bridge generated for workplan', 0);
     return bridge;
   }
 }
