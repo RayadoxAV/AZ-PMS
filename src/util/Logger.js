@@ -22,15 +22,21 @@ class Logger {
           console.log(`${color}%s${reset}`, `SUCCESS: ${message}`);
           break;
         }
+
         case 2: {
           const color = '\x1b[33m';
           console.log(`${color}%s${reset}`, `WARNING: ${message}`);
           break;
         }
+
         case 3: {
           const color = '\x1b[31m';
           console.log(`${color}%s${reset}`, `ERROR: ${message}`);
           break;
+        }
+
+        case 10: {
+          console.log(`TEST: ${message}`);
         }
       }
     }

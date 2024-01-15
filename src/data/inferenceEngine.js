@@ -222,6 +222,32 @@ class InferenceEngine {
     return workStatus;
   }
 
+  static inferTaskWorkStatus(task, type) {
+    let workStatus = undefined;
+
+    const timeResult = Util.isOnTime(task, type);
+
+    if (type === 0) {
+      if (timeResult.timeBehind === 0) {
+        workStatus = 0;
+      } else if (timeResult.timeBehind <= 2) {
+        workStatus = 1;
+      } else if (timeResult.timeBehind >= 4) {
+        workStatus = 2;
+      }
+    } else {
+      if (timeResult.timeBehind < 7) {
+        workStatus = 0;
+      } else if (timeResult <= 13) {
+        workStatus = 1;
+      } else if (timeResult >= 14) {
+        workStatus = 2;
+      }
+    }
+
+    return workStatus;
+  }
+
   static inferMilestoneProgress(milestone) {
 
     if (milestone.tasks.length === 0) {
@@ -295,8 +321,8 @@ class InferenceEngine {
 
           // console.log(task.progress, task.name);
 
-
-          if (task.flag === 1) {
+          
+          if (task.flag === 1 && dateDifference <= 2) {
 
             if (task.actualDate) {
               accomplishmentsString += `- [${task.name}] is completed. (WK${task.actualDate.week})\n`;
@@ -306,7 +332,7 @@ class InferenceEngine {
               accomplishmentsString += `- [${task.name}] is completed.\n`;
             }
 
-          } else if (task.status === 2) {
+          } else if (task.status === 2 && dateDifference <= 2) {
 
             if (task.actualDate) {
               accomplishmentsString += `- [${task.name}] is completed. (WK${task.actualDate.week})\n`;
@@ -487,7 +513,7 @@ class InferenceEngine {
     }
     return reportingItems;
   }
-  
+
 }
 
 module.exports = { InferenceEngine };

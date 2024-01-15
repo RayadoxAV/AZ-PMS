@@ -24,8 +24,8 @@ if (process.env.CURR_ENV === 'dev') {
 
 function createWindow() {
   const window = new BrowserWindow({
-    width: 800,
-    height: 700,
+    width: 1280,
+    height: 720,
     minWidth: 750,
     minHeight: 700,
     frame: false,
@@ -38,7 +38,7 @@ function createWindow() {
 
   // window.maximize();
   window.loadFile('./src/ui/index.html');
-
+  window.maximize();
 }
 
 app.whenReady().then(() => {

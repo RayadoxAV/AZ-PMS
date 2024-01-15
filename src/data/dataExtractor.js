@@ -1051,6 +1051,9 @@ class DataExtractor {
           task.remarks = Util.getValue(workplanSheet, `${taskRemarksColumn}${startRow + i}`, 'string');
           task.comments = Util.getValue(workplanSheet, `${taskCommentsColumn}${startRow + i}`, 'string');
 
+
+          task.workStatus = InferenceEngine.inferTaskWorkStatus(task, type);
+
           tasks.push(task);
         } else  if ((testCell.style.fill.fgColor.theme === 3 && testCell.style.fill.fgColor.tint === 0.7999816888943144) || (testCell.style.fill.fgColor.argb === 'FFD6DCE4')) {
           break;

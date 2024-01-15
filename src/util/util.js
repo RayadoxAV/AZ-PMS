@@ -328,7 +328,8 @@ class Util {
             return cellValue.result;
           }
         } else {
-          return -1;
+          // NOTE: If we are asking for the numeric result of a formula that has no result, return a 0 because the library omits the field when the result is 0 for some reason.
+          return 0;
         }
       }
       if (type === 'string') {
@@ -434,8 +435,13 @@ class Util {
 
     const value = workplanSheet.getCell(bridge.get(fieldIndex)).value;
 
+    if (fieldIndex === 4) {
+      let progress = Util.getValue(workplanSheet, bridge.get(fieldIndex), 'number');
+      return progress;
+    }
+
     if (!value) {
-      return `No value in cell for field '${Util.testFields[fieldIndex]}'`;
+      return '';
     }
 
     if (value.result) {

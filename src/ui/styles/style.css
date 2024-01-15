@@ -68,6 +68,7 @@ div.main-container {
   overflow: auto;
   max-height: calc(100vh - 2rem);
   padding: 3rem;
+  gap: 2rem;
 }
 
 div.blocker {
@@ -181,9 +182,9 @@ div.blocker > div.body > div.section:nth-child(3) {
 
 button.copy-button {
   position: absolute;
-  right: -4rem;
-  top: 0rem;
+  right: 3rem;
   width: 3rem;
+  bottom: 10%;
   aspect-ratio: 1;
   border: none;
   outline: none;
@@ -194,6 +195,7 @@ button.copy-button {
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 2;
 }
 
 button.copy-button > svg {
@@ -216,17 +218,16 @@ div.report {
   flex-direction: column;
   min-width: 40rem;
   width: 90%;
-  margin-top: 2rem;
   border: 1px solid #44546a;
   width: calc(100% - 15rem);
-
+  outline: 1rem solid white;
 }
 
 div.report > div.header {
   display: flex;
   flex-direction: row;
   background-color: #44546a;
-  
+  justify-content: space-between;
 }
 
 div.report > div.header > span.title {
@@ -238,25 +239,48 @@ div.report > div.header > span.title {
   color: white;
 }
 
-div.report > div.header > div.status-container {
+div.report > div.header div.target-date {
+  display: flex;
+  font-size: 15px;
+  font-weight: 500;
+  align-items: center;
+  padding: 1rem;
+  color: white;
+  width: 15rem;
+  justify-content: center;
+}
+
+div.report > div.header div.status-container {
   font-size: 14px;
   font-weight: 500;
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 20%;
+  width: 15rem;
   color: #FFFFFF;
   margin-left: auto;
 }
 
-div.report > div.header > div.progress-container {
-  width: 10%;
+div.report > div.header div.status-container.on-track {
+  background-color: #70ad47;
+}
+
+div.report > div.header div.status-container.behind {
+  background-color: #ffc000;
+}
+
+div.report > div.header div.status-container.out-of-track {
+  background-color: red;
+}
+
+div.report > div.header div.progress-container {
+  width: 10rem;
   background-color: #FFFFFF;
   display: flex;
   padding: 0.25rem;
 }
 
-div.report > div.header > div.progress-container > div.progress-bar {
+div.report > div.header div.progress-container > div.progress-bar {
   width: 100%;
   display: flex;
   align-items: center;
@@ -308,11 +332,14 @@ table.milestone-container > tbody > tr.milestone {
 }
 table.milestone-container > tbody > tr.milestone > td {
   padding: 0.25rem 0.5rem;
+  font-weight: 600;
+  background-color: #efefef;
 }
 
 table.milestone-container > tbody > tr > td {
   text-align: center;
   padding: 0rem 0.5rem;
+  background-color: white;
 }
 
 table.milestone-container > tbody > tr > td:first-child {

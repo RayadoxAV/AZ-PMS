@@ -5,7 +5,8 @@
   "main": "src/main.js",
   "scripts": {
     "test": "node src/tests/test.js",
-    "dev": "electron . \"C:/users/rpaz/documents/testing/az_pms/MERCH-1 Backup.xlsx\" \"MERCH-1\""
+    "dev": "electron . \"C:/users/rpaz/documents/testing/az_pms/MERCH-1 Backup.xlsx\" \"MERCH-1\"",
+    "deploy": "node src/deployment/deployer.js"
   },
   "author": "Raymundo Paz",
   "license": "ISC",
@@ -15,6 +16,7 @@
   },
   "dependencies": {
     "@microsoft/microsoft-graph-client": "^3.0.7",
+    "dom-to-image": "^2.6.0",
     "dotenv": "^16.3.1",
     "exceljs": "^4.4.0",
     "isomorphic-fetch": "^3.0.0"

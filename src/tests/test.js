@@ -13,9 +13,10 @@ const BridgeProvider = require('../data/bridgeProvider');
 const { Workplan } = require('../data/types');
 const { InferenceEngine } = require('../data/inferenceEngine');
 const Util = require('../util/util');
+const { PersistenceManager } = require('../data/persistenceManager');
 
 async function testExtraction(path, projectId) {
-  
+
   const dataExtractor = new DataExtractor();
 
 
@@ -74,7 +75,7 @@ async function testExtraction(path, projectId) {
   const inferenceEngine = new InferenceEngine();
 
   const inferences = inferenceEngine.infer(workplan);
-  
+
   const report = inferenceEngine.generateReport(workplan);
 
   console.log(report);
@@ -82,7 +83,7 @@ async function testExtraction(path, projectId) {
   return [workplanVersion, workplanType];
 }
 
-async function test() {
+async function testDataExtraction() {
 
   const testCases = [
     {
@@ -200,4 +201,130 @@ async function test() {
 
 }
 
-test();
+async function testDB() {
+  // const created = await PersistenceManager.createDBIfNotExists();
+  // const db = await PersistenceManager.readDBFile();
+
+  // customAssert(false, created, 'Create database');
+  // customAssert(1, db.meta.version, 'Read database');
+
+
+
+  // console.log('Method: PersistenceManager.searchInDB');
+  // const noProjectResult = await PersistenceManager.searchInDB('TST-2', '1. Some test');
+  // const noActivityResult = await PersistenceManager.searchInDB('TST-1', '1. Non existent');
+  // const activityResult = await PersistenceManager.searchInDB('TST-1', '1. Some test');
+
+  // const wrongTypeProjectResult = await PersistenceManager.searchInDB({}, '1. Some test');
+  // const wrongTypeActivityResult = await PersistenceManager.searchInDB('TST-1', {});
+
+  // customAssert(undefined, noProjectResult, 'Search in non existent project');
+  // customAssert(undefined, noActivityResult, 'Search non existent activity in project');
+  
+  // customAssert('1. Some test', activityResult.name, 'Search: Existent activity name');
+  // customAssert(0.2, activityResult.progress, 'Search: Existent activity progress');
+  // customAssert(21, activityResult.lastReportDate.week, 'Search: Existent activity week');
+  // customAssert('2024-01-15', activityResult.lastReportDate.date, 'Search: Existent activity date');
+
+  // customAssert(undefined, wrongTypeProjectResult, 'Search: Wrong type - Project');
+  // customAssert(undefined, wrongTypeActivityResult, 'Search: Wrong type - Activity');
+
+  // console.log('Method: PersistenceManager.addToDB');
+  // const activityOnNoProject = await PersistenceManager.addToDB('TST-2', '2. Some activity', 0.5);
+  // const [addedActivity] = await PersistenceManager.addToDB('TST-1', '2. Some activity', 0.5);
+  // customAssert(0.5, addedActivity.progress, 'Added activity progress');
+  // customAssert(21, addedActivity.lastReportDate.week, 'Added activity week');
+  // customAssert('2024-01-15', addedActivity.lastReportDate.date, 'Added activity date');
+
+  // customAssert(undefined, undefined, 'Add activity on non-existen project');
+  // customAssert('2. Some activity', addedActivity.name, 'Added activity name');
+
+  // const removedActivity = await PersistenceManager.deleteFromDB('TST-1', '2. Some activity');
+  // customAssert(true, removedActivity, 'Remove activity from project');
+
+  // const noRemovedActivity = await PersistenceManager.deleteFromDB('TST-1', '5. Some other activity');
+  // customAssert(false, noRemovedActivity, 'Remove non-existent activity');
+ 
+  // const noRemovedActivityProject = await PersistenceManager.deleteFromDB('TST-5', '2. Some activity');
+  // customAssert(false, noRemovedActivityProject, 'Remove activity from non-existent project');
+  const newActivity = {
+    name: '1. Some other name',
+    progress: 0.4,
+    lastReportDate: {
+      week: 22,
+      date: '2024-01-22'
+    }
+  };
+  const updatedActivity = await PersistenceManager.updateFromDB('TST-1', '1. Some test', newActivity);
+
+  customAssert(true, updatedActivity, 'Update existent activity');
+
+  const noUpdatedActivity = await PersistenceManager.updateFromDB('TST-1', '1. Asa', newActivity);
+  const noUpdatedActivityProject = await PersistenceManager.updateFromDB('TSTA-1', '1. Some test', newActivity);
+
+  customAssert(false, noUpdatedActivity, 'Update non-existent activity');
+  customAssert(false, noUpdatedActivityProject, 'Update existent activity from non-existent project');
+
+
+}
+
+
+function determineTests() {
+  const moduleArg = process.argv[2];
+
+  if (moduleArg) {
+    if (moduleArg.includes('-m=')) {
+      const target = moduleArg.split('=')[1];
+
+      if (target) {
+
+        switch (target) {
+          case 'data':
+            testDataExtraction();
+            break;
+
+          case 'd':
+            testDataExtraction();
+            break;
+
+          case 'bd':
+            testDB();
+            break;
+
+          case 'db':
+            testDB();
+            break;
+
+          default:
+            Logger.Log(`Unknown target for function 'test': '${target}'`, 3);
+            break;
+        }
+
+      } else {
+        Logger.Log(`Unknown target for function 'test': '${target}'`, 3);
+      }
+
+    } else {
+      Logger.Log(`Unknown arguments for function 'test': ${moduleArg}`, 3);
+    }
+  } else {
+    Logger.Log('Insufficient arguments for function \'test\'', 3);
+  }
+}
+
+determineTests();
+
+function customAssert(expectedValue, actualValue, caseName) {
+
+  if (typeof expectedValue === 'object') {
+    Logger.Log(`Assertion failed for case ${caseName}: Cannot assert values of type [object]`, 10);
+    return;
+  }
+
+
+  if (expectedValue === actualValue) {
+    Logger.Log(`${caseName}: PASS ✅`, 10)
+  } else {
+    Logger.Log(`${caseName}: FAIL ❌`, 10);
+  }
+}
