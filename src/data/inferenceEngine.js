@@ -485,22 +485,22 @@ class InferenceEngine {
       addedMilestone = false;
       const milestone = workplan.milestones[i];
 
-      if (milestone.flag = 0) {
+      if (milestone.flag === 0) {
         reportingItems.push(milestone);
 
         for (let j = 0; j < milestone.tasks.length; j++) {
           const task = milestone.tasks[j];
-
-          if (task.target > 0 || task.flag === 0) {
+          // NOTE: If someone wants to report a milestone. Report it in its entirety
+          // if (task.target > 0 || task.flag === 0) {
             reportingItems.push(task);
-          }
+          // }
         }
 
       } else {
         for (let j = 0; j < milestone.tasks.length; j++) {
           const task = milestone.tasks[j];
 
-          if (task.flag === 0 || task.target > 0) {
+          if (task.flag === 0) {
             if (!addedMilestone) {
               reportingItems.push(milestone);
               addedMilestone = true;
@@ -511,6 +511,7 @@ class InferenceEngine {
         }
       }
     }
+
     return reportingItems;
   }
 

@@ -196,8 +196,8 @@ function fillReport(workplan) {
         <td>${startDate}</td>
         <td>${finishDate}</td>
         <td></td>
-        <td>${item.target === -1 ? '' : item.target}</td>
-        <td>${item.remaining === 0 ? '' : item.remaining}</td>
+        <td>${item.target === -1 ? '' : numberWithCommas(item.target)}</td>
+        <td>${item.remaining === 0 ? '' : numberWithCommas(item.remaining)}</td>
         <td>
           <div class="progress-bar ${status}" style="--progress: ${(item.progress * 100).toFixed(0)}%;">
             <span>${(item.progress * 100).toFixed(0)}%</span>
@@ -211,16 +211,23 @@ function fillReport(workplan) {
       let finishDate = undefined;
       let newFinishDate = undefined;
 
+
       if (item.startDate) {
-        startDate = item.startDate.date.split('T')[0].replace(/\-/g, '/');
+        if (item.startDate.date) {
+          startDate = item.startDate.date.split('T')[0].replace(/\-/g, '/');
+        }
       }
 
       if (item.finishDate) {
-        finishDate = item.finishDate.date.split('T')[0].replace(/\-/g, '/');
+        if (item.finishDate.date) {
+          finishDate = item.finishDate.date.split('T')[0].replace(/\-/g, '/');
+        }
       }
 
       if (item.newFinishDate) {
-        newFinishDate = item.newFinishDate.date.split('T')[0].replace(/\-/g, '/');
+        if (item.newFinishDate.date) {
+          newFinishDate = item.newFinishDate.date.split('T')[0].replace(/\-/g, '/');
+        }
       }
 
       let status = undefined;
@@ -280,7 +287,12 @@ function intToWorkStatusText(workStatusInt) {
 }
 
 function numberWithCommas(x) {
-  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  try {
+    const number = x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    return number;
+  } catch (_) {
+    return '';
+  }
 }
 
 function convertToHTML() {

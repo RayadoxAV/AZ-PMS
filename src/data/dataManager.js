@@ -111,6 +111,9 @@ class DataManager {
 
     BrowserWindow.getAllWindows()[0].webContents.send('data-events', { name: 'project-loaded', data: JSON.stringify(workplan) });
 
+
+    // console.log(JSON.stringify(workplan));
+
     return workplan;
   }
 }

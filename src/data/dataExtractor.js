@@ -32,12 +32,16 @@ class DataExtractor {
 
     workbook.eachSheet((worksheet) => {
 
+      if (worksheet.state !== 'visible') {
+        sheetIndex++;
+        return;
+      }
+
       if (!shouldContinue) {
         return;
       }
 
       const cells = Util.getRange(worksheet, 'A1:V10');
-
       for (let i = 0; i < cells.length; i++) {
         const cellValue = cells[i].value;
 
@@ -58,7 +62,7 @@ class DataExtractor {
 
         }
       }
-
+      sheetIndex++;
       // TODO: Review
       // workplanScore = 0;
       // const fieldMap = new Map();
@@ -154,7 +158,6 @@ class DataExtractor {
       //   validSheetIndex = sheetIndex;
       // }
 
-      sheetIndex++;
     });
 
     if (validSheetIndex === -1) {
@@ -420,7 +423,12 @@ class DataExtractor {
 
               milestone.completed = Util.getValue(workplanSheet, `${milestoneCompletedColumn}${rowNumber}`, 'number');
               milestone.target = Util.getValue(workplanSheet, `${milestoneTargetColumn}${rowNumber}`, 'number');
+
               milestone.remaining = milestone.target - milestone.completed;
+
+              if (isNaN(milestone.remaining)) {
+                milestone.remaining = 0;
+              }
 
               milestone.remarks = Util.getValue(workplanSheet, `${milestoneRemarksColumn}${rowNumber}`, 'string');
               milestone.comments = Util.getValue(workplanSheet, `${milestoneCommentsColumn}${rowNumber}`, 'string');
