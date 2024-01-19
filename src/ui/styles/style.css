@@ -183,8 +183,8 @@ div.blocker > div.body > div.section:nth-child(3) {
 button.copy-button {
   position: absolute;
   right: 3rem;
+  bottom: 3rem;
   width: 3rem;
-  bottom: 10%;
   aspect-ratio: 1;
   border: none;
   outline: none;
@@ -390,4 +390,132 @@ div.progress-bar.behind > div.progress-background {
 div.progress-bar.out-of-track > div.progress-background {
   background: linear-gradient(90deg, rgba(255, 85, 90, 1) 0%, rgba(255, 255, 255, 1) 100%);
   border: 1px solid #ff555a;
+}
+
+button.fab-menu {
+  position: absolute;
+  top: 3rem;
+  left: 2rem;
+  background-color: #d2dbe7;
+  width: 2.5rem;
+  aspect-ratio: 1;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  border: 1px solid #c4ccd7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  box-shadow: 0px 0px 0px rgba(0, 0, 0, 0);
+  transition: all 150ms ease-out;
+}
+
+button.fab-menu:hover {
+  background-color: #d7e1f1;
+  /* transform: translateY(-1px); */
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+button.fab-menu:active {
+  background-color: #c1ccd8;
+  box-shadow: 0px 0px 0px rgba(0, 0, 0, 0);
+  border-radius: 0.75rem;
+}
+
+button > span.icon {
+  display: block;
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+button.menu-item {
+  background-color: #e0e2e7;
+  border: none;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 0.5rem;
+  display: flex;
+  justify-content: center;
+  padding: 0rem;
+  align-items: center;
+  cursor: pointer;
+  border: 1px solid #d4d7df;
+  animation-name: menuItemEnter;
+  animation-duration: 200ms;
+  animation-fill-mode: forwards;
+  animation-timing-function: cubic-bezier(0.77, 0, 0.18, 1);
+  transform-origin: center;
+  opacity: 0;
+}
+
+button > span.icon.zoom_in {
+  background-image: url('../assets/icons/zoom_in.svg');
+  background-size: auto;
+  background-position: center;
+}
+
+button > span.icon.zoom_out {
+  background-image: url('../assets/icons/zoom_out.svg');
+  background-size: auto;
+  background-position: center;
+}
+
+button > span.icon.settings {
+  background-image: url('../assets/icons/settings.svg');
+  background-size: auto;
+  background-position: center;
+}
+
+button > span.icon.help {
+  background-image: url('../assets/icons/help.svg');
+  background-size: auto;
+  background-position: center;
+}
+
+button > span.icon.menu {
+  background-image: url('../assets/icons/menu.svg');
+  background-size: auto;
+  background-position: center;
+}
+
+div.menu-container {
+  position: absolute;
+  display: none;
+  flex-direction: column;
+  left: 2.25rem;
+  top: 6.5rem;
+  gap: 0.5rem;
+}
+
+div.menu-container.close-menu {
+  animation-name: closeMenu;
+  animation-duration: 150ms;
+  animation-fill-mode: forwards;
+  animation-timing-function: cubic-bezier(0.77, 0, 0.18, 1);
+}
+
+@keyframes menuItemEnter {
+  0% {
+    transform: translateY(-60px * var(--index));
+    opacity: 0;
+  }
+
+  25% {
+    opacity: 0;
+  }
+
+  100% {
+    transform: translateY(0px);
+    opacity: 1;
+  }
+}
+
+@keyframes closeMenu {
+  0% {
+
+  }
+
+  100% {
+    opacity: 0;
+  }
 }
