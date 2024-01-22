@@ -256,7 +256,7 @@ div.report > div.header div.status-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 15rem;
+  min-width: 5rem;
   color: #FFFFFF;
   margin-left: auto;
 }
@@ -408,6 +408,7 @@ button.fab-menu {
   padding: 0;
   box-shadow: 0px 0px 0px rgba(0, 0, 0, 0);
   transition: all 150ms ease-out;
+  z-index: 2;
 }
 
 button.fab-menu:hover {
@@ -446,6 +447,17 @@ button.menu-item {
   animation-timing-function: cubic-bezier(0.77, 0, 0.18, 1);
   transform-origin: center;
   opacity: 0;
+  transition: all 150ms cubic-bezier(0.2, 0, 0, 1);
+  z-index: 2;
+}
+
+button.menu-item:hover {
+  background-color: #e9eef9;
+}
+
+button.menu-item:active {
+  background-color: #d0d3da;
+  border-radius: 0.75rem;
 }
 
 button > span.icon.zoom_in {
@@ -456,6 +468,12 @@ button > span.icon.zoom_in {
 
 button > span.icon.zoom_out {
   background-image: url('../assets/icons/zoom_out.svg');
+  background-size: auto;
+  background-position: center;
+}
+
+button > span.icon.zoom_reset {
+  background-image: url('../assets/icons/zoom_reset.svg');
   background-size: auto;
   background-position: center;
 }
@@ -475,6 +493,11 @@ button > span.icon.help {
 button > span.icon.menu {
   background-image: url('../assets/icons/menu.svg');
   background-size: auto;
+  background-position: center;
+}
+
+button > span.icon.reload {
+  background-image: url('../assets/icons/reload.svg');
   background-position: center;
 }
 

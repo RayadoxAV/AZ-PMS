@@ -35,7 +35,7 @@ function listenForEvents() {
   ipcRenderer.on('data-events', (_, args) => {
     switch (args.name) {
       case 'project-loaded': {
-        loadProjectData(args.data)
+        loadProjectData(args.data);
         break;
       }
 
@@ -155,7 +155,6 @@ function loadProjectData(workplanString) {
 
   accomplishmentsTitle.innerText = `Accomplishments (WK${currentWeek})`;
   fillReport(workplan);
-
 }
 
 function fillReport(workplan) {
