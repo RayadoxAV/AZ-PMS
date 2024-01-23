@@ -46,8 +46,11 @@ module.exports = function windowEventsManager(_, args) {
         const window = windows[i];
 
         if (args.window === window.title) {
-
-          app.quit();
+          if (args.window === 'Main') {
+            app.quit();
+          } else {
+            window.close();
+          }
         }
       }
 
@@ -75,7 +78,6 @@ module.exports = function windowEventsManager(_, args) {
           width: 1280,
           height: 720,
           frame: false,
-          title: 'Settings',
           webPreferences: {
             contextIsolation: false,
             nodeIntegration: true
@@ -105,9 +107,16 @@ module.exports = function windowEventsManager(_, args) {
         const helpWindow = new BrowserWindow({
           width: 800,
           height: 600,
-          frame: false,
+          titleBarStyle: 'hidden',
+          titleBarOverlay: {
+            color: '#2f3241',
+            symbolColor: '#74b1be',
+            height: 60
+          },
+          // frame: false,
           title: 'Help',
-          webPreferences  : {
+          // transparent: true,
+          webPreferences: {
             contextIsolation: false,
             nodeIntegration: true
           }

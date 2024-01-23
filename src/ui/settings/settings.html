@@ -1,11 +1,287 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="../styles/codicons/codicon.css">
   <title>Settings</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Roboto', sans-serif;
+    }
+
+    body {
+      margin: 0;
+      border-radius: 1rem;
+      overflow: hidden;
+      background-color: #f5f8ff;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+
+    div.title-bar {
+      display: flex;
+      height: 40px;
+      overflow: hidden;
+      user-select: none;
+      -webkit-app-region: drag;
+      flex-shrink: 0;
+    }
+
+    div.title-bar > div.information-container {
+      display: flex;
+      height: 100%;
+      align-items: center;
+      flex: 20;
+      border-right: 1px solid #e3e8f5;
+    }
+
+    div.title-bar > div.information-container > span.title {
+      font-size: 24px;
+      font-weight: 900;
+      padding-left: 1rem;
+      color: #333333;
+    }
+
+    div.title-bar > div.window-controls {
+      margin-left: auto;
+      display: flex;
+      gap: 0;
+      flex: 80;
+      background-color: #FFFFFF;
+    }
+
+    div.window-controls > button.control {
+      width: 3rem;
+      height: 100%;
+      border: none;
+      border-radius: 0rem;
+      background-color: transparent;
+      transition: all 150ms cubic-bezier(0.2, 0, 0, 1);
+      -webkit-app-region: no-drag;
+    }
+
+    div.window-controls > button.control:hover {
+      background-color: #e9ecf3;
+    }
+
+    div.window-controls > button.control[data-type="close"]:hover {
+      background-color: #e81123;
+      color: white;
+    }
+
+    div.window-controls > button.control:first-child {
+      margin-left: auto;
+    }
+
+    div.main-container {
+      display: flex;
+      flex-direction: row;
+      flex-grow: 1;
+      overflow: hidden;
+    }
+
+    div.main-container > div.sidebar {
+      display: flex;
+      flex-direction: column;
+      flex: 20;
+      border-right: 1px solid #e3e8f5;
+      gap: 0.25rem;
+    }
+
+    div.main-container > div.content {
+      display: flex;
+      flex-direction: column;
+      flex: 80;
+      background-color: #FFFFFF;
+      overflow: auto;
+    }
+
+    
+    div.sidebar > button.sidebar-button {
+      position: relative;
+      display: flex;
+      border: none;
+      background-color: transparent;
+      margin-left: 1rem;
+      margin-right: 1rem;
+      padding: 0.75rem 0.5rem;
+      border-radius: 0.5rem;
+      text-align: left;
+      cursor: pointer;
+      transition: all 150ms ease-out;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    div.sidebar > button.sidebar-button:first-child {
+      margin-top: 2rem;
+    }
+
+    div.sidebar > button.sidebar-button:hover {
+      background-color: #e2e7f4;
+    }
+
+    div.sidebar > button.sidebar-button:active {
+      background-color: #d1d8ec;
+      border-radius: 1rem;
+    }
+
+    div.sidebar > button.sidebar-button > .icon {
+      display: block;
+      width: 1.25rem;
+      aspect-ratio: 1;
+      /* background-color: red; */
+    }
+
+    div.sidebar > button.sidebar-button > .icon.appearance {
+      mask-image: url('../assets/icons/copy.svg');
+      mask-size: 100%;
+      background-color: #333333;
+    }
+    
+    div.sidebar > button.sidebar-button > .icon.behavior {
+      mask-image: url('../assets/icons/behavior.svg');
+      mask-size: 100%;
+      background-color: #333333;
+    }
+
+    div.sidebar > button.sidebar-button > .icon.persistence {
+      mask-image: url('../assets/icons/persistence.svg');
+      mask-size: 100%;
+      background-color: #333333;
+    }
+
+    div.sidebar > button.sidebar-button > .icon.debug {
+      mask-image: url('../assets/icons/debug.svg');
+      mask-size: 100%;
+      background-color: #333333;
+    }
+
+    div.sidebar > button.sidebar-button > span.text {
+      font-size: 15px;
+      color: #333333;
+      font-weight: 500;
+    }
+
+    div.sidebar > button.sidebar-button.active {
+      background-color: #e4ecff;
+      border-radius: 0rem 0.5rem 0.5rem 0rem;
+    }
+
+    div.sidebar > button.sidebar-button.active:hover {
+      background-color: #dde5fb;
+    }
+
+    div.sidebar > button.sidebar-button.active:active {
+      background-color: #c0cce7;
+      border-radius: 0rem 1rem 1rem 0rem;
+    }
+
+    div.sidebar > button.sidebar-button.active::before {
+      content: '';
+      display: block;
+      width: 0.25rem;
+      height: 100%;
+      background-color: #5a8ee9;
+      position: absolute;
+      left: -0.25rem;
+      border-radius: 0.5rem 0rem 0rem 0.5rem;
+    }
+
+  </style>
 </head>
+
 <body>
-  
+  <div class="title-bar">
+    <div class="information-container">
+      <span class="title">Settings</span>
+    </div>
+    <div class="window-controls">
+      <button id="titlebar-minimize-button" class="control codicon codicon-chrome-minimize"></button>
+      <button id="titlebar-maximize-button" class="control codicon codicon-chrome-maximize"></button>
+      <button id="titlebar-close-button" data-type="close" class="control codicon codicon-chrome-close"></button>
+    </div>
+  </div>
+  <div class="main-container">
+    <div class="sidebar">
+      <!-- Categories;
+          - Appearance
+          - Data
+          - Persistence
+          - Debug
+      -->
+      <button class="sidebar-button active">
+        <i class="icon appearance"></i>
+        <span class="text">Appearance</span>
+      </button>
+      <button class="sidebar-button">
+        <i class="icon behavior"></i>
+        <span class="text">Behavior</span>
+      </button>
+      <button class="sidebar-button">
+        <i class="icon persistence"></i>
+        <span class="text">Persistence</span>
+      </button>
+      <button class="sidebar-button">
+        <i class="icon debug"></i>
+        <span class="text">Debug</span>
+      </button>
+    </div>
+    <div class="content">
+      <h1>hola</h1>
+      <p>a</p>
+      <p>a</p>
+      <p>a</p>
+      <p>a</p>
+      <p>a</p>
+      <p>a</p>
+      <p>a</p>
+      <p>a</p>
+      <p>a</p>
+      <p>a</p>
+      <p>a</p>
+      <p>a</p>
+      <p>a</p>
+      <p>a</p>
+      <p>a</p>
+      <p>a</p>
+      <p>b</p>
+    </div>
+  </div>
+
+
+  <script>
+    const { ipcRenderer } = require('electron');
+
+    function handleWindowControls() {
+      const minimizeButton = document.getElementById('titlebar-minimize-button');
+      const maximizeButton = document.getElementById('titlebar-maximize-button');
+      const closeButton = document.getElementById('titlebar-close-button');
+
+      minimizeButton.addEventListener('click', () => {
+        ipcRenderer.send('window-events', { name: 'minimize', window: 'Settings' });
+      });
+
+      maximizeButton.addEventListener('click', () => {
+        ipcRenderer.send('window-events', { name: 'maximize', window: 'Settings' });
+      });
+
+      closeButton.addEventListener('click', () => {
+        ipcRenderer.send('window-events', { name: 'close', window: 'Settings' });
+      });
+    }
+
+    handleWindowControls();
+  </script>
 </body>
+
 </html>

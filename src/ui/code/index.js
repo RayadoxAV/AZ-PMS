@@ -46,11 +46,9 @@ function listenForEvents() {
   });
 }
 
-
 function loadProjectData(workplanString) {
   const workplan = JSON.parse(workplanString);
 
-  console.log(workplan);
   /* Blocker */
   blockerTitle.innerText = workplan.projectName;
   blockerAccElement.innerText = workplan.accomplishments;
@@ -62,7 +60,6 @@ function loadProjectData(workplanString) {
   const status = workplan.projectStatus;
 
   blockerStatus.innerText = intToWorkStatusText(status);
-  console.log(blockerProgressBar.childNodes);
 
   if (status === 0) {
     blockerStatus.classList.add('on-track');
