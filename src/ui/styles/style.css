@@ -308,6 +308,7 @@ div.report > div.information > textarea {
   resize: vertical;
   min-height: 1.5rem;
   border: none;
+  font-size: 16px;
 }
 
 div.report > table.milestone-container {

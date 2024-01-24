@@ -78,7 +78,7 @@ async function testExtraction(path, projectId) {
 
   const report = inferenceEngine.generateReport(workplan);
 
-  console.log(report);
+  // console.log(report);
 
   return [workplanVersion, workplanType];
 }

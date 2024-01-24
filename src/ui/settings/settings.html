@@ -170,6 +170,7 @@
       font-size: 15px;
       color: #333333;
       font-weight: 500;
+      user-select: none;
     }
 
     div.sidebar > button.sidebar-button.active {
@@ -197,6 +198,21 @@
       border-radius: 0.5rem 0rem 0rem 0.5rem;
     }
 
+
+    div.container {
+      display: flex;
+      border: 1px solid red;
+      height: 100%;
+      padding: 1rem;
+      flex-direction: column;
+    }
+
+    div.container > span.title {
+      user-select: none;
+      font-size: 24px;
+      font-weight: 500;
+    }
+
   </style>
 </head>
 
@@ -219,48 +235,42 @@
           - Persistence
           - Debug
       -->
-      <button class="sidebar-button active">
+      <button data-index="0" class="sidebar-button" onclick="changeCategory(0)">
         <i class="icon appearance"></i>
         <span class="text">Appearance</span>
       </button>
-      <button class="sidebar-button">
+      <button data-index="1" class="sidebar-button" onclick="changeCategory(1)">
         <i class="icon behavior"></i>
         <span class="text">Behavior</span>
       </button>
-      <button class="sidebar-button">
+      <button data-index="2" class="sidebar-button" onclick="changeCategory(2)">
         <i class="icon persistence"></i>
         <span class="text">Persistence</span>
       </button>
-      <button class="sidebar-button">
+      <button data-index="3" class="sidebar-button" onclick="changeCategory(3)">
         <i class="icon debug"></i>
         <span class="text">Debug</span>
       </button>
     </div>
-    <div class="content">
-      <h1>hola</h1>
-      <p>a</p>
-      <p>a</p>
-      <p>a</p>
-      <p>a</p>
-      <p>a</p>
-      <p>a</p>
-      <p>a</p>
-      <p>a</p>
-      <p>a</p>
-      <p>a</p>
-      <p>a</p>
-      <p>a</p>
-      <p>a</p>
-      <p>a</p>
-      <p>a</p>
-      <p>a</p>
-      <p>b</p>
+    <div id="content" class="content">
+      <div class="container" data-index="0" style="display: none;">
+        <span class="title">Appearance</span>
+        Font Size
+        Theme
+        Default Zoom
+
+      </div>
+      <div class="container" data-index="1" style="display: none;">b</div>
+      <div class="container" data-index="2" style="display: none;">c</div>
+      <div class="container" data-index="3" style="display: none;">d</div>
     </div>
   </div>
 
 
   <script>
     const { ipcRenderer } = require('electron');
+
+    let selectedCategoryIndex = -1;
 
     function handleWindowControls() {
       const minimizeButton = document.getElementById('titlebar-minimize-button');
@@ -281,6 +291,32 @@
     }
 
     handleWindowControls();
+
+    function changeCategory(index) {
+      const prevButton = document.querySelector(`button[data-index="${selectedCategoryIndex}"]`);
+      const prevContainer = document.querySelector(`div[data-index="${selectedCategoryIndex}"]`);
+
+      if (prevButton) {
+        prevButton.classList.remove('active');
+      }
+
+      if (prevContainer) {
+        prevContainer.style.display = 'none';
+      }
+
+      const activeButton = document.querySelector(`button[data-index="${index}"]`);
+      activeButton.classList.add('active');
+
+      const activeContainer = document.querySelector(`div[data-index="${index}"]`);
+      activeContainer.style.display = 'flex';
+
+      selectedCategoryIndex = index;
+      
+
+    }
+
+    changeCategory(0);
+
   </script>
 </body>
 

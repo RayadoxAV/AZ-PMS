@@ -63,7 +63,8 @@ class DataExtractor {
         }
       }
       sheetIndex++;
-      // TODO: Review
+      // TODO: Review to be able to open workplans without project id
+      
       // workplanScore = 0;
       // const fieldMap = new Map();
 

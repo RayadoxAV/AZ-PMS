@@ -104,24 +104,24 @@ module.exports = function windowEventsManager(_, args) {
       }
 
       if (!helpWindowFound) {
-        const helpWindow = new BrowserWindow({
-          width: 800,
-          height: 600,
-          titleBarStyle: 'hidden',
-          titleBarOverlay: {
-            color: '#2f3241',
-            symbolColor: '#74b1be',
-            height: 60
-          },
-          // frame: false,
-          title: 'Help',
-          // transparent: true,
-          webPreferences: {
-            contextIsolation: false,
-            nodeIntegration: true
-          }
-        });
-        helpWindow.loadFile('./src/ui/help/help.html');
+        // const helpWindow = new BrowserWindow({
+        //   width: 800,
+        //   height: 600,
+        //   titleBarStyle: 'hidden',
+        //   titleBarOverlay: {
+        //     color: '#2f3241',
+        //     symbolColor: '#74b1be',
+        //     height: 60
+        //   },
+        //   // frame: false,
+        //   title: 'Help',
+        //   // transparent: true,
+        //   webPreferences: {
+        //     contextIsolation: false,
+        //     nodeIntegration: true
+        //   }
+        // });
+        // helpWindow.loadFile('./src/ui/help/help.html');
       }
 
       break;

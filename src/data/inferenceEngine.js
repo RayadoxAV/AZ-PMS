@@ -496,16 +496,99 @@ class InferenceEngine {
           // }
         }
 
+      } else if (milestone.flag === 2) {
+        milestone.name = milestone.name + ' (Risk)';
+
+        reportingItems.push(milestone);
+
+        for (let j = 0; j < milestone.tasks.length; j++) {
+          const task = milestone.tasks[j];
+
+          reportingItems.push(task);
+        }
+
       } else {
         for (let j = 0; j < milestone.tasks.length; j++) {
           const task = milestone.tasks[j];
 
-          if (task.flag === 0) {
+          if (task.flag === 1 || task.status === 2) {
+
+            // A task has a completed flag or is completed.
+            // We need to test if it was completed recently.
+            if (workplan.type === 0) {
+              const tolerance = 2; // 2 Weeks since it was first completed
+
+              const currentWeek = Util.dateToWeek(new Date(new Date().getTime() + 21600000));
+
+              let dateDifference = -1;
+
+              if (task.actualDate) {
+                dateDifference = currentWeek - task.actualDate.week;
+              } else if (task.newFinishDate) {
+                dateDifference = currentWeek - task.newFinishDate.week;
+              } else if (task.finishDate) {
+                dateDifference = currentWeek - task.finishDate.week;
+              }
+
+              if (dateDifference >= 0 && dateDifference <= tolerance) {
+                if  (!addedMilestone) {
+                  reportingItems.push(milestone);
+                  
+                  addedMilestone = true;
+                }
+                
+                reportingItems.push(task);
+              }
+
+            } else if (workplan.type === 1) {
+              const tolerance = 10;
+
+              const today = new Date(new Date().getTime() - 21600000);
+
+              console.log(today);
+
+            } else if (workplan.type === 2) {
+              const tolerance = 10;
+
+              const today = new Date(new Date().getTime() - 21600000);
+              let dateDifference = -1;
+
+              if (task.actualDate) {
+                dateDifference = today - task.actualDate.date;
+                // console.log(dateDifference / 86400000, 'a');
+              } else if (task.newFinishDate) {
+                dateDifference = today - task.newFinishDate.date;
+              } else if (task.finishDate) {
+                dateDifference = today - task.finishDate.date;
+              }
+              dateDifference /= 86400000;
+
+              if (dateDifference >= 0 && dateDifference <= tolerance) {
+                if (!addedMilestone) {
+                  reportingItems.push(milestone);
+
+                  addedMilestone = true;
+                }
+                reportingItems.push(task);
+              }
+            }
+
+          } else if (task.flag === 0) {
             if (!addedMilestone) {
               reportingItems.push(milestone);
               addedMilestone = true;
             }
 
+            reportingItems.push(task);
+          } else if (task.flag === 2) {
+          // NOTE: Request-1 -> Add risks to the report table to track them.
+            if (!addedMilestone) {
+              reportingItems.push(milestone);
+              addedMilestone = true;
+            }
+
+            task.name = task.name + ' (Risk)';
+            
             reportingItems.push(task);
           }
         }
