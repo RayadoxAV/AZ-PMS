@@ -10,6 +10,7 @@ body {
   align-items: center;
   height: 100vh;
   overflow: hidden;
+  background-color: var(--window-background);
 }
 
 div.title-bar {
@@ -21,6 +22,7 @@ div.title-bar {
   width: 100%;
   user-select: none;
   -webkit-app-region: drag;
+  background-color: var(--titlebar-background);
 }
 
 div.title-bar > div.information-container {
@@ -45,18 +47,18 @@ div.window-controls > button.control {
   height: 100%;
   border: none;
   border-radius: 0rem;
-  background-color: transparent;
+  background-color: var(--window-control-background);
   transition: all 150ms cubic-bezier(0.2, 0, 0, 1);
   -webkit-app-region: no-drag;
 }
 
 div.window-controls > button.control:hover {
-  background-color: #E0E0E0;
+  background-color: var(--window-control-background-hover);
 }
 
 div.window-controls > button.control[data-type="close"]:hover {
-  background-color: #e81123;
-  color: white;
+  background-color: var(--window-control-close-background);
+  color: var(--window-control-close-color);
 }
 
 div.main-container {
@@ -74,7 +76,7 @@ div.main-container {
 div.blocker {
   display: flex;
   flex-direction: column;
-  border: 1px solid #1f2630;
+  border: 1px solid var(--blocker-border);
   min-width: 40rem;
   width: calc(100% - 15rem);
 }
@@ -86,15 +88,15 @@ div.blocker > div.header {
 }
 
 div.blocker > div.header > .status-label {
-  color: white;
-  background-color: #44546a;
+  color: var(--blocker-label-color);
+  background-color: var(--blocker-background);
   font-weight: 500;
   font-size: 14px;
   padding: 0.5rem 1rem;
 }
 
 div.blocker > div.header > .status {
-  color: white;
+  color: var(--blocker-label-color);
   font-weight: 500;
   font-size: 14px;
   padding: 0.5rem;
@@ -102,15 +104,15 @@ div.blocker > div.header > .status {
 }
 
 div.blocker .status.on-track {
-  background-color: #70ad47;
+  background-color: var(--status-on-track);
 }
 
 div.blocker .status.behind {
-  background-color: #ffc000;
+  background-color: var(--status-behind);
 }
 
 div.blocker .status.out-of-track {
-  background-color: red;
+  background-color: var(--status-out-of-track);
 }
 
 div.blocker > div.header > .progress-label {

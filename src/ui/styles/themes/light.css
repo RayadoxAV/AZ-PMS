@@ -1,0 +1,24 @@
+:root {
+  --window-background: #FFFFFF;
+
+  --titlebar-background: #FFFFFF;
+
+  --window-control-background: transparent;
+  --window-control-background-hover: #E0E0E0;
+
+  --window-control-close-background: #e81123;
+  --window-control-close-color: #FFFFFF;
+  
+
+  /* Status colors */
+  --status-on-track: #70AD47;
+  --status-behind: #FFC000;
+  --status-out-of-track: #FF0000;
+  
+  /* Blocker colors */
+  --blocker-background: #475469;
+  --blocker-border: #1f2630;
+  --blocker-label-color: #FFFFFF;
+
+
+}
