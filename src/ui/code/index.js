@@ -155,7 +155,7 @@ function loadProjectData(workplanString) {
 }
 
 function fillReport(workplan) {
-
+  console.log(workplan);
   const tableBody = document.getElementById('report-body');
 
   let tableHTML = '';
@@ -169,7 +169,11 @@ function fillReport(workplan) {
       let finishDate = undefined;
 
       if (item.startDate) {
-        startDate = item.startDate.date.split('T')[0].replace(/\-/g, '/');
+        if (item.startDate.date === '2500-01-01T06:00:00.000Z') {
+          startDate = 'TBD';
+        } else {
+          startDate = item.startDate.date.split('T')[0].replace(/\-/g, '/');
+        }
       }
 
       if (item.finishDate) {
@@ -192,6 +196,7 @@ function fillReport(workplan) {
         <td>${startDate}</td>
         <td>${finishDate}</td>
         <td></td>
+        <td></td>
         <td>${item.target === -1 ? '' : numberWithCommas(item.target)}</td>
         <td>${item.remaining === 0 ? '' : numberWithCommas(item.remaining)}</td>
         <td>
@@ -206,7 +211,7 @@ function fillReport(workplan) {
       let startDate = undefined;
       let finishDate = undefined;
       let newFinishDate = undefined;
-
+      let actualDate = undefined;
 
       if (item.startDate) {
         if (item.startDate.date) {
@@ -226,6 +231,12 @@ function fillReport(workplan) {
         }
       }
 
+      if (item.actualDate) {
+        if (item.actualDate.date) {
+          actualDate = item.actualDate.date.split('T')[0].replace(/\-/g, '/');
+        }
+      }
+
       let status = undefined;
 
       if (item.workStatus === 0) {
@@ -235,7 +246,6 @@ function fillReport(workplan) {
       } else if (item.workStatus === 2) {
         status = 'out-of-track';
       }
-
       
       tableHTML +=
       `<tr>
@@ -243,8 +253,9 @@ function fillReport(workplan) {
         <td>${startDate || 'TBD'}</td>
         <td>${finishDate || 'TBD'}</td>
         <td>${newFinishDate || ''}</td>
+        <td>${actualDate || ''}</td>
         <td>${item.target === -1 ? '' : numberWithCommas(item.target)}</td>
-        <td>${item.remaining === -1 ? '' : numberWithCommas(item.remaining)}</td>
+        <td>${(item.target > 0) ? numberWithCommas(item.remaining) : ''}</td>
         <td>
           <div class="progress-bar ${status}" style="--progress: ${(item.progress * 100).toFixed(0)}%;">
             <span>${(item.progress * 100).toFixed(0)}%</span>
@@ -287,14 +298,19 @@ function numberWithCommas(x) {
     const number = x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     return number;
   } catch (_) {
-    return '';
+    return '-';
   }
 }
 
 function convertToHTML() {
   const domToImg = require('dom-to-image');
 
-  domToImg.toPng(report).then((dataUrl) => {
+  function filterNodes (node) {
+    return (node.tagName !== 'BUTTON');
+    // return true;
+  }
+
+  domToImg.toPng(report, { filter: filterNodes }).then((dataUrl) => {
     const byteCharacters = atob(dataUrl.substring(22));
 
     const byteNumbers = new Array(byteCharacters.length);

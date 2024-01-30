@@ -18,8 +18,6 @@ if (process.env.CURR_ENV === 'dev') {
   require('electron-reload')(__dirname, {
     electron: path.join(__dirname, '../', 'node_modules', '.bin', 'electron')
   });
-
-
 }
 
 function createWindow() {
@@ -45,10 +43,6 @@ app.whenReady().then(() => {
   createWindow();
   Logger.Log('Window created successfully', 1);
 
-  // loadProject();
-
-
-
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) {
       createWindow();
@@ -64,7 +58,7 @@ app.on('window-all-closed', () => {
 
 require('./events/ipcEvents');
 
-function loadProject() {
+/* function loadProject() {
 
   // dataManager.loadProject({ path: '', projectId: 'something' })
 
@@ -86,3 +80,4 @@ function loadProject() {
 
   dataManager.loadProject({ path, projectId });
 }
+ */

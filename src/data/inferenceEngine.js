@@ -1,4 +1,5 @@
 const Util = require("../util/util");
+const { PersistenceManager } = require("./persistenceManager");
 const { Workplan } = require("./types");
 
 class InferenceEngine {
@@ -266,9 +267,9 @@ class InferenceEngine {
    * 
    * @param {Workplan} workplan 
    */
-  infer(workplan) {
+  async infer(workplan) {
     // this.generateAccomplishments(workplan);
-    const accomplishments = this.generateAccomplishments(workplan);
+    const accomplishments = await this.generateAccomplishments(workplan);
     const risks = this.generateRisks(workplan);
     const remarks = this.generateRemarks(workplan);
     const onHold = this.generateOnHold(workplan);
@@ -281,70 +282,147 @@ class InferenceEngine {
     };
   }
 
-  generateAccomplishments(workplan) {
+  async generateAccomplishments(workplan) {
 
     let accomplishmentsString = '';
     for (let i = 0; i < workplan.milestones.length; i++) {
       const milestone = workplan.milestones[i];
+      if (milestone.flag === 1 || milestone.status === 2) {
+      
+        /* NOTE: Algorithm
+          1. Figure out if the milestone should be reported.
+            1.1 Check if it is already in the DB.
+            1.2 If it is, then check if its reported date is recent enough to show. (currentWeek | currentWeek - 1)
+              1.2.1 Milestones only have a finishDate. If it is a weekly workplan, check for weeks. Check for 10 days otherwise
+            1.3 If it is not, then report it and add it to the DB.
+        */
 
-      if (milestone.flag === 1) {
-        accomplishmentsString += `- [${milestone.name}] is completed. (WK${milestone.finishDate ? milestone.finishDate.week : ''})\n`
+        const result = await PersistenceManager.searchInDB(workplan.projectId, milestone.name);
+
+        if (result) {
+          if (workplan.type === 0) {
+            const currentWeek = Util.dateToWeek(new Date());
+            const week = result.reportedDate.week;
+            if (currentWeek - 1 <= week) {
+              accomplishmentsString += `- 100% - ${milestone.name} (WK${week}).\n`;
+            }
+          } else {
+            const tempDate = new Date(new Date() - 21600000);
+
+            const currentDate = new Date(`${tempDate.getFullYear()}-${tempDate.getMonth() + 1}-${tempDate.getDate()}`);
+            const date = milestone.finishDate.date;
+            const dayUnit = 1000 * 60 * 60 * 24;
+
+            if (currentDate - (5 * dayUnit) <= date.getTime()) {
+              accomplishmentsString += `- 100% - ${milestone.name} (WK${milestone.finishDate.week}).\n`;
+            }            
+          }
+        } else {
+
+          accomplishmentsString += `100% - ${milestone.name} (WK${milestone.finishDate.week}).\n`;          
+
+          const newEntry = {
+            name: milestone.name,
+            completionDate: {
+              week: milestone.finishDate.week,
+              date: milestone.finishDate.date
+            }
+          };
+
+          await PersistenceManager.addToDB(workplan.projectId, newEntry, 'milestone');
+        }
+
       } else {
+
         for (let j = 0; j < milestone.tasks.length; j++) {
           const task = milestone.tasks[j];
 
-          let dateDifference = undefined;
+          if (task.flag === 1 || task.status === 2) {
+            const result = await PersistenceManager.searchInDB(workplan.projectId, task.name);
 
-          if (workplan.type === 0) {
-            const currentWeek = Util.dateToWeek(new Date());
+            if (result) {
+              if (workplan.type === 0) {
+                const currentWeek = Util.dateToWeek(new Date());
+                const week = result.reportedDate.week;
+                if (currentWeek - 1 <= week) {
+                  let taskCompletionDate = Util.getActualDate(task);
+                  accomplishmentsString += `- 100% - ${task.name} (WK${taskCompletionDate.week}).\n`;
+                }
+              } else {
+                const tempDate = new Date(new Date() - 21600000);
 
-            if (task.newFinishDate) {
-              dateDifference = task.newFinishDate.week - currentWeek;
-            } else if (task.finishDate) {
-              dateDifference = task.finishDate.week - currentWeek;
+                const currentDate = new Date(`${tempDate.getFullYear()}-${tempDate.getMonth() + 1}-${tempDate.getDate()}`);
+                const date = new Date(result.reportedDate.date);
+                const dayUnit = 1000 * 60 * 60 * 24;
+
+                if (currentDate - (5 * dayUnit) <= date.getTime()) {
+                  let taskCompletionDate = Util.getActualDate(task);
+                  accomplishmentsString += `- 100% - ${task.name} (WK${taskCompletionDate.week}).\n`;
+                }
+              }
             } else {
-              dateDifference = 10000;
+              // Report and add to DB
+              let taskCompletionDate = Util.getActualDate(task);                
+              accomplishmentsString += `100% - ${task.name} (WK${taskCompletionDate.week}).\n`
+
+              const newEntry = {
+                name: task.name,
+                completionDate: {
+                  week: taskCompletionDate.week,
+                  date: taskCompletionDate.date
+                }
+              };
+
+              await PersistenceManager.addToDB(workplan.projectId, newEntry, 'task');
             }
 
-          } else {
-            const currentDate = new Date();
-            const dayUnit = 1000 * 60 * 60 * 24;
+          } else if (task.progress >= 0.75) {
+            /* NOTE: Algorithm
+              1. If it has a completion date that is close and it is in work and does not have a risk flag. I'm just going to ignore the calculated risks if any.
+            */
+            let hasNighCompletionDate = false;
+            let isInWork = false;
+            let isNotRisk = false;
 
-            if (task.newFinishDate) {
-              dateDifference = Math.ceil((task.newFinishDate.date.getTime() - currentDate.getTime()) / dayUnit)
-            } else if (task.finishDate) {
-              dateDifference = Math.ceil((task.finishDate.date.getTime() - currentDate.getTime()) / dayUnit);
+            if (workplan.type === 0) {
+              const currentWeek = Util.dateToWeek(new Date());
+              const finishDate = Util.getFinishDate(task);
+
+              if (currentWeek + 2 <= finishDate.week) {
+                hasNighCompletionDate = true;
+              }
             } else {
-              dateDifference = 10000;
-            }
-          }
+              const tempDate = new Date(new Date() - 21600000);
 
-          // console.log(task.progress, task.name);
+              const currentDate = new Date(`${tempDate.getFullYear()}-${tempDate.getMonth() + 1}-${tempDate.getDate()}`);
+              const dayUnit = 1000 * 60 * 60 * 24;
 
-          
-          if (task.flag === 1 && dateDifference <= 2) {
+              const finishDate = Util.getFinishDate(task);
 
-            if (task.actualDate) {
-              accomplishmentsString += `- [${task.name}] is completed. (WK${task.actualDate.week})\n`;
-            } else if (task.finishDate) {
-              accomplishmentsString += `- [${task.name}] is completed. (WK${task.finishDate.week})\n`;
-            } else {
-              accomplishmentsString += `- [${task.name}] is completed.\n`;
-            }
-
-          } else if (task.status === 2 && dateDifference <= 2) {
-
-            if (task.actualDate) {
-              accomplishmentsString += `- [${task.name}] is completed. (WK${task.actualDate.week})\n`;
-            } else if (task.finishDate) {
-              accomplishmentsString += `- [${task.name}] is completed. (WK${task.finishDate.week})\n`;
-            } else {
-              accomplishmentsString += `- [${task.name}] is completed.\n`;
+              // TODO: Test with Scrum workplan
+              if (currentDate + (5 * dayUnit) <= new Date(finishDate.date).getTime()) {
+                hasNighCompletionDate = true;
+              }
             }
 
+            if (task.status === 1) {
+              isInWork = true;
+            } else {
+              isInWork = false;
+            }
 
-          } else if (task.status === 1 && task.progress >= 0.75 && dateDifference < 2) {
-            accomplishmentsString += `- [${task.name}] is at ${(task.progress * 100).toFixed(0)}% progress.\n`;
+            if (task.flag !== 2) {
+              isNotRisk = true;
+            } else {
+              isNotRisk = false;
+            }
+
+            if (hasNighCompletionDate && isInWork && isNotRisk) {
+              let finishDate = Util.getFinishDate(task);
+
+              // TODO: Let the user decide if they want to see the ETA.
+              accomplishmentsString += `- ${(task.progress * 100).toFixed(0)}% - ${task.name}.\n`;
+            }
           }
         }
       }

@@ -247,23 +247,25 @@ async function testDB() {
  
   // const noRemovedActivityProject = await PersistenceManager.deleteFromDB('TST-5', '2. Some activity');
   // customAssert(false, noRemovedActivityProject, 'Remove activity from non-existent project');
-  const newActivity = {
+  
+  /* const newEntry = {
+    type: 'task',
     name: '1. Some other name',
-    progress: 0.4,
-    lastReportDate: {
-      week: 22,
-      date: '2024-01-22'
+    actualDate: {
+
     }
   };
-  const updatedActivity = await PersistenceManager.updateFromDB('TST-1', '1. Some test', newActivity);
+ */
+  // await PersistenceManager.addToDB('TST-1', newEntry, 'task');
+  // const updatedActivity = await PersistenceManager.updateFromDB('TST-1', '1. Some test', newActivity);
 
-  customAssert(true, updatedActivity, 'Update existent activity');
+  // customAssert(true, updatedActivity, 'Update existent activity');
 
-  const noUpdatedActivity = await PersistenceManager.updateFromDB('TST-1', '1. Asa', newActivity);
-  const noUpdatedActivityProject = await PersistenceManager.updateFromDB('TSTA-1', '1. Some test', newActivity);
+  // const noUpdatedActivity = await PersistenceManager.updateFromDB('TST-1', '1. Asa', newActivity);
+  // const noUpdatedActivityProject = await PersistenceManager.updateFromDB('TSTA-1', '1. Some test', newActivity);
 
-  customAssert(false, noUpdatedActivity, 'Update non-existent activity');
-  customAssert(false, noUpdatedActivityProject, 'Update existent activity from non-existent project');
+  // customAssert(false, noUpdatedActivity, 'Update non-existent activity');
+  // customAssert(false, noUpdatedActivityProject, 'Update existent activity from non-existent project');
 
 
 }

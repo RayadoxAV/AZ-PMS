@@ -769,6 +769,50 @@ class Util {
 
     return 'Unknown';
   }
+
+  static getActualDate(task) {
+    
+    if (task.actualDate) {
+      return {
+        week: task.actualDate.week,
+        date: task.actualDate.date
+      };
+    }
+
+    if (task.newFinishDate) {
+      return {
+        week: task.newFinishDate.week,
+        date: task.newFinishDate.date
+      };
+    }
+
+    if (task.finishDate) {
+      return {
+        week: task.finishDate.week,
+        date: task.finishDate.date
+      };
+    }
+
+    return undefined;
+  }
+
+  static getFinishDate(task) {
+    if (task.newFinishDate) {
+      return {
+        week: task.newFinishDate.week,
+        date: task.newFinishDate.date
+      };
+    }
+
+    if (task.finishDate) {
+      return {
+        week: task.finishDate.week,
+        date: task.finishDate.date
+      };
+    }
+
+    return undefined;
+  }
 }
 
 

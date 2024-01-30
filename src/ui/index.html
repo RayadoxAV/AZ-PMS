@@ -47,11 +47,19 @@
       <span class="icon zoom_reset"></span>
       <span class="tooltip">Reset zoom</span>
     </button>
-    <button class="menu-item" style="--index: 4" id="settings-button">
+    <button class="menu-item" style="--index: 4" id="information-collapse-button">
+      <span class="icon collapse"></span>
+      <span class="tooltip">Collapse</span>
+    </button>
+    <button class="menu-item" style="--index: 5" id="information-expand-button">
+      <span class="icon expand"></span>
+      <span class="tooltip">Expand</span>
+    </button>
+    <button class="menu-item" style="--index: 6" id="settings-button">
       <span class="icon settings"></span>
       <span class="tooltip">Settings</span>
     </button>
-    <button class="menu-item" style="--index: 5" id="help-button">
+    <button class="menu-item" style="--index: 7" id="help-button">
       <span class="icon help"></span>
       <span class="tooltip">Help</span>
     </button>
@@ -111,12 +119,18 @@
           </div>
         </div>
       </div>
-      <div class="information">
-        <span id="accomplishments-week"></span>
+      <div id="accomplishments-information" class="information">
+        <div>
+          <span id="accomplishments-week"></span>
+          <!-- <button class="collapse" id="collapse-accomplishments">Collapse</button> -->
+        </div>
         <textarea name="" id="report-acc-textarea" rows="4"></textarea>
       </div>
-      <div class="information">
-        <span>Risks</span>
+      <div id="risks-information" class="information">
+        <div>
+          <span>Risks</span>
+          <!-- <button class="collapse" id="collapse-risks">Collapse</button> -->
+        </div>
         <textarea name="" id="report-risks-textarea" rows="4"></textarea>
       </div>
       <table class="milestone-container">
@@ -126,41 +140,13 @@
             <th>Start date</th>
             <th>Finish date</th>
             <th>New Finish Date</th>
+            <th>Actual date</th>
             <th>Target</th>
             <th>Remaining</th>
             <th>Progress</th>
           </tr>
         </thead>
         <tbody id="report-body">
-          <!-- <tr class="milestone">
-            <td>1</td>
-            <td>2</td>
-            <td>3</td>
-            <td>4</td>
-            <td>5</td>
-            <td>6</td>
-          </tr>
-          <tr>
-            <td>1</td>
-            <td>2</td>
-            <td>3</td>
-            <td>4</td>
-            <td>5</td>
-            <td>
-              <div class="progress-bar on-track" style="--progress: 75%">
-                <span>75%</span>
-                <div class="progress-background"></div>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td>1</td>
-            <td>2</td>
-            <td>3</td>
-            <td>4</td>
-            <td>5</td>
-            <td>
-          </tr> -->
         </tbody>
       </table>
     </div>

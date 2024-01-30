@@ -5,6 +5,7 @@ const DataExtractor = require("./dataExtractor");
 const { Workplan } = require("./types");
 const WorkbookProvider = require("./workbookProvider");
 const { InferenceEngine } = require("./inferenceEngine");
+const { PersistenceManager } = require("./persistenceManager");
 
 class DataManager {
   async manageDataEvents(_, args) {
@@ -33,6 +34,7 @@ class DataManager {
           return;
         }
 
+        await PersistenceManager.createDBIfNotExists();
         await this.loadProject({ path, projectId });
         break;
       }
@@ -98,7 +100,7 @@ class DataManager {
 
     const inferenceEngine = new InferenceEngine();
 
-    const inferences = inferenceEngine.infer(workplan);
+    const inferences = await inferenceEngine.infer(workplan);
 
     // TODO: Run inference and calculations
     Object.assign(workplan, inferences);

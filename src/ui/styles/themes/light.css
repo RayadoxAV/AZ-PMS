@@ -19,6 +19,20 @@
   --blocker-background: #475469;
   --blocker-border: #1f2630;
   --blocker-label-color: #FFFFFF;
+  
+  --section-background: #FFFFFF;
+  --section-title-color: #000000;
+  --section-title-background: #FFFFFF;
 
+  /* Copy button */
+  --copy-background: #d2dbe7;
+  --copy-border-color: #c4ccd7;
+  --copy-background-hover: #d7e1f1;
+  --copy-background-active: #c1ccd8;
 
+  /* Report */
+  --report-background: #475469;
+  --report-title-color: #FFFFFF;
+  
+  --report-status-color: #FFFFFF;
 }

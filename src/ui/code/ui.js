@@ -7,8 +7,22 @@ const reloadButton = document.getElementById('reload-button');
 const zoomInButton = document.getElementById('zoom-in-button');
 const zoomOutButton = document.getElementById('zoom-out-button');
 const zoomResetButton = document.getElementById('zoom-reset-button');
+const collapseButton = document.getElementById('information-collapse-button');
+const expandButton = document.getElementById('information-expand-button');
 const settingsButton = document.getElementById('settings-button');
 const helpButton = document.getElementById('help-button');
+
+const accInformationDiv = document.getElementById('accomplishments-information');
+const risksInformationDiv = document.getElementById('risks-information');
+
+
+const reportAccomplishmentsTextArea = document.getElementById('report-acc-textarea');
+const reportRisksTextArea = document.getElementById('report-risks-textarea');
+
+// const collapseAccomplishments = document.getElementById('collapse-accomplishments');
+// const collapseRisks = document.getElementById('collapse-risks');
+
+// const risksInformationDiv = document.getElementById('risks-information');
 
 function init() {
 
@@ -56,7 +70,24 @@ function init() {
   zoomResetButton.addEventListener('click', () => {
     webFrame.setZoomLevel(0);
   });
+
+  collapseButton.addEventListener('click', () => {
+
+    if (!reportAccomplishmentsTextArea.value) {
+      accInformationDiv.classList.add('collapsed');
+    }
+
+    if (!reportRisksTextArea.value) {
+      risksInformationDiv.classList.add('collapsed');
+    }
+    
+  });
   
+  expandButton.addEventListener('click', () => {
+    accInformationDiv.classList.remove('collapsed');
+    risksInformationDiv.classList.remove('collapsed');
+  });
+
   settingsButton.addEventListener('click', () => {
     // alert('open new window');
     ipcRenderer.send('window-events', { name: 'open-settings-window', window: 'Settings' });

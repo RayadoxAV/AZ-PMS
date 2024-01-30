@@ -17,7 +17,7 @@ const readFile = promisify(fs.readFile);
   For the sake of simplicity, when an Activity is registered in this "DB" it is expected of the user to prepend the name of the milestone for the activity as follows:
   [milestone_name] => ([activity_number]. [activity_name])
   This is to ensure a somewhat "unique" identifier for each activity without generating a hash or a UUID from it.
-  Which would only cause issues with this level of uniqueness.
+  Which would only cause issues given the fact that activity names and milestone name can and do repeat.
 */
 
 /* DB = Some random file on xterra */
@@ -61,7 +61,7 @@ class PersistenceManager {
     return created;
   }
 
-  static async searchInDB(projectId, activityName) {
+  static async searchInDB(projectId, entryName) {
     let result = undefined;
 
     try {
@@ -73,15 +73,23 @@ class PersistenceManager {
 
         if (projectId === project.id) {
 
-          for (let j = 0; j < project.activities.length; j++) {
-            const activity = project.activities[j];
+          for (let j = 0; j < project.entries.length; j++) {
+            const entry = project.entries[j];
 
-            if (activity.name === activityName) {
+            if (entry.name === entryName) {
               result = {
-                name: activity.name,
-                progress: activity.progress,
-                lastReportDate: activity.lastReportDate
+                name: entry.name,
+                type: entry.type,
+                reportedDate: {
+                  week: entry.reportedDate.week,
+                  date: entry.reportedDate.date
+                }
               };
+              // result = {
+              //   name: activity.name,
+              //   progress: activity.progress,
+              //   lastReportDate: activity.lastReportDate
+              // };
               break;
             }
           }
@@ -105,12 +113,12 @@ class PersistenceManager {
 
         if (projectId === project.id) {
 
-          for (let j = 0; j < project.activities.length; j++) {
-            const activity = project.activities[j];
-            if (activity.name === activityName) {
+          for (let j = 0; j < project.entries.length; j++) {
+            const entry = project.entries[j];
+            if (entry.name === activityName) {
               deleteIndex = j;
 
-              project.activities.splice(j, 1);
+              project.entries.splice(j, 1);
 
             }
           }
@@ -130,7 +138,7 @@ class PersistenceManager {
     }
   }
 
-  static async updateFromDB(projectId, activityName, newActivity) {
+  static async updateFromDB(projectId, entryName, newEntry) {
     try {
       const db = await PersistenceManager.readDBFile();
       let updateIndex = -1;
@@ -139,16 +147,16 @@ class PersistenceManager {
         const project = db.projects[i];
 
         if (project.id === projectId) {
-          for (let j = 0; j < project.activities.length; j++) {
-            const activity = project.activities[j];
+          for (let j = 0; j < project.entries.length; j++) {
+            const entry = project.entries[j];
 
-            if (activity.name === activityName) {
+            if (entry.name === entryName) {
               updateIndex = j;
 
-              activity.name = newActivity.name;
-              activity.progress = newActivity.progress;
-              activity.lastReportDate.week = newActivity.lastReportDate.week;
-              activity.lastReportDate.date = newActivity.lastReportDate.date;
+              // activity.name = newActivity.name;
+              // activity.progress = newActivity.progress;
+              // activity.lastReportDate.week = newActivity.lastReportDate.week;
+              // activity.lastReportDate.date = newActivity.lastReportDate.date;
 
               break;
             }
@@ -170,8 +178,51 @@ class PersistenceManager {
     }
   }
 
-  static async addToDB(projectId, activityName, progress) {
+  static async addToDB(projectId, item, entryType) {
     try {
+      const db = await PersistenceManager.readDBFile();
+
+      let added = false;
+
+      const date = new Date(new Date().getTime() - 21600000);
+      
+      const newEntry = {
+        type: entryType,
+        name: item.name,
+        completionDate: {
+          week: item.completionDate.week,
+          date: item.completionDate.date.toISOString().split('T')[0]
+        },
+        reportedDate: {
+          week: Util.dateToWeek(new Date()),
+          date: date.toISOString().split('T')[0]
+        }
+      };
+
+      db.projects.forEach((project) => {
+        if (project.id === projectId) {
+          project.entries.push(newEntry);
+          added = true;
+        }
+      });
+
+      if (!added) {
+        db.projects.push(
+          {
+            id: projectId,
+            entries: [newEntry]
+          }
+        );
+        added = true;
+      }
+      await PersistenceManager.writeDBFile(db);
+      return [newEntry, added];
+
+    } catch (error) {
+      console.log(error);
+      return [undefined, false];
+    }
+/*     try {
       const db = await PersistenceManager.readDBFile();
       let added = false;
 
@@ -179,7 +230,7 @@ class PersistenceManager {
       const newActivity = {
         name: activityName,
         progress: progress,
-        lastReportDate: {
+        reportedDate: {
           week: Util.dateToWeek(new Date()),
           date: date.toISOString().split('T')[0]
         }
@@ -206,7 +257,7 @@ class PersistenceManager {
     } catch (error) {
       console.log(error);
       return [undefined, false];
-    }
+    } */
   }
 
   static async readDBFile() {

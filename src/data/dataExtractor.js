@@ -997,6 +997,7 @@ class DataExtractor {
 
           if (type === 0) {
             finishDate = Util.getValue(workplanSheet, `${taskFinishDateColumn}${startRow + i}`, 'number');
+            
             if (finishDate !== -1) {
               task.finishDate = {
                 date: Util.weekToDate(finishDate)[1],

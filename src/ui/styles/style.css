@@ -117,7 +117,7 @@ div.blocker .status.out-of-track {
 
 div.blocker > div.header > .progress-label {
   color: white;
-  background-color: #44546a;
+  background-color: var(--blocker-background);
   font-weight: 500;
   font-size: 14px;
   padding: 0.5rem 1rem;
@@ -128,7 +128,7 @@ div.blocker > div.header .progress {
   justify-content: center;
   align-items: center;
   padding: 0.2rem;
-  border-bottom: 1px solid #44546a;
+  border-bottom: 1px solid var(--blocker-background);
   background-color: #FFFFFF;
 }
 
@@ -143,13 +143,13 @@ div.blocker > span.title {
   padding: 0.5rem;
   text-align: center;
   font-weight: 500;
-  background-color: #44546a;
+  background-color: var(--blocker-background);
   color: white;
 }
 
 div.blocker > div.body > div.section {
   min-height: 4rem;
-  background-color: white;
+  background-color: var(--section-background);
   max-height: 15rem;
   overflow: auto;
   display: flex;
@@ -162,7 +162,8 @@ div.blocker > div.body > div.section > span.section-title {
   padding: 0.25rem;
   position: sticky;
   top: 0;
-  background-color: white;
+  color: var(--section-title-color);
+  background-color: var(--section-title-background);
 }
 
 div.blocker > div.body > div.section > div.section-body {
@@ -170,16 +171,16 @@ div.blocker > div.body > div.section > div.section-body {
 }
 
 div.blocker > div.body > div.section:first-child {
-  border-right: 1px solid #44546a;
-  border-bottom: 1px solid #44546a;
+  border-right: 1px solid var(--blocker-background);
+  border-bottom: 1px solid var(--blocker-background);
 }
 
 div.blocker > div.body > div.section:nth-child(2) {
-  border-bottom: 1px solid #44546a;
+  border-bottom: 1px solid var(--blocker-background);
 }
 
 div.blocker > div.body > div.section:nth-child(3) {
-  border-right: 1px solid #44546a;
+  border-right: 1px solid var(--blocker-background);
 }
 
 button.copy-button {
@@ -188,9 +189,9 @@ button.copy-button {
   bottom: 3rem;
   width: 3rem;
   aspect-ratio: 1;
-  border: 1px solid #c4ccd7;
+  border: 1px solid var(--copy-border-color);
   outline: none;
-  background-color: #d2dbe7;
+  background-color: var(--copy-background);
   border-radius: 0.5rem;
   cursor: pointer;
   transition: all 150ms cubic-bezier(0.2, 0, 0, 1);
@@ -208,12 +209,12 @@ button.copy-button > svg {
 }
 
 button.copy-button:hover {
-  background-color: #d7e1f1;
+  background-color: var(--copy-background-hover);
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 button.copy-button:active {
-  background-color: #c1ccd8;
+  background-color: var(--copy-background-active);
   box-shadow: 0px 0px 0px rgba(0, 0, 0, 0);
   border-radius: 0.75rem;
 }
@@ -224,15 +225,14 @@ div.report {
   flex-direction: column;
   min-width: 40rem;
   width: 90%;
-  border: 1px solid #44546a;
+  border: 1px solid var(--report-background);
   width: calc(100% - 15rem);
-  outline: 1rem solid white;
 }
 
 div.report > div.header {
   display: flex;
   flex-direction: row;
-  background-color: #44546a;
+  background-color: var(--report-background);
   justify-content: space-between;
 }
 
@@ -241,8 +241,8 @@ div.report > div.header > span.title {
   padding: 0.5rem;
   text-align: center;
   font-weight: 500;
-  background-color: #44546a;
-  color: white;
+  background-color: var(--report-background);
+  color: var(--report-title-color);
 }
 
 div.report > div.header div.target-date {
@@ -251,7 +251,7 @@ div.report > div.header div.target-date {
   font-weight: 500;
   align-items: center;
   padding: 1rem;
-  color: white;
+  color: var(--report-title-color);
   width: 15rem;
   justify-content: center;
 }
@@ -263,7 +263,7 @@ div.report > div.header div.status-container {
   justify-content: center;
   align-items: center;
   min-width: 5rem;
-  color: #FFFFFF;
+  color: var(--report-status-color);
   margin-left: auto;
 }
 
@@ -297,20 +297,65 @@ div.report > div.header div.progress-container > div.progress-bar {
 div.report > div.information {
   display: flex;
   flex-direction: column;
+  overflow: hidden;
+  height: unset;
 }
 
-div.report > div.information > span {
+div.report > div.information.collapsed {
+  height: 0px;
+}
+
+div.report > div.information > div {
+  display: flex;
+  background-color: #d2dbe7; 
+  align-items: center;
+  padding: 0.25rem 0.5rem;
+  position: relative;
+}
+
+div.report > div.information > div > span {
   font-size: 15px;
   font-weight: 500;
+}
+/* 
+button.collapse {
+  margin-left: auto;
+  cursor: pointer;
+  background-color: #d2dbe7;
+  border: none;
+  font-weight: 500;
+  font-size: 15px;
   padding: 0.25rem 0.5rem;
-  background-color: #d2dbe7; 
+  border-radius: 0.25rem;
+  transition: all 150ms cubic-bezier(0.2, 0, 0, 1);
+  box-shadow: 0rem 0.0625rem 0.125rem rgba(0, 0, 0, 0.0);
+  user-select: none;
+  position: absolute;
+  left: calc(100% + 1rem);
 }
 
+button.collapse:hover {
+  background-color: #e1ebf8;
+  box-shadow: 0rem 0.0625rem 0.125rem rgba(0, 0, 0, 0.1);
+}
+
+button.collapse:active {
+  background-color: #c6d1e0;
+  box-shadow: 0rem 0.0625rem 0.125rem rgba(0, 0, 0, 0.0);
+}
+
+ */
 div.report > div.information > textarea {
   resize: vertical;
   min-height: 1.5rem;
   border: none;
   font-size: 16px;
+}
+
+textarea.collapsed {
+  padding: 0;
+  min-height: 0 !important;
+  height: 0;
 }
 
 div.report > table.milestone-container {
@@ -509,6 +554,19 @@ button > span.icon.zoom_reset {
   background-size: auto;
   background-position: center;
 }
+
+button > span.icon.collapse {
+  background-image: url('../assets/icons/collapse.svg');
+  background-size: auto;
+  background-position: center;
+}
+
+button > span.icon.expand {
+  background-image: url('../assets/icons/expand.svg');
+  background-size: auto;
+  background-position: center;
+}
+
 
 button > span.icon.settings {
   background-image: url('../assets/icons/settings.svg');
