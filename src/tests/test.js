@@ -270,6 +270,99 @@ async function testDB() {
 
 }
 
+function testIsOnTime() {
+  // NOTE: A perfectly on time task.
+  const task1 = {
+    startDate: {
+      week: 2,
+      date: new Date('2024/09/04'),
+    },
+    finishDate: {
+      week: 11,
+      date: new Date('2023/11/10'),
+    },
+    progress: 0.63,
+    duration: 10,
+    status: 1
+  };
+
+  const result1 = Util.isOnTime(task1, 0, '2023/10/16');
+
+  customAssert(true, result1.onTime, 'On time activity. onTime - boolean');
+  customAssert(0, result1.timeBehind, 'On time activity. Time behind - number');
+  customAssert('weeks', result1.unit, 'On time activity. Unit - string');
+
+  const task2 = {
+    startDate: {
+      week: 1,
+      date: new Date('2023/08/28')
+    },
+    finishDate: {
+      week: 4,
+      date: new Date('2023/09/22')
+    },
+    progress: 0.25,
+    duration: 4,
+    status: 1
+  };
+
+  const result2 = Util.isOnTime(task2, 0, '2023/09/13');
+
+  customAssert(false, result2.onTime, 'Behind plan activity. onTime - boolean');
+  customAssert(2, result2.timeBehind, 'Behind plan activity. Time behind - number');
+  
+  const task3 = {
+    startDate: {
+
+    },
+    finishDate: {
+
+    },
+    progress: 0,
+    duration: 1,
+    status: 2
+  };
+
+  const result3 = Util.isOnTime(task3, 0);
+  customAssert(true,result3.onTime, 'Completed activity. onTime - boolean');
+  customAssert(0,result3.timeBehind, 'Completed activity. Time behind - number');
+
+
+  const task4 = {
+    startDate: {
+
+    },
+    finishDate: {
+
+    },
+    progress: 1,
+    duration: 1,
+    status: 1
+  };
+
+  const result4 = Util.isOnTime(task4, 0);
+
+  customAssert(true, result4.onTime, 'Completed activity (2). onTime - boolean');
+  customAssert(0, result4.timeBehind, 'Completed activity (2). Time behind - number');
+
+  const task5 = {
+    startDate: {
+      week: 13,
+      date: '2023/11/23'
+    },
+    finishDate: {
+      week: 15,
+      date: '2023/12/08'
+    },
+    progress: 0.56,
+    duration: 2,
+    status: 1
+  };
+
+  const result5 = Util.isOnTime(task5, 0);
+  customAssert(false, result5.onTime, 'Late activity. onTime - boolean');
+  customAssert(10, result5.timeBehind, 'Late activity. Time behind - number');
+}
 
 function determineTests() {
   const moduleArg = process.argv[2];
@@ -281,6 +374,13 @@ function determineTests() {
       if (target) {
 
         switch (target) {
+          case 'time': 
+            testIsOnTime();
+            break;  
+
+          case 't':
+            testIsOnTime();
+            break;
           case 'data':
             testDataExtraction();
             break;

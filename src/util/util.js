@@ -605,7 +605,130 @@ class Util {
     return workStatusText;
   }
 
-  static isOnTime(task, type) {
+  static isOnTime(task, workplanType, testDate) {
+    const timeResult = {
+      onTime: false,
+      timeBehind: 0,
+      unit: ''
+    };
+
+    if (task.progress >= 1 || task.status === 2) {
+      timeResult.onTime = true;
+      timeResult.timeBehind = 0;
+      return timeResult;
+    }
+
+    if (task.duration === -1) {
+      timeResult.onTime = true;
+      timeResult.timeBehind = 0;
+      return timeResult;
+    }
+
+    if (!task.startDate) {
+      timeResult.onTime = true;
+      timeResult.timeBehind = 0;
+      return timeResult;
+    }
+
+    if (workplanType === 0) {
+      timeResult.unit = 'weeks';
+
+      const startWeek = task.startDate.week;
+      const finishWeek = Util.getFinishDate(task).week;
+      // NOTE: If a task does not have a new finish date, then the planned duration and the actual duration should be the same
+      const taskPlannedDuration = task.duration;
+      const taskActualDuration = finishWeek - startWeek + 1;
+      const progress = task.progress;
+
+      // console.log('startWeek:', startWeek);
+      // console.log('finishWeek:', finishWeek);
+      // console.log('taskPlannedDuration:', taskPlannedDuration);
+      // console.log('taskActualDuration', taskActualDuration);
+      // console.log('progress:', progress);
+
+      const progressUnit = 1 / taskActualDuration;
+      let accumulatedProgress = progressUnit;
+
+      const ranges = new Array(taskActualDuration);
+      for (let i = 0; i < ranges.length; i++) {
+        ranges[i] = Number.parseFloat(accumulatedProgress.toFixed(3));
+        accumulatedProgress += progressUnit;
+      }
+      
+      // The index of the current date in the ranges array
+      let currentWeek = -1;
+      if (testDate) {
+        currentWeek = Util.dateToWeek(new Date(testDate));
+      } else {
+        currentWeek = Util.dateToWeek(new Date());
+      }
+      
+      let currentDateIndex = currentWeek - startWeek;
+      
+      let rangeIndex = -1;
+      let previousRange = 0;
+
+      for (let i = 0; i < ranges.length; i++) {
+        if (i === 0) {
+          previousRange = -0.1;
+        } else {
+          previousRange = ranges[i - 1];
+        }
+
+        if (progress > previousRange && progress <= ranges[i]) {
+          rangeIndex = i;
+          break;
+        }
+      }
+
+      
+ 
+
+      /* TODO: Remove this, it's just for visualization purposes */
+      let message = '';
+      for (let i = 0; i < ranges.length; i++) {
+        if (i === 0) {
+          previousRange = -0.1;
+        } else {
+          previousRange = ranges[i - 1];
+        }
+
+        message += `[${previousRange === -0.1 ? '0' : previousRange} - ${ranges[i]}],`;
+      }
+      
+      // console.log(message);
+      
+      if (currentDateIndex > ranges.length) {
+        timeResult.onTime = false;
+        timeResult.timeBehind = currentDateIndex - rangeIndex;
+        return timeResult;
+      }
+
+      let progressDifference = currentDateIndex - rangeIndex;
+      
+
+      // CurrentDateIndex > rangeIndex -> Task is late
+      if (progressDifference > 0) {
+        timeResult.onTime = false;
+        timeResult.timeBehind = progressDifference;
+      } else if (progressDifference === 0) { // CurrentDateIndex === rangeIndex -> Task is precisely on time
+        timeResult.onTime = true;
+        timeResult.timeBehind = 0;
+      } else if (progressDifference < 0) { // CurrentDateIndex < rangeIndex -> Task is ahead plan
+        timeResult.onTime = true;
+        timeResult.timeBehind = Math.abs(progressDifference);
+      }
+
+    } else if (workplanType === 1) {
+
+    } else if (workplanType === 2) {
+
+    }
+
+    return timeResult;
+  }
+
+/*   static isOnTime(task, type) {
 
     
     const timeResult = {
@@ -726,7 +849,7 @@ class Util {
 
 
     return timeResult;
-  }
+  } */
 
   static determineValueType(value) {
     if (value === false || value === true) {

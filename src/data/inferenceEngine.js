@@ -362,7 +362,8 @@ class InferenceEngine {
               }
             } else {
               // Report and add to DB
-              let taskCompletionDate = Util.getActualDate(task);                
+              let taskCompletionDate = Util.getActualDate(task);
+              // TODO: Handle errors gracefully
               accomplishmentsString += `100% - ${task.name} (WK${taskCompletionDate.week}).\n`
 
               const newEntry = {
@@ -428,7 +429,7 @@ class InferenceEngine {
       }
     }
 
-    return accomplishmentsString;
+    return accomplishmentsString.trim();
   }
 
   generateRisks(workplan) {
@@ -469,7 +470,7 @@ class InferenceEngine {
       }
     }
 
-    return risksString;
+    return risksString.trim();
   }
 
   generateRemarks(workplan) {

@@ -13,6 +13,29 @@ body {
   background-color: var(--window-background);
 }
 
+::-webkit-scrollbar {
+  width: 0.625rem;
+  height: 0.625rem;
+}
+
+::-webkit-scrollbar-track {
+  background-color: var(--scrollbar-track-background);
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--scrollbar-thumb-background);
+  border-radius: 0.5rem;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--scrollbar-thumb-background-hover);
+}
+
+::-webkit-scrollbar-thumb:active {
+  background-color: var(--scrollbar-thumb-background-active);
+}
+
+
 div.title-bar {
   display: flex;
   flex-direction: row;
@@ -34,6 +57,7 @@ div.information-container > span.title {
   font-size: 14px;
   align-self: center;
   margin-left: 1rem;
+  color: var(--titlebar-color);
 }
 
 div.window-controls {
@@ -50,6 +74,7 @@ div.window-controls > button.control {
   background-color: var(--window-control-background);
   transition: all 150ms cubic-bezier(0.2, 0, 0, 1);
   -webkit-app-region: no-drag;
+  color: var(--window-control-color);
 }
 
 div.window-controls > button.control:hover {
@@ -116,7 +141,7 @@ div.blocker .status.out-of-track {
 }
 
 div.blocker > div.header > .progress-label {
-  color: white;
+  color: var(--blocker-label-color);
   background-color: var(--blocker-background);
   font-weight: 500;
   font-size: 14px;
@@ -128,8 +153,8 @@ div.blocker > div.header .progress {
   justify-content: center;
   align-items: center;
   padding: 0.2rem;
-  border-bottom: 1px solid var(--blocker-background);
-  background-color: #FFFFFF;
+  border-bottom: 1px solid var(--blocker-border);
+  background-color: var(--blocker-progress-container-color);
 }
 
 div.blocker > div.body {
@@ -168,19 +193,20 @@ div.blocker > div.body > div.section > span.section-title {
 
 div.blocker > div.body > div.section > div.section-body {
   padding: 0.5rem;
+  color: var(--section-color);
 }
 
 div.blocker > div.body > div.section:first-child {
-  border-right: 1px solid var(--blocker-background);
-  border-bottom: 1px solid var(--blocker-background);
+  border-right: 1px solid var(--blocker-border);
+  border-bottom: 1px solid var(--blocker-border);
 }
 
 div.blocker > div.body > div.section:nth-child(2) {
-  border-bottom: 1px solid var(--blocker-background);
+  border-bottom: 1px solid var(--blocker-border);
 }
 
 div.blocker > div.body > div.section:nth-child(3) {
-  border-right: 1px solid var(--blocker-background);
+  border-right: 1px solid var(--blocker-border);
 }
 
 button.copy-button {
@@ -265,23 +291,24 @@ div.report > div.header div.status-container {
   min-width: 5rem;
   color: var(--report-status-color);
   margin-left: auto;
+  padding: 0rem 1rem;
 }
 
 div.report > div.header div.status-container.on-track {
-  background-color: #70ad47;
+  background-color: var(--status-on-track);
 }
 
 div.report > div.header div.status-container.behind {
-  background-color: #ffc000;
+  background-color: var(--status-behind);
 }
 
 div.report > div.header div.status-container.out-of-track {
-  background-color: red;
+  background-color: var(--status-out-of-track);
 }
 
 div.report > div.header div.progress-container {
   width: 10rem;
-  background-color: #FFFFFF;
+  background-color: var(--report-progress-container);
   display: flex;
   padding: 0.25rem;
 }
@@ -307,7 +334,7 @@ div.report > div.information.collapsed {
 
 div.report > div.information > div {
   display: flex;
-  background-color: #d2dbe7; 
+  background-color: var(--report-information-background); 
   align-items: center;
   padding: 0.25rem 0.5rem;
   position: relative;
@@ -317,39 +344,13 @@ div.report > div.information > div > span {
   font-size: 15px;
   font-weight: 500;
 }
-/* 
-button.collapse {
-  margin-left: auto;
-  cursor: pointer;
-  background-color: #d2dbe7;
-  border: none;
-  font-weight: 500;
-  font-size: 15px;
-  padding: 0.25rem 0.5rem;
-  border-radius: 0.25rem;
-  transition: all 150ms cubic-bezier(0.2, 0, 0, 1);
-  box-shadow: 0rem 0.0625rem 0.125rem rgba(0, 0, 0, 0.0);
-  user-select: none;
-  position: absolute;
-  left: calc(100% + 1rem);
-}
 
-button.collapse:hover {
-  background-color: #e1ebf8;
-  box-shadow: 0rem 0.0625rem 0.125rem rgba(0, 0, 0, 0.1);
-}
-
-button.collapse:active {
-  background-color: #c6d1e0;
-  box-shadow: 0rem 0.0625rem 0.125rem rgba(0, 0, 0, 0.0);
-}
-
- */
 div.report > div.information > textarea {
   resize: vertical;
   min-height: 1.5rem;
   border: none;
   font-size: 16px;
+  background-color: var(--report-textarea-background);
 }
 
 textarea.collapsed {
@@ -363,7 +364,7 @@ div.report > table.milestone-container {
 }
 
 table.milestone-container > thead th {
-  background-color: #d2dbe7;
+  background-color: var(--report-information-background);
   font-size: 15px;
   padding: 0.25rem 0.5rem;
 }
@@ -378,20 +379,20 @@ table.milestone-container > tbody > tr {
 }
 
 table.milestone-container > tbody > tr.milestone {
-  background-color: #efefef;
+  background-color: var(--report-milestone-background);
   font-size: 15px;
   font-weight: 500;
 }
 table.milestone-container > tbody > tr.milestone > td {
   padding: 0.25rem 0.5rem;
   font-weight: 600;
-  background-color: #efefef;
+  background-color: var(--report-milestone-background);
 }
 
 table.milestone-container > tbody > tr > td {
   text-align: center;
   padding: 0rem 0.5rem;
-  background-color: white;
+  background-color: var(--report-task-background);
 }
 
 table.milestone-container > tbody > tr > td:first-child {
@@ -430,30 +431,30 @@ div.progress-bar > div.progress-background {
 }
 
 div.progress-bar.on-track > div.progress-background {
-  background: linear-gradient(90deg, rgba(99,195,132,1) 0%, rgba(255,255,255,1) 100%);
-  border: 1px solid #63c384;
+  background: var(--progress-gradient-on-track);
+  border: var(--progress-border-on-track);
 }
 
 div.progress-bar.behind > div.progress-background {
-  background: linear-gradient(90deg, rgba(255,182,40,1) 0%, rgba(255,255,255,1) 100%);
-  border: 1px solid #ffb628;
+  background: var(--progress-gradient-behind);
+  border: var(--progress-border-behind);
 }
 
 div.progress-bar.out-of-track > div.progress-background {
-  background: linear-gradient(90deg, rgba(255, 85, 90, 1) 0%, rgba(255, 255, 255, 1) 100%);
-  border: 1px solid #ff555a;
+  background: var(--progress-gradient-out-of-track);
+  border: var(--progress-border-out-of-track);
 }
 
 button.fab-menu {
   position: absolute;
   top: 3rem;
   left: 2rem;
-  background-color: #d2dbe7;
+  background-color: var(--fab-background);
   width: 2.5rem;
   aspect-ratio: 1;
   border-radius: 0.5rem;
   cursor: pointer;
-  border: 1px solid #c4ccd7;
+  border: 1px solid var(--fab-border);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -464,13 +465,13 @@ button.fab-menu {
 }
 
 button.fab-menu:hover {
-  background-color: #d7e1f1;
+  background-color: var(--fab-background-hover);
   /* transform: translateY(-1px); */
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 button.fab-menu:active {
-  background-color: #c1ccd8;
+  background-color: var(--fab-background-active);
   box-shadow: 0px 0px 0px rgba(0, 0, 0, 0);
   border-radius: 0.75rem;
 }
@@ -482,7 +483,7 @@ button > span.icon {
 }
 
 button.menu-item {
-  background-color: #e0e2e7;
+  background-color: var(--menu-item-background);
   border: none;
   width: 2rem;
   height: 2rem;
@@ -492,7 +493,7 @@ button.menu-item {
   padding: 0rem;
   align-items: center;
   cursor: pointer;
-  border: 1px solid #d4d7df;
+  border: 1px solid var(--menu-item-border);
   animation-name: menuItemEnter;
   animation-duration: 200ms;
   animation-fill-mode: forwards;
@@ -506,19 +507,19 @@ button.menu-item {
 }
 
 button.menu-item:hover {
-  background-color: #e9eef9;
+  background-color: var(--menu-item-background-hover);
 }
 
 button.menu-item:active {
-  background-color: #d0d3da;
+  background-color: var(--menu-item-background-active);
   border-radius: 0.75rem;
 }
 
 button.menu-item > span.tooltip {
   opacity: 0;
   position: absolute;
-  background-color: #333333;
-  border: 1px solid #333333;
+  background-color: var(--tooltip-background);
+  border: 1px solid var(--tooltip-background);
   color: #E0E0E0;
   font-size: 14px;
   padding: 0.25rem 0.5rem;

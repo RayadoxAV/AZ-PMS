@@ -1,0 +1,75 @@
+:root {
+  --window-background: #222222;
+
+  --titlebar-background: #222222;
+  --titlebar-color: #DDDDDD;
+
+  --window-control-background: transparent;
+  --window-control-color: #DDDDDD;
+  --window-control-background-hover: #444444;
+
+  --window-control-close-background: #b42123;
+  --window-control-close-color: #FFFFFF;
+  
+  --scrollbar-track-background: transparent;
+  --scrollbar-thumb-background: #4F4F4F;
+  --scrollbar-thumb-background-hover: #555555;
+  --scrollbar-thumb-background-active: #444444;
+
+  /* Status colors */
+  --status-on-track: #70AD47;
+  --status-behind: #FFC000;
+  --status-out-of-track: #B1180f;
+  
+  /* Blocker colors */
+  --blocker-background: #1e2532;
+  --blocker-border: #222222;
+  --blocker-label-color: #DDDDDD;
+  --blocker-progress-container-color: #333333;
+  
+  --section-background: #333333;
+  --section-title-color: #DDDDDD;
+  --section-title-background: #333333;
+  --section-color: #CCCCCC;
+
+  /* Copy button */
+  --copy-background: #d2dbe7;
+  --copy-border-color: #c4ccd7;
+  --copy-background-hover: #d7e1f1;
+  --copy-background-active: #c1ccd8;
+
+  /* Report */
+  --report-background: #475469;
+  --report-title-color: #FFFFFF;
+  
+  --report-status-color: #FFFFFF;
+  --report-progress-container: #FFFFFF;
+
+  --report-information-background: #d3dbe7;
+  --report-textarea-background: #FFFFFF;
+
+  --report-milestone-background: #EFEFEF;
+
+  --report-task-background: #FFFFFF;
+
+  --progress-gradient-on-track: linear-gradient(90deg, rgba(99,195,132,1) 0%, rgba(255,255,255,1) 100%);
+  --progress-border-on-track: 1px solid #63c384;
+
+  --progress-gradient-behind: linear-gradient(90deg, rgba(255,182,40,1) 0%, rgba(255,255,255,1) 100%);
+  --progress-border-behind: 1px solid #ffb628;
+
+  --progress-gradient-out-of-track: linear-gradient(90deg, rgba(255, 85, 90, 1) 0%, rgba(255, 255, 255, 1) 100%);
+  --progress-border-out-of-track: 1px solid #ff555a;
+
+  --fab-background: #d2dbe7;
+  --fab-border: #c4ccd7;
+  --fab-background-hover: #d7e1f1;
+  --fab-background-active: #c1ccd8;
+
+  --menu-item-background: #e0e2e7;
+  --menu-item-border: #d4d7df;
+  --menu-item-background-hover: #e9eef9;
+  --menu-item-background-active: #d0d3da;
+
+  --tooltip-background: #333333;
+}

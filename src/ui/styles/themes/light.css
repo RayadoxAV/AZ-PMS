@@ -2,13 +2,19 @@
   --window-background: #FFFFFF;
 
   --titlebar-background: #FFFFFF;
+  --titlebar-color: #222222;
 
   --window-control-background: transparent;
+  --window-control-color: #222222;
   --window-control-background-hover: #E0E0E0;
 
   --window-control-close-background: #e81123;
   --window-control-close-color: #FFFFFF;
   
+  --scrollbar-track-background: transparent;
+  --scrollbar-thumb-background: #CCCCCC;
+  --scrollbar-thumb-background-hover: #C0C0C0;
+  --scrollbar-thumb-background-active: #B0B0B0;
 
   /* Status colors */
   --status-on-track: #70AD47;
@@ -19,10 +25,12 @@
   --blocker-background: #475469;
   --blocker-border: #1f2630;
   --blocker-label-color: #FFFFFF;
+  --blocker-progress-container-color: #FFFFFF;
   
   --section-background: #FFFFFF;
   --section-title-color: #000000;
   --section-title-background: #FFFFFF;
+  --section-color: #222222;
 
   /* Copy button */
   --copy-background: #d2dbe7;
@@ -35,4 +43,33 @@
   --report-title-color: #FFFFFF;
   
   --report-status-color: #FFFFFF;
+  --report-progress-container: #FFFFFF;
+
+  --report-information-background: #d3dbe7;
+  --report-textarea-background: #FFFFFF;
+
+  --report-milestone-background: #EFEFEF;
+
+  --report-task-background: #FFFFFF;
+
+  --progress-gradient-on-track: linear-gradient(90deg, rgba(99,195,132,1) 0%, rgba(255,255,255,1) 100%);
+  --progress-border-on-track: 1px solid #63c384;
+
+  --progress-gradient-behind: linear-gradient(90deg, rgba(255,182,40,1) 0%, rgba(255,255,255,1) 100%);
+  --progress-border-behind: 1px solid #ffb628;
+
+  --progress-gradient-out-of-track: linear-gradient(90deg, rgba(255, 85, 90, 1) 0%, rgba(255, 255, 255, 1) 100%);
+  --progress-border-out-of-track: 1px solid #ff555a;
+
+  --fab-background: #d2dbe7;
+  --fab-border: #c4ccd7;
+  --fab-background-hover: #d7e1f1;
+  --fab-background-active: #c1ccd8;
+
+  --menu-item-background: #e0e2e7;
+  --menu-item-border: #d4d7df;
+  --menu-item-background-hover: #e9eef9;
+  --menu-item-background-active: #d0d3da;
+
+  --tooltip-background: #333333;
 }

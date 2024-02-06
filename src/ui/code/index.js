@@ -97,9 +97,16 @@ function loadProjectData(workplanString) {
 
   /* Report */
   reportTitle.innerText = workplan.projectName;
+  const accomplishments = workplan.report.accomplishments.trim();
 
-  reportAccomplishmentsTextArea.value = workplan.report.accomplishments;
-  reportRisksTextArea.value = workplan.risks;
+  reportAccomplishmentsTextArea.value = accomplishments;
+  reportAccomplishmentsTextArea.rows = accomplishments.split('\n').length;
+
+  const risks = workplan.risks.trim();
+
+  reportRisksTextArea.value = risks;
+  reportRisksTextArea.rows = risks.split('\n').length;
+
   reportStatusContainer.innerText = intToWorkStatusText(status);
 
   if (status === 0) {
@@ -155,7 +162,7 @@ function loadProjectData(workplanString) {
 }
 
 function fillReport(workplan) {
-  console.log(workplan);
+
   const tableBody = document.getElementById('report-body');
 
   let tableHTML = '';
