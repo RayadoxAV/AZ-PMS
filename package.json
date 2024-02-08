@@ -5,7 +5,7 @@
   "main": "src/main.js",
   "scripts": {
     "test": "node src/tests/test.js",
-    "dev": "electron . \"C:/users/rpaz/documents/testing/az_pms/TST-1 Testing WP.xlsx\" \"TST-1\"",
+    "dev": "electron . \"C:/users/rpaz/documents/testing/az_pms/MERCH-1_MDM MX Implementation.xlsx\" \"MERCH-1\"",
     "deploy": "node src/deployment/deployer.js"
   },
   "author": "Raymundo Paz",

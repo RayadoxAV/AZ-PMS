@@ -49,8 +49,8 @@ class InferenceEngine {
             dateDifference = 10000;
           }
         }
-
-        const timeResult = Util.isOnTime(task, workplan.type)
+        
+        const timeResult = Util.isOnTime(task, workplan.type);
 
         if (task.status !== 2 & dateDifference < 0) {
           late++;
@@ -303,7 +303,7 @@ class InferenceEngine {
           if (workplan.type === 0) {
             const currentWeek = Util.dateToWeek(new Date());
             const week = result.reportedDate.week;
-            if (currentWeek - 1 <= week) {
+            if (currentWeek <= week) {
               accomplishmentsString += `- 100% - ${milestone.name} (WK${week}).\n`;
             }
           } else {
@@ -344,7 +344,7 @@ class InferenceEngine {
               if (workplan.type === 0) {
                 const currentWeek = Util.dateToWeek(new Date());
                 const week = result.reportedDate.week;
-                if (currentWeek - 1 <= week) {
+                if (currentWeek <= week) {
                   let taskCompletionDate = Util.getActualDate(task);
                   accomplishmentsString += `- 100% - ${task.name} (WK${taskCompletionDate.week}).\n`;
                 }

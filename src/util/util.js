@@ -612,7 +612,7 @@ class Util {
       unit: ''
     };
 
-    if (task.progress >= 1 || task.status === 2) {
+    if (task.progress >= 1 || task.status === 2 || task.status === 4) {
       timeResult.onTime = true;
       timeResult.timeBehind = 0;
       return timeResult;
@@ -639,12 +639,6 @@ class Util {
       const taskPlannedDuration = task.duration;
       const taskActualDuration = finishWeek - startWeek + 1;
       const progress = task.progress;
-
-      // console.log('startWeek:', startWeek);
-      // console.log('finishWeek:', finishWeek);
-      // console.log('taskPlannedDuration:', taskPlannedDuration);
-      // console.log('taskActualDuration', taskActualDuration);
-      // console.log('progress:', progress);
 
       const progressUnit = 1 / taskActualDuration;
       let accumulatedProgress = progressUnit;
@@ -680,9 +674,6 @@ class Util {
           break;
         }
       }
-
-      
- 
 
       /* TODO: Remove this, it's just for visualization purposes */
       let message = '';
@@ -720,9 +711,95 @@ class Util {
       }
 
     } else if (workplanType === 1) {
+      // NOTE: This does take weekends into consideration in a way that Fiscal Weeks do not have to.
+      timeResult.unit = 'days';
+
+      const startDate = task.startDate.date;
+      const finishDate = Util.getFinishDate(task).date;
+      const dayUnit = 1000 * 60 * 60 * 24;
+
+      // NOTE: If a task does not have a new finish date, then the planned duration and the actual duration should be the same
+      const taskNaturalDuration = (new Date(finishDate).getTime() - new Date(startDate).getTime()) / dayUnit + 1;
+
+      let taskActualDuration = 0;
+      // const a = ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado'];
+      for (let i = 0; i < taskNaturalDuration; i++) {
+        const newDay = new Date(startDate.getTime() + (i * dayUnit));
+        if (newDay.getDay() === 0 || newDay.getDay() === 6) {
+          continue;
+        }
+        taskActualDuration += 1;
+        // console.log(a[newDay.getDay()], newDay);
+      }
+      const progress = task.progress;
+
+      const progressUnit = 1 / taskActualDuration;
+
+      let accumulatedProgress = progressUnit;
+
+      const ranges = new Array(taskActualDuration);
+      for (let i = 0; i < ranges.length; i++) {
+        ranges[i] = Number.parseFloat(accumulatedProgress.toFixed(3));
+        accumulatedProgress += progressUnit;
+      }
+
+      let currentDate = undefined;
+      if (testDate) {
+        currentDate = new Date(testDate);
+      } else {
+        const now = new Date();
+        currentDate = new Date(`${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`);
+      }
+      let naturalDayDifference = (currentDate - startDate) / dayUnit;
+
+      let actualDayDifference = 0;
+      for (let i = 0; i < naturalDayDifference; i++) {
+        const newDate = new Date(currentDate.getTime() - (i * dayUnit));
+        if (newDate.getDay() === 0 || newDate.getDay() === 6) {
+          continue;
+        }
+        actualDayDifference += 1;
+      }
+      
+      let currentDateIndex = actualDayDifference;
+      let rangeIndex = -1;
+      let previousRange = 0;
+
+      for (let i = 0; i < ranges.length; i++) {
+        if (i === 0) {
+          previousRange = -0.1;
+        } else {
+          previousRange = ranges[i - 1];
+        }
+
+        if (progress > previousRange && progress <= ranges[i]) {
+          rangeIndex = i;
+        }
+      }
+
+      if (currentDateIndex > ranges.length) {
+        timeResult.onTime = false;
+        timeResult.timeBehind = currentDateIndex - rangeIndex;
+        return timeResult;
+      }
+
+      let progressDifference = currentDateIndex - rangeIndex;
+      if (progressDifference > 0) {
+        timeResult.onTime = false;
+        timeResult.timeBehind = progressDifference;
+      } else if (progressDifference === 0) {
+        timeResult.onTime = true;
+        timeResult.timeBehind = 0;
+      } else if (progressDifference < 0) {
+        timeResult.onTime = true;
+        timeResult.timeBehind = Math.abs(progressDifference);
+      }
 
     } else if (workplanType === 2) {
-
+      // NOTE: Maybe not needed at all
+      timeResult.onTime = true;
+      timeResult.timeBehind = 0;
+      timeResult.unit = 'days';
     }
 
     return timeResult;

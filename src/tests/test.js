@@ -348,20 +348,76 @@ function testIsOnTime() {
   const task5 = {
     startDate: {
       week: 13,
-      date: '2023/11/23'
+      date: new Date('2023/11/23')
     },
     finishDate: {
       week: 15,
-      date: '2023/12/08'
+      date: new Date('2023/12/08')
     },
     progress: 0.56,
-    duration: 2,
+    duration: 3,
     status: 1
   };
 
   const result5 = Util.isOnTime(task5, 0);
   customAssert(false, result5.onTime, 'Late activity. onTime - boolean');
   customAssert(10, result5.timeBehind, 'Late activity. Time behind - number');
+
+  const task6 = {
+    startDate: {
+      week: 19,
+      date: new Date('2024/01/01')
+    },
+    finishDate: {
+      week: 19,
+      date: new Date('2024/01/05')
+    },
+    progress: 0.2,
+    duration: 5,
+    status: 1
+  }
+
+  const result6 = Util.isOnTime(task6, 1, '2024/01/04');
+  customAssert(false, result6.onTime, 'Late activity - Daily. onTime - boolean');
+  customAssert(3, result6.timeBehind, 'Late activity - Daily. Time behind - number');
+  customAssert('days', result6.unit, 'Late activity - Daily. Unit - string');
+
+
+  const task7 = {
+    startDate: {
+      week: 23,
+      date: new Date('2024/01/29')
+    },
+    finishDate: {
+      week: 24,
+      date: new Date('2024/02/09')
+    },
+    progress: 0.65,
+    duration: 10,
+    status: 1
+  };
+
+  const result7 = Util.isOnTime(task7, 1);
+  customAssert(false, result7.onTime, 'Late activity - Daily. onTime - boolean');
+  customAssert(2, result7.timeBehind, 'Late activity - Daily. Time behind - number a');
+
+  const task8 = {
+    startDate: {
+      week: 2,
+      date: new Date('2023/09/04')
+    },
+    finishDate: {
+      week: 5,
+      date: new Date('2023/09/29')
+    },
+    progress: 0.423,
+    duration: 26,
+    status: 1
+  };
+
+  const result8 = Util.isOnTime(task8, 1, '2023/09/14');
+  customAssert(true, result8.onTime, 'On time activity - Daily. onTime - boolean');
+  customAssert(0, result8.timeBehind, 'On time activity - Daily. Time behind - number');
 }
 
 function determineTests() {
