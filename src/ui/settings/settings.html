@@ -475,26 +475,11 @@
         <div class="setting-block" style="margin-top: 1rem;">
           <span class="title">Theme</span>
           <span class="subtitle">Controls the color theme for the entire application</span>
-          <div class="select-container">
-            <button class="select">
-              <span>Light</span>
-              <i class="icon expand"></i>
-            </button>
-            <div tabindex="-1" class="options" onclick="selectTheme(event)" data-selected-index="1">
-              <div class="option" data-option-index="0">
-                <span>System</span>
-                <i class="icon"></i>
-              </div>
-              <div class="option active" data-option-index="1">
-                <span>Light</span>
-                <i class="icon"></i>
-              </div>
-              <div class="option" data-option-index="2">
-                <span>Dark</span>
-                <i class="icon"></i>
-              </div>
-            </div>
-          </div>
+          <blocker-select title="Select a theme" default-value="light">
+            <option data-value="system">System</option>
+            <option data-value="light">Light</option>
+            <option data-value="dark">Dark</option>
+          </blocker-select>
         </div>
         <div class="setting-block">
           <span class="title">Font size</span>
@@ -569,58 +554,57 @@
     changeCategory(0);
 
     function init() {
-      document.addEventListener('click', (event) => {
-        if (event.target.matches('div.options') || event.target.matches('div.option')) {
+      // document.addEventListener('click', (event) => {
+      //   if (event.target.matches('div.options') || event.target.matches('div.option')) {
           
-        } else if (event.target.matches('button.select')) {
-          const buttonSelect = event.target;
+      //   } else if (event.target.matches('button.select')) {
+      //     const buttonSelect = event.target;
 
-          // console.log(buttonSelect.parentElement);
-          const optionsContainer = buttonSelect.parentElement.querySelector('div.options');
+      //     // console.log(buttonSelect.parentElement);
+      //     const optionsContainer = buttonSelect.parentElement.querySelector('div.options');
 
-          let opened = optionsContainer.classList.contains('active');
+      //     let opened = optionsContainer.classList.contains('active');
 
-          if (opened) {
-            optionsContainer.classList.remove('active');
-            optionsContainer.classList.add('inactive');
-          } else {
-            optionsContainer.classList.remove('inactive');
-            optionsContainer.classList.add('active');
-          }
+      //     if (opened) {
+      //       optionsContainer.classList.remove('active');
+      //       optionsContainer.classList.add('inactive');
+      //     } else {
+      //       optionsContainer.classList.remove('inactive');
+      //       optionsContainer.classList.add('active');
+      //     }
 
-          // optionsContainer.classList.remove('inactive');
-          // optionsContainer.classList.add('active');
-        } else {
-          document.querySelectorAll('div.options').forEach((element) => {
-            element.classList.remove('active');
-          });
-        }
-      });
+      //     // optionsContainer.classList.remove('inactive');
+      //     // optionsContainer.classList.add('active');
+      //   } else {
+      //     document.querySelectorAll('div.options').forEach((element) => {
+      //       element.classList.remove('active');
+      //     });
+      //   }
+      // });
     }
 
     function selectTheme(event) {
-      const themes = ['sys', 'light', 'dark']
-      const optionsContainer = event.currentTarget;
+      // const themes = ['system', 'light', 'dark']
+      // const optionsContainer = event.currentTarget;
 
-      const priorIndex = Number.parseInt(optionsContainer.getAttribute('data-selected-index'));
+      // const priorIndex = Number.parseInt(optionsContainer.getAttribute('data-selected-index'));
       
-      if (event.target.matches('div.option')) {
-        const optionIndex = Number.parseInt(event.target.getAttribute('data-option-index'));
+      // if (event.target.matches('div.option')) {
+      //   const optionIndex = Number.parseInt(event.target.getAttribute('data-option-index'));
         
-        optionsContainer.children[priorIndex].classList.remove('active');
-        optionsContainer.children[optionIndex].classList.add('active');
+      //   optionsContainer.children[priorIndex].classList.remove('active');
+      //   optionsContainer.children[optionIndex].classList.add('active');
 
-        optionsContainer.setAttribute('data-selected-index', optionIndex);
+      //   optionsContainer.setAttribute('data-selected-index', optionIndex);
 
-        const parentElement = optionsContainer.parentElement;
+      //   const parentElement = optionsContainer.parentElement;
 
-        const labelElement = parentElement.querySelector('button.select > span');
-        labelElement.innerText = optionsContainer.children[optionIndex].querySelector('span').innerText;
+      //   const labelElement = parentElement.querySelector('button.select > span');
+      //   labelElement.innerText = optionsContainer.children[optionIndex].querySelector('span').innerText;
 
-        optionsContainer.classList.remove('active');
-        optionsContainer.classList.add('inactive');
-        // console.log(optionIndex);
-      }
+      //   optionsContainer.classList.remove('active');
+      //   optionsContainer.classList.add('inactive');
+      // }
 
 
     }
@@ -628,6 +612,8 @@
     init();
 
   </script>
+  <script type="module" src="./code/select/select.js"></script>
+  <script type="module" src="./code/main.js"></script>
 </body>
 
 </html>

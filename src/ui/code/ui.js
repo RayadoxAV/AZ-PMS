@@ -19,6 +19,16 @@ const risksInformationDiv = document.getElementById('risks-information');
 const reportAccomplishmentsTextArea = document.getElementById('report-acc-textarea');
 const reportRisksTextArea = document.getElementById('report-risks-textarea');
 
+const blockerTitle = document.getElementById('blocker-title');
+blockerTitle.onclick = () => {
+  ipcRenderer.send('data-events', { name: 'workplan-open' });
+}
+
+const reportTitle = document.getElementById('report-title');
+reportTitle.onclick = () => {
+  ipcRenderer.send('data-events', { name: 'workplan-open' });
+}
+
 // const collapseAccomplishments = document.getElementById('collapse-accomplishments');
 // const collapseRisks = document.getElementById('collapse-risks');
 

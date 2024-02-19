@@ -170,6 +170,7 @@ div.blocker > span.title {
   font-weight: 500;
   background-color: var(--blocker-background);
   color: white;
+  cursor: pointer;
 }
 
 div.blocker > div.body > div.section {
@@ -269,6 +270,7 @@ div.report > div.header > span.title {
   font-weight: 500;
   background-color: var(--report-background);
   color: var(--report-title-color);
+  cursor: pointer;
 }
 
 div.report > div.header div.target-date {

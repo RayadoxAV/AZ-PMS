@@ -39,6 +39,13 @@ class DataManager {
         break;
       }
 
+      case 'workplan-open': {
+        console.log(process.argv);
+        // TODO: Open the real workplan. Maybe need to pass the link in the arguments.
+        // Might be easier once I extract information from the internet. Event
+        break;
+      }
+
       default: {
         Logger.Log(`Unknown data event ${args.name}`, 3);
       }
