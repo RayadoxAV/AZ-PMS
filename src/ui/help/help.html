@@ -3,9 +3,71 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="../styles/codicons/codicon.css">
+  <link rel="stylesheet" href="./styles/style.css">
   <title>Help</title>
 </head>
 <body>
-  Helpering
+  <div class="title-bar">
+    <div class="information-container">
+      <span class="title">Help</span>
+    </div>
+    <div class="window-controls">
+      <button id="titlebar-minimize-button" class="control codicon codicon-chrome-minimize"></button>
+      <button id="titlebar-maximize-button" class="control codicon codicon-chrome-maximize"></button>
+      <button id="titlebar-close-button" data-type="close" class="control codicon codicon-chrome-close"></button>
+    </div>
+  </div>
+  <div class="main-container">
+    <div class="container">
+      <span class="title">About</span>
+      <span class="name">AutoZone Project Management Software Version 1.2.2</span>
+      <span class="description">A tool to analyze an AZ BTSSC 1 Workplan and generate a report for any project that it contains.</span>
+      <span class="author">Developed by the AutoZone BTSSC 1 PMO Merchandising Team</span>
+      <img src="" alt="">
+    </div>
+    <div class="container">
+      <span class="title">Usage</span>
+      <span class="subtitle">How to use:</span>
+      <button onclick="openUsageGuide()">Open guide</button>
+      <span class="subtitle">FAQ</span>
+      <button>Show FAQ</button>
+    </div>
+    <div id="guide-container" class="guide-container" style="display: none;">
+      <div class="header">
+        <button>
+          <i class="icon back"></i>
+        </button>
+        <span class="title">Usage Guide</span>
+        <button style="margin-left: auto;">
+          <i class="icon zoom-out"></i>
+        </button>
+        <button>
+          <i class="icon zoom-reset"></i>
+        </button>
+        <button style="margin-right: 10rem;">
+          <i class="icon zoom_in"></i>
+        </button>
+
+      </div>
+      <object id="pdf-view" data="../../docs/usage_guide.pdf#toolbar=0"></object> 
+      <!-- data="../../docs/usage_guide.pdf#toolbar=0" -->
+    </div>
+    <!-- About:
+      - Blocker version tal tal
+      - Programado para el equipo de PMO de Merchandising de AZ BTSSC y demas
+      - logo az
+
+    How to use:
+      - button con logo
+      - El boton esconde otras partes del layout para nada mas mostrar una vista de PDF con el markdown de la documentacion -->
+  </div>
+  <script src="./code/main.js"></script>
+  <script src="./code/ui.js" type="module"></script>
 </body>
 </html>

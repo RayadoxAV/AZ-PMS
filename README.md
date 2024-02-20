@@ -1,5 +1,5 @@
 # AZ-PMS
-A tool to analyze an AZ BTSSC 1 Workplan and generate a report for project that it contains.
+A tool to analyze an AZ BTSSC 1 Workplan and generate a report for any project that it contains.
 
 
 ## Arguments

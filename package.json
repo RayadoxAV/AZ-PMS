@@ -1,6 +1,6 @@
 {
   "name": "az-pms",
-  "version": "1.0.0",
+  "version": "1.2.2",
   "description": "A Javascript port for the Excel Summary Macro",
   "main": "src/main.js",
   "scripts": {

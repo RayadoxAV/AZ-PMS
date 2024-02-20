@@ -10,422 +10,8 @@
     href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
     rel="stylesheet">
   <link rel="stylesheet" href="../styles/codicons/codicon.css">
+  <link rel="stylesheet" href="./styles/style.css">
   <title>Settings</title>
-  <style>
-    * {
-      box-sizing: border-box;
-      font-family: 'Roboto', sans-serif;
-    }
-
-    body {
-      margin: 0;
-      border-radius: 1rem;
-      overflow: hidden;
-      background-color: #f5f8ff;
-      display: flex;
-      flex-direction: column;
-      height: 100vh;
-    }
-
-    div.title-bar {
-      display: flex;
-      height: 2.5rem;
-      overflow: hidden;
-      user-select: none;
-      -webkit-app-region: drag;
-      flex-shrink: 0;
-    }
-
-    div.title-bar > div.information-container {
-      display: flex;
-      height: 100%;
-      align-items: center;
-      flex: 20;
-      border-right: 0.0625rem solid #e3e8f5;
-    }
-
-    div.title-bar > div.information-container > span.title {
-      font-size: 1.5rem;
-      font-weight: 900;
-      padding-left: 1rem;
-      color: #333333;
-    }
-
-    div.title-bar > div.window-controls {
-      margin-left: auto;
-      display: flex;
-      gap: 0;
-      flex: 80;
-      background-color: #FFFFFF;
-    }
-
-    div.window-controls > button.control {
-      width: 3rem;
-      height: 100%;
-      border: none;
-      border-radius: 0rem;
-      background-color: transparent;
-      transition: all 150ms cubic-bezier(0.2, 0, 0, 1);
-      -webkit-app-region: no-drag;
-    }
-
-    div.window-controls > button.control:hover {
-      background-color: #e9ecf3;
-    }
-
-    div.window-controls > button.control[data-type="close"]:hover {
-      background-color: #e81123;
-      color: white;
-    }
-
-    div.window-controls > button.control:first-child {
-      margin-left: auto;
-    }
-
-    div.main-container {
-      display: flex;
-      flex-direction: row;
-      flex-grow: 1;
-      overflow: hidden;
-    }
-
-    div.main-container > div.sidebar {
-      display: flex;
-      flex-direction: column;
-      flex: 20;
-      border-right: 0.0625rem solid #e3e8f5;
-      gap: 0.25rem;
-    }
-
-    div.main-container > div.content {
-      display: flex;
-      flex-direction: column;
-      flex: 80;
-      background-color: #FFFFFF;
-      overflow: auto;
-    }
-
-    
-    div.sidebar > button.sidebar-button {
-      position: relative;
-      display: flex;
-      border: none;
-      background-color: transparent;
-      margin-left: 1rem;
-      margin-right: 1rem;
-      padding: 0.75rem 0.5rem;
-      border-radius: 0.5rem;
-      text-align: left;
-      cursor: pointer;
-      transition: all 150ms ease-out;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    div.sidebar > button.sidebar-button:first-child {
-      margin-top: 2rem;
-    }
-
-    div.sidebar > button.sidebar-button:hover {
-      background-color: #e2e7f4;
-    }
-
-    div.sidebar > button.sidebar-button:active {
-      background-color: #d1d8ec;
-      border-radius: 1rem;
-    }
-
-    div.sidebar > button.sidebar-button > .icon {
-      display: block;
-      width: 1.25rem;
-      aspect-ratio: 1;
-      /* background-color: red; */
-    }
-
-    div.sidebar > button.sidebar-button > .icon.appearance {
-      mask-image: url('../assets/icons/copy.svg');
-      mask-size: 100%;
-      background-color: #333333;
-    }
-    
-    div.sidebar > button.sidebar-button > .icon.behavior {
-      mask-image: url('../assets/icons/behavior.svg');
-      mask-size: 100%;
-      background-color: #333333;
-    }
-
-    div.sidebar > button.sidebar-button > .icon.persistence {
-      mask-image: url('../assets/icons/persistence.svg');
-      mask-size: 100%;
-      background-color: #333333;
-    }
-
-    div.sidebar > button.sidebar-button > .icon.debug {
-      mask-image: url('../assets/icons/debug.svg');
-      mask-size: 100%;
-      background-color: #333333;
-    }
-
-    div.sidebar > button.sidebar-button > span.text {
-      font-size: 0.9375rem;
-      color: #333333;
-      font-weight: 500;
-      user-select: none;
-    }
-
-    div.sidebar > button.sidebar-button.active {
-      background-color: #e4ecff;
-      border-radius: 0rem 0.5rem 0.5rem 0rem;
-    }
-
-    div.sidebar > button.sidebar-button.active:hover {
-      background-color: #dde5fb;
-    }
-
-    div.sidebar > button.sidebar-button.active:active {
-      background-color: #c0cce7;
-      border-radius: 0rem 1rem 1rem 0rem;
-    }
-
-    div.sidebar > button.sidebar-button.active::before {
-      content: '';
-      display: block;
-      width: 0.25rem;
-      height: 100%;
-      background-color: #5a8ee9;
-      position: absolute;
-      left: -0.25rem;
-      border-radius: 0.5rem 0rem 0rem 0.5rem;
-      animation-name: indicatorEnter;
-      animation-duration: 150ms;
-      animation-fill-mode: forwards;
-      animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
-
-
-    div.container {
-      display: flex;
-      height: 100%;
-      padding: 1rem;
-      flex-direction: column;
-      gap: 0.5rem;
-    }
-
-    div.container > span.title {
-      user-select: none;
-      font-size: 1.5rem;
-      font-weight: 500;
-    }
-
-    div.setting-block {
-      display: flex;
-      flex-direction: column;
-      padding: 0.5rem;
-      padding-bottom: 1rem;
-      transition: background-color 50ms ease-out;
-    }
-
-    div.setting-block:hover {
-      background-color: #fafaff;
-    }
-
-    div.setting-block > span.title {
-      user-select: none;
-      font-size: 0.9375rem;
-      font-weight: 500;
-    }
-
-    div.setting-block > span.subtitle {
-      user-select: none;
-      font-size: 0.875rem;
-      font-weight: 400;
-    }
-
-    div.setting-block > *:last-child {
-      margin-top: 0.5rem;
-    }
-
-    input::-webkit-outer-spin-button,
-    input::-webkit-inner-spin-button {
-      -webkit-appearance: none;
-      margin: 0;
-    }
-
-    input {
-      height: 2.25rem;
-      border-radius: 0.375rem;
-      border: 0.0625rem solid #e2e7f3;
-      background-color: #f5f8ff;
-      padding: 0.25rem 0.75rem;
-      font-size: 0.875rem;
-      box-shadow: inset 0rem 0.0625rem 0.125rem rgba(0, 0, 0, 0.05);
-      outline: 0.125rem solid transparent;
-      outline-offset: 0.25rem;
-      transition: all 150ms ease-in-out;
-    }
-
-    input:focus-visible {
-      outline: 0.125rem solid #668ce7;
-      outline-offset: 0rem;
-      background-color: #e1e8f5;
-    }
-
-    div.select-container {
-      position: relative;
-    }
-
-    button.select {
-      height: 2.25rem;
-      border-radius: 0.375rem;
-      border: 0.0625rem solid #e2e7f3;
-      background-color: #fbfcff;
-      box-shadow: 0rem 0.0625rem 0.125rem rgba(0, 0, 0, 0.05);
-      width: 100%;
-      text-align: left;
-      cursor: pointer;
-      padding: 0.25rem 0.75rem;
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-    }
-
-    button.select > span {
-      font-size: 0.875rem;
-      pointer-events: none;
-    }
-
-    button.select > i.icon {
-      display: block;
-      width: 1rem;
-      aspect-ratio: 1;
-      margin-left: auto;
-      pointer-events: none;
-    }
-
-    i.icon.expand {
-      mask-image: url('../assets/icons/expand.svg');
-      mask-size: 100%;
-      background-color: #9fa3ad;
-    }
-
-    div.select-container > div.options {
-      position: absolute;
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      top: 2.5rem;
-      background-color: #fbfcff;
-      padding: 0.25rem;
-      border-radius: 0.375rem;
-      border: 0.0625rem solid #e2e7f3;
-      box-shadow: 0rem 0.125rem 0.25rem rgba(0, 0, 0, 0.1);
-      opacity: 0;
-      transform-origin: top;
-      pointer-events: none;
-      gap: 0.25rem;
-    }
-
-    div.select-container > div.options > div.option {
-      font-size: 0.9375rem;
-      padding: 0.375rem 0.5rem;
-      user-select: none;
-      transition: all 100ms ease-in-out;
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      border-radius: 0.25rem;
-    }
-
-    div.select-container > div.options > div.option:hover {
-      background-color: #e7e9f0;
-      border-radius: 0.25rem;
-    }
-
-    div.select-container > div.options.active {
-      pointer-events: unset;
-      animation-name: selectShowOptions;
-      animation-duration: 150ms;
-      animation-timing-function: cubic-bezier(0.77, 0, 0.18, 1);
-      animation-fill-mode: forwards;
-    }
-
-    div.select-container > div.options.inactive {
-      pointer-events: none;
-      animation-name: selectHideOptions;
-      animation-duration: 150ms;
-      animation-timing-function: cubic-bezier(0.77, 0, 0.18, 1);
-      animation-fill-mode: forwards;
-    }
-
-
-    div.options > div.option > * {
-      pointer-events: none;
-    }
-
-    div.options > div.option.active {
-      justify-content: center;
-      background-color: #dee5fa;
-    }
-
-    div.options > div.option > i.icon {
-      display: block;
-      width: 1.25rem;
-      aspect-ratio: 1;
-      margin-left: auto;
-    }
-
-    div.options > div.option.active > i.icon {
-      mask-image: url('../assets/icons/check.svg');
-      background-color: #333333;
-      mask-repeat: none;
-      mask-size: 100%;
-    }
-
-    @media (width > 700px) {
-      
-      div.setting-block > *:last-child {
-        max-width: 50%;
-
-      }
-    }
-  
-    @keyframes indicatorEnter {
-      0% {
-        transform: scaleY(50%);
-        opacity: 0;
-      }
-
-      100% {
-        opacity: 1;
-        transform: scaleY(100%);
-      }
-    }
-
-    @keyframes selectShowOptions {
-      0% {
-        transform: scaleY(60%);
-        opacity: 0;
-      }
-
-      100% {
-        opacity: 1;
-        transform: scaleY(100%);
-      }
-    }
-
-    @keyframes selectHideOptions {
-      0% {
-        opacity: 1;
-        transform: scaleY(100%);
-      }
-
-      100% {
-        opacity: 0;
-        transform: scaleY(60%);
-      }
-    }
-
-  </style>
 </head>
 
 <body>
@@ -472,7 +58,11 @@
         Default Zoom -->
         <!-- Subtitle -->
         <!-- Color customizations -->
-        <div class="setting-block" style="margin-top: 1rem;">
+        <div class="subtitle-block" style="margin-top: 1rem;">
+          <span class="subtitle">Application</span>
+          <span class="description">The following settings only affect the actual tool and not the appearance of the 4Blocker or the Report.</span>
+        </div>
+        <div class="setting-block">
           <span class="title">Theme</span>
           <span class="subtitle">Controls the color theme for the entire application</span>
           <blocker-select title="Select a theme" default-value="light">
@@ -492,14 +82,96 @@
           <input type="number" value="100">
         </div>
         <div class="subtitle-block">
-          <span class="subtitle">Some subtitle</span>
-          <span class="description">Some description</span>
+          <span class="subtitle">4Blocker</span>
+          <span class="description">All settings regarding the appearance of the 4Blocker section of the tool.</span>
         </div>
-
+        <div class="subtitle-block">
+          <span class="subtitle">Report</span>
+          <span class="description">All settings regarding the appearance of the Report section of the tool.</span>
+        </div>
       </div>
-      <div class="container" data-index="1" style="display: none;">b</div>
-      <div class="container" data-index="2" style="display: none;">c</div>
-      <div class="container" data-index="3" style="display: none;">d</div>
+      <div class="container" data-index="1" style="display: none;">
+        <span class="title">Behavior</span>
+        <div class="subtitle-block" style="margin-top: 1rem;">
+          <span class="subtitle">General</span>
+          <span class="description">The following settings affect the behavior of both the 4Blocker and reporting sections of the tool.</span>
+        </div>
+        <div class="setting-block">
+          <span class="title">Progress threshold for accomplishments</span>
+          <span class="subtitle">Minimum threshold value for which an activity is considered an accomplishment.</span>
+          <input type="number" value="0.75" step="0.1">
+        </div>
+        <div class="setting-block">
+          <span class="title">Behind task count for Behind &lpar;Project&rpar;</span>
+          <span class="subtitle">How many tasks "Behind" for the project to reflect a status of "Behind".</span>
+          <input type="number" value="2" step="1">
+        </div>
+        <div class="setting-block">
+          <span class="title">Late task count for Late &lpar;Project&rpar;</span>
+          <span class="subtitle">How many tasks "Late" for the project to reflect a status of "Late".</span>
+          <input type="number" value="4" step="1">
+        </div>
+        <div class="setting-block">
+          <span class="title">Week count for Behind &lpar;Task&rpar;</span>
+          <span class="subtitle">How many weeks behind plan for a task to reflect a status of "Behind" &lpar;For Weekly Projects Only&rpar;</span>
+          <input type="number" value="2" step="1">
+        </div>
+        <div class="setting-block">
+          <span class="title">Day count for Behind &lpar;Task&rpar;</span>
+          <span class="subtitle">How many business days behind plan for a task to reflect a status of "Behind" &lpar;For Daily and Scrum Projects Only&rpar;</span>
+          <input type="number" value="2" step="1">
+        </div>
+        <div class="setting-block">
+          <span class="title">Week count for Late &lpar;Task&rpar;</span>
+          <span class="subtitle">How many weeks behind plan for a task to reflect a status of "Out of Track" &lpar;For Weekly Projects Only&rpar;</span>
+          <input type="number" value="3" step="1">
+        </div>
+        <div class="setting-block">
+          <span class="title">Day count for Late &lpar;Task&rpar;</span>
+          <span class="subtitle">How many business days behind plan for a task to reflect a status of "Out of Track" &lpar;For Daily and Scrum Projects Only&rpar;</span>
+          <input type="number" value="5" step="1">
+        </div>
+        <div class="subtitle-block">
+          <span class="subtitle">4Blocker</span>
+          <span class="description">The following settings only affect the behavior of the 4Blocker part of the tool. <i class="icon help"></i> </span>
+        </div>
+        <div class="setting-block" style="margin-top: 0.5rem;">
+          <span class="title">Reporting weeks</span>
+          <span class="subtitle">Controls the number of weeks that an accomplishment is shown in the Blocker. &lpar;For Weekly Projects Only&rpar;</span>
+          <input type="number" value="1" step="1">
+        </div>
+        <div class="setting-block">
+          <span class="title">Reporting days</span>
+          <span class="subtitle">Controls the number of business days that an accomplishment is shown in the Blocker. &lpar;For Daily and Scrum Projects Only&rpar;</span>
+          <input type="number" value="5" step="1">
+        </div>
+        <div class="subtitle-block">
+          <span class="subtitle">Report</span>
+          <span class="description">The following settings only affect the Report section of the tool.</span>
+        </div>
+        <div class="setting-block">
+          <span class="title">Reporting weeks</span>
+          <span class="subtitle">Controls the number of weeks that an accomplishment is shown in the Report. &lpar;For Weekly Projects Only&rpar;</span>
+          <input type="number" value="2" step="1">
+        </div>
+        <div class="setting-block">
+          <span class="title">Reporting days</span>
+          <span class="subtitle">Controls the number of business days that an accomplishment is shown in the Report. &lpar;For Daily and Scrum Projects Only&rpar;</span>
+          <input type="number" value="5" step="1">
+        </div>
+        <div class="setting-footer"></div>
+      </div>
+      <div class="container" data-index="2" style="display: none;">
+        <span class="title">Persistence</span>
+      </div>
+      <div class="container" data-index="3" style="display: none;">
+        <span class="title">Debug</span>
+        <span class="subtitle warn">Warning: This section is for development and debugging purposes only. Do not modify these settings unless you know what you are doing.</span>
+        <div class="subtitle-block" style="margin-top: 1rem;">
+          <span class="subtitle">General</span>
+          <span class="description">Something something</span>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -551,7 +223,7 @@
       
     }
 
-    changeCategory(0);
+    changeCategory(3);
 
     function init() {
       // document.addEventListener('click', (event) => {
@@ -581,6 +253,8 @@
       //     });
       //   }
       // });
+      
+      console.log('Read settings');
     }
 
     function selectTheme(event) {

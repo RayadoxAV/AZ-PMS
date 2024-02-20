@@ -1,0 +1,200 @@
+{
+  "meta": {
+    "version": 1
+  },
+  "categories": [
+    {
+      "name": "appearance",
+      "displayName": "Appearance",
+      "settings": [
+        {
+          "name": "application_theme",
+          "displayName": "Theme",
+          "value": "light",
+          "defaultValue": "light",
+          "possibleValues": [
+            {
+              "name": "System",
+              "value": "system"
+            },
+            {
+              "name": "Light",
+              "value": "light"
+            },
+            {
+              "name": "Dark",
+              "value": "dark"
+            }
+          ]
+        },
+        {
+          "name": "application_font-size",
+          "displayName": "Font size",
+          "value": 16,
+          "defaultValue": 16,
+          "possibleValues": {
+            "type": "number",
+            "min": 1,
+            "max": 40,
+            "step": 1
+          }
+        },
+        {
+          "name": "application_default-zoom",
+          "displayName": "Default zoom",
+          "value": 100,
+          "defaultValue": 100,
+          "possibleValues": {
+            "type": "number",
+            "min": 50,
+            "max": 200,
+            "step": 50
+          }
+        }
+      ]
+    },
+    {
+      "name": "behavior",
+      "displayName": "Behavior",
+      "settings": [
+        {
+          "name": "general_accomplishments-progress-threshold",
+          "displayName": "Progress threshold for accomplishments",
+          "value": 0.75,
+          "defaultValue": 0.75,
+          "possibleValues": {
+            "type": "number",
+            "min": 0.01,
+            "max": 1.0,
+            "step": 0.01
+          }
+        },
+        {
+          "name": "general_task-behind-count-project-behind",
+          "displayName": "Behind task count for Behind (Project)",
+          "value": 2,
+          "defaultValue": 2,
+          "possibleValues": {
+            "type": "number",
+            "min": 1,
+            "max": -1,
+            "step": 1
+          }
+        },
+        {
+          "name": "general_task-late-count-project-behind",
+          "displayName": "Late task count for Late (Project)",
+          "value": 4,
+          "defaultValue": 4,
+          "possibleValues": {
+            "type": "number",
+            "min": 1,
+            "max": -1,
+            "step": 1
+          }
+        },
+        {
+          "name": "general_week-count-task-behind",
+          "displayName": "Week count for Behind (Task)",
+          "value": 2,
+          "defaultValue": 2,
+          "possibleValues": {
+            "type": "number",
+            "min": 1,
+            "max": -1,
+            "step": 1
+          }
+        },
+        {
+          "name": "general_day-count-task-behind",
+          "displayName": "Day count for Behind (Task)",
+          "value": 2,
+          "defaultValue": 2,
+          "possibleValues": {
+            "type": "number",
+            "min": 1,
+            "max": -1,
+            "step": 1
+          }
+        },
+        {
+          "name": "general_week-count-task-late",
+          "displayName": "Week count for Late (Task)",
+          "value": 3,
+          "defaultValue": 3,
+          "possibleValues": {
+            "type": "number",
+            "min": 1,
+            "max": -1,
+            "step": 1
+          }
+        },
+        {
+          "name": "general_day-count-task-late",
+          "displayName": "Day count for Late (Task)",
+          "value": 5,
+          "defaultValue": 5,
+          "possibleValues": {
+            "type": "number",
+            "min": 1,
+            "max": -1,
+            "step": 1
+          }
+        },
+        {
+          "name": "blocker_reporting-weeks",
+          "displayName": "Reporting weeks",
+          "value": 1,
+          "defaultValue": 1,
+          "possibleValues": {
+            "min": 1,
+            "max": -1,
+            "step": 1
+          }
+        },
+        {
+          "name": "blocker_reporting-days",
+          "displayName": "Reporting days",
+          "value": 1,
+          "defaultValue": 1,
+          "possibleValues": {
+            "min": 1,
+            "max": -1,
+            "step": 1
+          }
+        },
+        {
+          "name": "report_reporting-weeks",
+          "displayName": "Reporting weeks",
+          "value": 2,
+          "defaultValue": 2,
+          "possibleValues": {
+            "min": 1,
+            "max": -1,
+            "step": 1
+          }
+        },
+        {
+          "name": "report_reporting-days",
+          "displayName": "Reporting days",
+          "value": 5,
+          "defaultValue": 5,
+          "possibleValues": {
+            "min": 1,
+            "max": -1,
+            "step": 1
+          }
+        }
+      ]
+    },
+    {
+      "name": "debug",
+      "displayName": "Debug",
+      "settings": [
+        {
+          "name": "logging"
+        }
+      ]
+    }
+  ]
+}

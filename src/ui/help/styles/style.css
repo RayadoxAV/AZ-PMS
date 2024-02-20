@@ -1,0 +1,193 @@
+* {
+  box-sizing: border-box;
+  font-family: 'Roboto', sans-serif;
+}
+
+body {
+  margin: 0;
+  border-radius: 1rem;
+  overflow: hidden;
+  background-color: #f5f8ff;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+div.title-bar {
+  display: flex;
+  height: 2.5rem;
+  overflow: hidden;
+  user-select: none;
+  -webkit-app-region: drag;
+  flex-shrink: 0;
+}
+
+div.title-bar > div.information-container {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  flex: 20;
+}
+
+div.title-bar > div.information-container > span.title {
+  font-size: 1.5rem;
+  font-weight: 900;
+  padding-left: 1rem;
+  color: #333333;
+}
+
+div.title-bar > div.window-controls {
+  margin-left: auto;
+  display: flex;
+  gap: 0;
+  flex: 80;
+}
+
+div.window-controls > button.control {
+  width: 3rem;
+  height: 100%;
+  border: none;
+  border-radius: 0rem;
+  background-color: transparent;
+  transition: all 150ms cubic-bezier(0.2, 0, 0, 1);
+  -webkit-app-region: no-drag;
+}
+
+div.window-controls > button.control:hover {
+  background-color: #e9ecf3;
+}
+
+div.window-controls > button.control[data-type="close"]:hover {
+  background-color: #e81123;
+  color: white;
+}
+
+div.window-controls > button.control:first-child {
+  margin-left: auto;
+}
+
+div.main-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex-grow: 1;
+  justify-content: center;
+  position: relative;
+}
+
+div.container {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  align-items: center;
+  width: 60%;
+  align-self: center;
+  gap: 0.5rem;
+}
+
+div.container > span.title {
+  user-select: none;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+div.container > span.name {
+  font-size: 0.875rem;
+}
+
+div.container > span.description {
+  font-size: 0.9375rem;
+  text-align: center;
+}
+
+div.container > span.author {
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+div.container > span.subtitle {
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+div.container > button {
+  background-color: #5a8ee9;
+  padding: 0.5rem 1rem;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: #fafaff;
+  border: none;
+  min-width: 10rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: all 150ms cubic-bezier(0.2, 0, 0, 1);
+}
+
+div.container > button:hover {
+  background-color: #4c82ff;
+}
+
+
+div.container > button:active {
+  background-color: #4070e0;
+  border-radius: 0.75rem;
+}
+
+div.guide-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: #FFFFFF;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+div.header {
+  padding: 1rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: #f5f8ff;
+}
+
+div.header > button {
+  height: 1.5rem;
+  width: 1.5rem;
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
+}
+
+div.header > button:hover {
+  background-color: #ebf1ff;
+}
+
+div.header > button > i.icon {
+  display: flex;
+  width: 1rem;
+  height: 1rem;
+}
+
+div.header > button > i.icon.zoom_in {
+  mask-image: url('../../assets/icons/check.svg');
+  mask-size: auto;
+  mask-position: center;
+  mask-repeat: no-repeat;
+  background-color: red;
+}
+
+div.header > span.title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  user-select: none;
+}
+
+div.guide-container > object {
+  background-color: #f5f8ff;
+  width: 100%;
+  flex-grow: 1;
+  padding: 1rem;
+}
