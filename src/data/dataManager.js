@@ -1,3 +1,8 @@
+/* 
+  Author: Raymundo Paz
+  Date: 12/29/2023
+*/
+
 const { BrowserWindow } = require("electron");
 const Logger = require("../util/Logger");
 const BridgeProvider = require("./bridgeProvider");
@@ -9,7 +14,6 @@ const { PersistenceManager } = require("./persistenceManager");
 
 class DataManager {
   async manageDataEvents(_, args) {
-    console.log(args);
     if (!args) {
       Logger.Log(`Invalid argument structure`, 3);
       return;
@@ -17,20 +21,16 @@ class DataManager {
 
     switch (args.name) {
       case 'load-project': {
-
-        let path = '';
-        let projectId = '';
-
-        if (process.argv[1] === '.') {
-          path = process.argv[2];
-          projectId = process.argv[3];
-        } else {
-          path = process.argv[1];
-          projectId = process.argv[2];
-        }
-
+  
+        const { path, link, projectId } = global.shared.args;
+        
         if (!path || !projectId) {
           Logger.Log('Not enough arguments specified', 3);
+          return;
+        }
+
+        if (path && link) {
+          Logger.Log('Path and link specified. Can not decide. Aborting...', 3);
           return;
         }
 
@@ -53,7 +53,6 @@ class DataManager {
   }
 
   async loadProject({ path, projectId }) {
-    console.log(path, projectId);
 
     const dataExtractor = new DataExtractor();
 

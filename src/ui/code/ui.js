@@ -29,24 +29,16 @@ reportTitle.onclick = () => {
   ipcRenderer.send('data-events', { name: 'workplan-open' });
 }
 
-// const collapseAccomplishments = document.getElementById('collapse-accomplishments');
-// const collapseRisks = document.getElementById('collapse-risks');
-
-// const risksInformationDiv = document.getElementById('risks-information');
-
 function init() {
-
-
   const fabRect = fabMenu.getBoundingClientRect();
   
   menuContainer.style.top = `${fabRect.top + fabRect.height + 16}px`;
   menuContainer.style.left = `${fabRect.left + (fabRect.width / 2 ) - 16}px`;
 
-
   fabMenu.addEventListener('click', () => {
-    const visibile = menuContainer.style.display === 'flex' ? true : false;
+    const visible = menuContainer.style.display === 'flex' ? true : false;
 
-    if (visibile) {
+    if (visible) {
       menuContainer.classList.add('close-menu');
       setTimeout(() => {
         menuContainer.style.display = 'none';
@@ -99,15 +91,12 @@ function init() {
   });
 
   settingsButton.addEventListener('click', () => {
-    // alert('open new window');
     ipcRenderer.send('window-events', { name: 'open-settings-window', window: 'Settings' });
 
   });
 
   helpButton.addEventListener('click', () => {
     ipcRenderer.send('window-events', { name: 'open-help-window', window: 'Help' });
-
-    // const helpWindow = window.open('', '_blank', 'frame=false');
   });
 }
 

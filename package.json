@@ -5,7 +5,7 @@
   "main": "src/main.js",
   "scripts": {
     "test": "node src/tests/test.js",
-    "dev": "electron . \"C:/users/rpaz/documents/testing/az_pms/MERCH-1_MDM MX Implementation.xlsx\" \"MERCH-1\"",
+    "dev": "electron . --path \"C:/users/rpaz/documents/testing/az_pms/SUPP-5.Legacy Retirement FY24.xlsx\" --id SUPP-5",
     "deploy": "node src/deployment/deployer.js"
   },
   "author": "Raymundo Paz",
