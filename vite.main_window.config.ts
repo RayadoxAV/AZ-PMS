@@ -8,11 +8,11 @@ export default defineConfig((env) => {
   const name = forgeConfigSelf.name ?? '';
 
   return {
-    root: path.join(__dirname, 'src', 'main'),
+    root: path.join(__dirname, 'src', 'ui', 'main'),
     mode,
     base: './',
     build: {
-      outDir: `../../.vite/main_window/${name}`
+      outDir: `../../../.vite/ui/main_window/${name}`
     },
     plugins: [pluginExposeRenderer(name)],
     resolve: {

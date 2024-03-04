@@ -24,10 +24,10 @@ const createWindow = () => {
   if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
     mainWindow.loadURL(MAIN_WINDOW_VITE_DEV_SERVER_URL);
   } else {
-    mainWindow.loadFile(path.join(__dirname, `../main_window/${MAIN_WINDOW_VITE_NAME}/index.html`));
+    mainWindow.loadFile(path.join(__dirname, `../ui/main_window/${MAIN_WINDOW_VITE_NAME}/index.html`));
   }
 
-/*   const settingsWindow = new BrowserWindow({
+  const settingsWindow = new BrowserWindow({
     width: 700,
     height: 300
   });
@@ -35,7 +35,7 @@ const createWindow = () => {
   if (SETTINGS_WINDOW_VITE_DEV_SERVER_URL) {
     settingsWindow.loadURL(SETTINGS_WINDOW_VITE_DEV_SERVER_URL);
   } else {
-    settingsWindow.loadFile(path.join(__dirname, `../settings_window/${SETTINGS_WINDOW_VITE_NAME}/index.html`));
+    settingsWindow.loadFile(path.join(__dirname, `../ui/settings_window/${SETTINGS_WINDOW_VITE_NAME}/index.html`));
   }
 
   const helpWindow = new BrowserWindow({
@@ -46,8 +46,8 @@ const createWindow = () => {
   if (HELP_WINDOW_VITE_DEV_SERVER_URL) {
     helpWindow.loadURL(HELP_WINDOW_VITE_DEV_SERVER_URL);
   } else {
-    helpWindow.loadFile(path.join(__dirname, `../help_window/${HELP_WINDOW_VITE_NAME}/index.html`));
-  } */
+    helpWindow.loadFile(path.join(__dirname, `../ui/help_window/${HELP_WINDOW_VITE_NAME}/index.html`));
+  }
 
   // Open the DevTools.
   mainWindow.webContents.openDevTools({ mode: 'undocked', activate: false });
