@@ -10,26 +10,147 @@
     href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
     rel="stylesheet">
   <title>Main</title>
+  <link rel="stylesheet" href="/assets/styles/style.css">
+  <link rel="stylesheet" href="/assets/styles/themes/light.css">
+  <link rel="stylesheet" href="/assets/styles/codicons/codicon.css">
 
 </head>
 
 <body>
   <div class="title-bar">
     <div class="information-container">
-      <span id="window-title" class="title">4Blocker</span>
-      <div class="window-controls">
-        <button id="titlebar-minimize-button" class="control codicon codicon-chrome-minimize"></button>
-        <button id="titlebar-maximize-button" class="control codicon codicon-chrome-maximize"></button>
-        <button id="titlebar-close-button" class="control codicon codicon-chrome-close" data-type="close"></button>
-      </div>
+      <span id="window-title" class="title">AZ-PMS</span>
     </div>
-
-    <div class="main-container">
-      
+    <div class="window-controls">
+      <button id="titlebar-minimize-button" class="control codicon codicon-chrome-minimize"></button>
+      <button id="titlebar-maximize-button" class="control codicon codicon-chrome-maximize"></button>
+      <button id="titlebar-close-button" class="control codicon codicon-chrome-close" data-type="close"></button>
     </div>
-
   </div>
-  <script type="module" src="./index.ts"></script>
+
+  <div class="main-container">
+    <nav>
+      <div class="nav-item " data-target="container" data-target-index="0" tabindex="0">
+        <span class="icon-container">
+          <i class="icon" data-icon="home"></i>
+        </span>
+        <span class="text">Home?</span>
+      </div>
+      <div class="nav-item" data-target="container" data-target-index="1" tabindex="0">
+        <span class="icon-container">
+          <i class="icon" data-icon="blocker"></i>
+        </span>
+        <span class="text">4Blocker</span>
+      </div>
+      <div class="nav-item" data-target="container" data-target-index="2" tabindex="0">
+        <span class="icon-container">
+          <i class="icon" data-icon="gantt"></i>
+        </span>
+        <span class="text">Gantt</span>
+      </div>
+      <div class="nav-item" data-target="container" data-target-index="3" tabindex="0">
+        <span class="icon-container">
+          <i class="icon" data-icon="chart"></i>
+        </span>
+        <span class="text">Charts</span>
+      </div>
+      <div class="nav-item" data-target="window" style="margin-top: auto;" tabindex="0">
+        <span class="icon-container">
+          <i class="icon" data-icon="settings"></i>
+        </span>
+        <span class="text">Settings</span>
+      </div>
+    </nav>
+
+    <div class="holder">
+      <div class="container" data-index="0" style="display: none;">
+        hola
+      </div>
+      <div class="container blocker-section" data-index="1" style="display: none;">
+        <div class="blocker">
+          <span id="blocker-title" class="title"></span>
+          <div class="header">
+            <div class="status-label">Status</div>
+            <div id="blocker-status" class="status"></div>
+            <div class="progress-label">Progress</div>
+            <div class="progress">
+              <div id="blocker-progress-bar" class="progress-bar">
+                <span></span>
+                <div class="progress-background"></div>
+              </div>
+            </div>
+          </div>
+          <div class="body">
+            <div class="section">
+              <span class="section-title">Accomplishments</span>
+              <div class="section-body" id="blocker-acc">
+              </div>
+            </div>
+            <div class="section">
+              <span class="section-title">Risks</span>
+              <div class="section-body" id="blocker-risks"></div>
+            </div>
+            <div class="section">
+              <span class="section-title">Remarks</span>
+              <div class="section-body" id="blocker-remarks"></div>
+            </div>
+            <div class="section">
+              <span class="section-title">On Hold</span>
+              <div class="section-body" id="blocker-onhold"></div>
+            </div>
+          </div>
+        </div>
+        <div class="report" id="report-container">
+          <div class="header">
+            <span id="report-title" class="title"></span>
+            <div style="display: flex;">
+              <div class="target-date" id="target-date"></div>
+              <div id="report-status-container" class="status-container"></div>
+              <div class="progress-container">
+                <div id="report-progress-bar" class="progress-bar">
+                  <span></span>
+                  <div class="progress-background"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div id="accomplishments-information" class="information">
+            <div>
+              <span id="accomplishments-week"></span>
+            </div>
+            <textarea name="" id="report-acc-textarea" rows="4"></textarea>
+          </div>
+          <div id="risks-information" class="information">
+            <div>
+              <span>Risks</span>
+            </div>
+            <textarea name="" id="report-risks-textarea" rows="4"></textarea>
+          </div>
+          <table class="milestone-container">
+            <thead>
+              <tr>
+                <th>Milestones</th>
+                <th>Start date</th>
+                <th>Finish date</th>
+                <th>New Finish Date</th>
+                <th>Actual date</th>
+                <th>Target</th>
+                <th>Remaining</th>
+                <th>Progress</th>
+              </tr>
+            </thead>
+            <tbody id="report-body">
+            </tbody>
+          </table>
+        </div>
+        
+      </div>
+      <div class="container" data-index="2" style="display: none;">c</div>
+      <div class="container" data-index="3" style="display: none;">d</div>
+    </div>
+  </div>
+
+  <script type="module" src="./code/index.ts"></script>
 </body>
 
 </html>

@@ -1,5 +1,6 @@
-import { app, BrowserWindow, Menu } from 'electron';
+import { app, BrowserWindow, ipcMain, Menu } from 'electron';
 import path from 'path';
+import { manageEvents } from './ui/events/ipcEvents';
 
 Menu.setApplicationMenu(null);
 
@@ -26,7 +27,7 @@ const createWindow = () => {
   } else {
     mainWindow.loadFile(path.join(__dirname, `../ui/main_window/${MAIN_WINDOW_VITE_NAME}/index.html`));
   }
-
+/* 
   const settingsWindow = new BrowserWindow({
     width: 700,
     height: 300
@@ -48,7 +49,7 @@ const createWindow = () => {
   } else {
     helpWindow.loadFile(path.join(__dirname, `../ui/help_window/${HELP_WINDOW_VITE_NAME}/index.html`));
   }
-
+ */
   // Open the DevTools.
   mainWindow.webContents.openDevTools({ mode: 'undocked', activate: false });
 };
@@ -77,3 +78,5 @@ app.on('activate', () => {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.
+manageEvents();
+

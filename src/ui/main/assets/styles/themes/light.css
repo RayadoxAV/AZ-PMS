@@ -1,0 +1,86 @@
+:root {
+
+  --window-background: #FFFFFF;
+
+  --titlebar-background: #FFFFFF;
+  --titlebar-color: #3c3c43;
+
+  --window-control-background: transparent;
+  --window-control-color: #222222;
+  --window-control-background-hover: #E0E0E0;
+
+  --window-control-close-background: #e81123;
+  --window-control-close-color: #FFFFFF;
+  
+  --scrollbar-track-background: transparent;
+  --scrollbar-thumb-background: #CCCCCC;
+  --scrollbar-thumb-background-hover: #C0C0C0;
+  --scrollbar-thumb-background-active: #B0B0B0;
+
+  /* Status colors */
+  --status-on-track: #70AD47;
+  --status-behind: #FFC000;
+  --status-out-of-track: #FF0000;
+  
+  /* Nav Rail colors */
+  --navrail-background: #FFFFFF;
+  --navrail-item-background: #FFFFFF;
+  --navrail-icon-container-background: #FFFFFF;
+  --navrail-icon-container-hover-background: #f5d0d0;
+  --navrail-icon-container-active-background: #f56565;
+  --navrail-item-text: #3c3c43;
+
+  /* Holder colors */
+  --holder-border: #e2e2e3;
+
+  /* Blocker colors */
+  --blocker-background: #475469;
+  --blocker-border: #1f2630;
+  --blocker-label-color: #FFFFFF;
+  --blocker-progress-container-color: #FFFFFF;
+  
+  --section-background: #FFFFFF;
+  --section-title-color: #000000;
+  --section-title-background: #FFFFFF;
+  --section-color: #222222;
+  
+  /* Report */
+  --report-background: #475469;
+  --report-title-color: #FFFFFF;
+  
+  --report-status-color: #FFFFFF;
+  --report-progress-container: #FFFFFF;
+
+  --report-information-background: #d3dbe7;
+  --report-textarea-background: #FFFFFF;
+
+  --report-milestone-background: #EFEFEF;
+
+  --report-task-background: #FFFFFF;
+
+  --progress-gradient-on-track: linear-gradient(90deg, rgba(99,195,132,1) 0%, rgba(255,255,255,1) 100%);
+  --progress-border-on-track: 1px solid #63c384;
+
+  --progress-gradient-behind: linear-gradient(90deg, rgba(255,182,40,1) 0%, rgba(255,255,255,1) 100%);
+  --progress-border-behind: 1px solid #ffb628;
+
+  --progress-gradient-out-of-track: linear-gradient(90deg, rgba(255, 85, 90, 1) 0%, rgba(255, 255, 255, 1) 100%);
+  --progress-border-out-of-track: 1px solid #ff555a;
+
+  /* Context menu */
+  --context-menu-background: #FCFCFC;
+  --context-menu-border: #E2E2E3;
+  --context-menu-hover-background: #ECE5E5;
+
+  /* --fab-background: #d2dbe7;
+  --fab-border: #c4ccd7;
+  --fab-background-hover: #d7e1f1;
+  --fab-background-active: #c1ccd8;
+
+  --menu-item-background: #e0e2e7;
+  --menu-item-border: #d4d7df;
+  --menu-item-background-hover: #e9eef9;
+  --menu-item-background-active: #d0d3da;
+
+  --tooltip-background: #333333; */
+}
