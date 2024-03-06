@@ -1,3 +1,8 @@
+/* 
+  Raymundo Paz
+  March 2024
+*/
+
 import { BrowserWindow, app } from 'electron';
 
 export function manageWindowEvents(_: any, ...args: any[]): void {

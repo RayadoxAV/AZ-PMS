@@ -1,3 +1,8 @@
+/* 
+  Raymundo Paz
+  March 2024
+*/
+
 export const optionsMenuHTML = 
 `
   <button class="option-item" style="--index: 1">

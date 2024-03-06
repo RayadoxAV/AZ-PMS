@@ -1,3 +1,8 @@
+/* 
+  Raymundo Paz
+  March 2024
+*/
+
 import { initBlockerUI } from './blockerUI';
 import { handleContextMenu } from './contextMenu';
 import { initNavigationMenu, selectContainer } from './navMenu';

@@ -1,3 +1,8 @@
+/* 
+  Raymundo Paz
+  March 2024
+*/
+
 console.log('nav');
 export function initNavigationMenu(): void {
   const navItems = document.querySelectorAll('nav > div.nav-item') as NodeListOf<HTMLElement>;

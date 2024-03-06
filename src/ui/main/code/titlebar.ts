@@ -1,3 +1,7 @@
+/* 
+  Raymundo Paz
+  March 2024
+*/
 
 export function initTitlebar() {
   const minimizeButton = document.getElementById('titlebar-minimize-button');

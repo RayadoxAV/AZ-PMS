@@ -1,3 +1,8 @@
+/* 
+  Raymundo Paz
+  March 2024
+*/
+
 export const contextMenuHTML =
   `
   <div class="menu-item" tabindex="0">
