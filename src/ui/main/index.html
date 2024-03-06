@@ -54,6 +54,12 @@
         </span>
         <span class="text">Charts</span>
       </div>
+      <div class="nav-item" data-target="container" data-target-index="4" tabindex="0">
+        <span class="icon-container">
+          <i class="icon" data-icon="timeline"></i>
+        </span>
+        <span class="text">Historic</span>
+      </div>
       <div class="nav-item" data-target="window" style="margin-top: auto;" tabindex="0">
         <span class="icon-container">
           <i class="icon" data-icon="settings"></i>
@@ -64,7 +70,7 @@
 
     <div class="holder">
       <div class="container" data-index="0" style="display: none;">
-        hola
+        <p>Quizás un dashboard? Pero de qué? La aplicación no está restringida a ver muchos proyectos al mismo tiempo ni nada pero fue concebida a mostrar información de un solo proyecto a la vez.</p>
       </div>
       <div class="container blocker-section" data-index="1" style="display: none;">
         <div class="blocker">
@@ -143,10 +149,23 @@
             </tbody>
           </table>
         </div>
-        
+        <button id="fab-options" class="fab-options">
+          <i class="icon" data-icon="menu"></i>
+        </button>
+        <button id="fab-copy-report" class="fab-copy-report">
+          <i class="icon" data-icon="copy"></i>
+          <span class="text">Copy report</span>
+        </button>
       </div>
-      <div class="container" data-index="2" style="display: none;">c</div>
-      <div class="container" data-index="3" style="display: none;">d</div>
+      <div class="container" data-index="2" style="display: none;">
+        Una gráfica de gantt interactiva que te muestra, actualmente donde estás en el tiempo y a lo mejor te puede mostrar donde deberías estar.
+      </div>
+      <div class="container" data-index="3" style="display: none;">
+        <p>Una pantalla donde mediante gráficas se puede ver como ha ido progresando un proyecto completo, sus tareas y a lo mejor predicciones de como va a progresar.</p>
+      </div>
+      <div class="container" data-index="4" style="display: none;">
+        <p>Una pantalla donde ver los cambios que se le han ido haciendo a un workplan desde que se creo hasta que terminó. Los detalles de la implementación todavía no los tengo pero probablemente haya que subir cambios periódicamente a los workplans.</p>
+      </div>
     </div>
   </div>
 

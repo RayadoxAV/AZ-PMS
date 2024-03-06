@@ -51,7 +51,8 @@ const createWindow = () => {
   }
  */
   // Open the DevTools.
-  mainWindow.webContents.openDevTools({ mode: 'undocked', activate: false });
+  mainWindow.webContents.openDevTools({ mode: 'right'});
+  mainWindow.maximize();
 };
 
 // This method will be called when Electron has finished

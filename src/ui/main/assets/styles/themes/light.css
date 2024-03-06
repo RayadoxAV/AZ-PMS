@@ -5,6 +5,9 @@
   --titlebar-background: #FFFFFF;
   --titlebar-color: #3c3c43;
 
+  --general-text-color: #3c3c43;
+  --contrast-text-color: #FFFFFF;
+
   --window-control-background: transparent;
   --window-control-color: #222222;
   --window-control-background-hover: #E0E0E0;
@@ -28,6 +31,7 @@
   --navrail-icon-container-background: #FFFFFF;
   --navrail-icon-container-hover-background: #f5d0d0;
   --navrail-icon-container-active-background: #f56565;
+  --navrail-icon-color-active: #FFFFFF;
   --navrail-item-text: #3c3c43;
 
   /* Holder colors */
@@ -72,6 +76,32 @@
   --context-menu-border: #E2E2E3;
   --context-menu-hover-background: #ECE5E5;
 
+  /* Copy report FAB */
+  --crep-background: #f56565;
+  --crep-background-hover: #ff7674;
+  --crep-background-active: #ee5754;
+  --crep-accent: #FFFFFF;
+  --crep-border: #f56565;
+
+  /* Options FAB */
+  --opts-background: #F0F0F0;
+  --opts-background-hover: #FAFAFA;
+  --opts-background-active: #E0E0E0;
+  --opts-border: #E2E2E3;
+  --opts-icon: #3c3c43;
+
+  /* Option item */
+  --opt-item-background: #FFFFFF;
+  --opt-item-background-hover: #FFFFFF;
+  --opt-item-border: #E2E2E3;
+  --opt-item-border-hover: #f56b69;
+  --opt-item-icon: #3c3c43;
+  --opt-item-icon-active: #f56b69;
+
+  /* Tooltips */
+
+  --tooltip-background: #3c3c43;
+  --tooltip-color: #FFFFFF;
   /* --fab-background: #d2dbe7;
   --fab-border: #c4ccd7;
   --fab-background-hover: #d7e1f1;
@@ -82,5 +112,5 @@
   --menu-item-background-hover: #e9eef9;
   --menu-item-background-active: #d0d3da;
 
-  --tooltip-background: #333333; */
+   */
 }

@@ -155,6 +155,10 @@ div.nav-item.active > span.icon-container {
   background-color: var(--navrail-icon-container-active-background);
 }
 
+div.nav-item.active > span.icon-container > i.icon {
+  background-color: var(--navrail-icon-color-active);
+}
+
 div.holder {
   width: 100%;
   border-top-left-radius: 1rem;
@@ -190,6 +194,7 @@ div.blocker {
   border: 1px solid var(--blocker-border);
   min-width: 40rem;
   width: calc(100% - 15rem);
+  max-width: 1500px;
 }
 
 div.blocker > div.header {
@@ -306,6 +311,7 @@ div.report {
   width: 90%;
   border: 1px solid var(--report-background);
   width: calc(100% - 15rem);
+  max-width: 1500px;
 }
 
 div.report > div.header {
@@ -513,6 +519,7 @@ div.context-menu {
   border-radius: 0.75rem;
   display: flex;
   flex-direction: column;
+  outline: none;
 
   transform-origin: top center;
   animation-name: contextMenuEnter;
@@ -524,7 +531,6 @@ div.context-menu {
 
 div.context-menu > div.menu-item {
   user-select: none;
-  /* font-size: 14px; */
   border-radius: 0.5rem;
   padding: 0.5rem 0.75rem;
   display: flex;
@@ -553,6 +559,166 @@ div.context-menu > div.divider {
   margin: 0.25rem 0.5rem;
 }
 
+/* FABs */
+
+button.fab-copy-report {
+  position: absolute;
+  bottom: 4rem;
+  right: 1rem;
+  display: flex;
+  gap: 0.25rem;
+  padding: 0.5rem;
+  background-color: var(--crep-background);
+  border: 1px solid var(--crep-border);
+  border-radius: 0.5rem;
+  cursor: pointer;
+  align-items: center;
+  transition: all 150ms cubic-bezier(0.2, 0, 0, 1);
+}
+
+button.fab-copy-report:hover {
+  transform: translateY(-1px);
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+  background-color: var(--crep-background-hover);
+}
+
+button.fab-copy-report:active {
+  transform: translateY(1px);
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.0);
+  background-color: var(--crep-background-active);
+  border-radius: 1rem;
+}
+
+button.fab-copy-report > i.icon {
+  display: block;
+  height: 2rem;
+  width: 2rem;
+  background-color: var(--crep-accent);
+  mask-size: 100%;
+  mask-repeat: no-repeat;
+}
+
+button.fab-copy-report > span.text {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--crep-accent);
+}
+
+button.fab-options {
+  position: absolute;
+  bottom: 8rem;
+  right: 1rem;
+  display: flex;
+  align-items: center;
+  justify-items: center;
+  width: 2.5rem;
+  aspect-ratio: 1;
+  border-radius: 0.5rem;
+  border: 1px solid var(--opts-border);
+  background-color: var(--opts-background);
+  cursor: pointer;
+  transition: all 150ms cubic-bezier(0.2, 0, 0, 1);
+}
+
+button.fab-options > i.icon {
+  width: 2rem;
+  aspect-ratio: 1;
+  background-color: var(--opts-icon);
+  mask-size: 100%;
+  mask-repeat: no-repeat;
+  pointer-events: none;
+}
+
+button.fab-options:hover {
+  background-color: var(--opts-background-hover);
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+button.fab-options:active {
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.0);
+  background-color: var(--opts-background-active);
+  border-radius: 0.5rem;
+}
+
+/* Options container */
+
+div.opts-menu-container {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  z-index: 1;
+  /* bottom: 11rem; */
+  /* right: 1.25rem; */
+}
+
+div.opts-menu-container > button.option-item {
+  background-color: var(--opt-item-background);
+  border: none;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 0.5rem;
+  display: flex;
+  justify-content: center;
+  padding: 0rem;
+  align-items: center;
+  cursor: pointer;
+  border: 1px solid var(--opt-item-border);
+  animation-name: optionItemEnter;
+  animation-duration: 200ms;
+  animation-fill-mode: forwards;
+  animation-timing-function: cubic-bezier(0.2, 0, 0, 1);
+  transform-origin: bottom center;
+  opacity: 0;
+  transition: all 150ms cubic-bezier(0.2, 0, 0, 1);
+  z-index: 2;
+  position: relative;
+  animation-delay: calc(5ms * var(--index));
+}
+
+button.option-item > span.tooltip {
+  opacity: 0;
+  position: absolute;
+  background-color: var(--tooltip-background);
+  border: 1px solid var(--tooltip-background);
+  color: var(--tooltip-color);
+  font-size: 14px;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.5rem;
+  right: 2.5rem;
+  user-select: none;
+  pointer-events: none;
+  width: auto; 
+  white-space: nowrap;
+  transition: all 150ms cubic-bezier(0.2, 0, 0, 1);
+  transform: scale(80%);
+}
+
+div.opts-menu-container > button.option-item:hover {
+  background-color: var(--opt-item-background-hover);
+  border-color: var(--opt-item-border-hover);
+}
+
+button.option-item:hover > span.tooltip {
+  opacity: 1;
+  transform: scale(100%);
+}
+
+button.option-item > i.icon {
+  display: block;
+  height: 1.5rem;
+  width: 1.5rem;
+  mask-size: 100%;
+  mask-repeat: no-repeat;
+  background-color: var(--opt-item-icon);
+  pointer-events: none;
+}
+
+button.option-item:hover > i.icon {
+  background-color: var(--opt-item-icon-active);
+}
+
+
 /* Icons */
 
 i.icon[data-icon="home"] {
@@ -571,8 +737,44 @@ i.icon[data-icon="chart"] {
   mask-image: url('/assets/icons/chart.svg');
 }
 
+i.icon[data-icon="timeline"] {
+  mask-image: url('/assets/icons/timeline.svg');
+}
+
 i.icon[data-icon="settings"] {
   mask-image: url('/assets/icons/settings.svg');
+}
+
+i.icon[data-icon="copy"] {
+  mask-image: url('/assets/icons/copy.svg');
+}
+
+i.icon[data-icon="menu"] {
+  mask-image: url('/assets/icons/menu.svg');
+}
+
+i.icon[data-icon="reload"] {
+  mask-image: url('/assets/icons/reload.svg');
+}
+
+i.icon[data-icon="zoom-in"] {
+  mask-image: url('/assets/icons/zoom_in.svg');
+}
+
+i.icon[data-icon="zoom-out"] {
+  mask-image: url('/assets/icons/zoom_out.svg');
+}
+
+i.icon[data-icon="zoom-reset"] {
+  mask-image: url('/assets/icons/zoom_reset.svg');
+}
+
+i.icon[data-icon="collapse"] {
+  mask-image: url('/assets/icons/collapse.svg');
+}
+
+i.icon[data-icon="expand"] {
+  mask-image: url('/assets/icons/expand.svg');
 }
 
 /* Animations */
@@ -598,5 +800,21 @@ i.icon[data-icon="settings"] {
   to {
     opacity: 1;
     transform: scaleY(100%);
+  }
+}
+
+@keyframes optionItemEnter {
+  0% {
+    transform: translateY(-10px) scale(150%);
+    opacity: 0;
+  }
+
+  25% {
+    opacity: 0;
+  }
+
+  100% {
+    transform: translateY(0px) scale(100%);
+    opacity: 1;
   }
 }

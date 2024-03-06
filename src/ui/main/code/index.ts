@@ -1,5 +1,7 @@
+import { initBlockerUI } from './blockerUI';
 import { handleContextMenu } from './contextMenu';
 import { initNavigationMenu, selectContainer } from './navMenu';
+import { handleOptionsMenu } from './optionsMenu';
 import { initTitlebar } from './titlebar';
 import { InternalState } from './types';
 
@@ -9,9 +11,10 @@ declare global {
 };
 
 function initializeInternalState(): void {
-  const temp = {
+  const temp: InternalState = {
     contextMenuVisible: false,
-    contextMenuCoords: { x: 0, y: 0 }
+    contextMenuCoords: { x: 0, y: 0 },
+    optionsMenuVisible: false
   };
 
 
@@ -20,6 +23,10 @@ function initializeInternalState(): void {
 
       if (key === 'contextMenuVisible') {
         handleContextMenu(value);
+      }
+
+      if (key === 'optionsMenuVisible') {
+        handleOptionsMenu(value);
       }
 
       target[key] = value;
@@ -44,13 +51,20 @@ function listenGlobalEvents(): void {
     if (!matchesContextMenu) {
       window.internalState.contextMenuVisible = false;
     }
+
+    const matchesOptionsMenu = ((event.target as HTMLElement).matches('div.opts-menu-container') || (event.target as HTMLElement).matches('div.opts-menu-container > *') || (event.target as HTMLElement).matches('button.fab-options')) ;
+
+    if (!matchesOptionsMenu) {
+      window.internalState.optionsMenuVisible = false;
+    }
+
   });
 
   window.addEventListener('blur', (event) => {
     window.internalState.contextMenuVisible = false;
+    window.internalState.optionsMenuVisible = false;
   });
 }
-
 
 function main(): void {
   initializeInternalState();
@@ -60,6 +74,8 @@ function main(): void {
 
   initNavigationMenu();
   selectContainer(1);
+
+  initBlockerUI();
 }
 
 main();

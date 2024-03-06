@@ -1,25 +1,25 @@
 export const contextMenuHTML =
   `
-  <div class="menu-item">
+  <div class="menu-item" tabindex="0">
     <span class="text">Reload window</span>
     <span class="shortcut">Ctrl+R</span>
   </div>
-  <div class="menu-item">
+  <div class="menu-item" tabindex="0">
     <span class="text">Option</span>
   </div>
   <div class="divider"></div>
-  <div class="menu-item">
+  <div class="menu-item" tabindex="0">
     <span class="text">Option</span>
   </div>
-  <div class="menu-item">
+  <div class="menu-item" tabindex="0">
     <span class="text">Option</span>
   </div>
-  <div class="menu-item">
+  <div class="menu-item" tabindex="0">
     <span class="text">Option</span>
   </div>
 `;
 
-export function handleContextMenu(visible: boolean) {
+export function handleContextMenu(visible: boolean): void {
 
   if (window.internalState.contextMenuVisible) {
     if (visible) {
@@ -46,6 +46,7 @@ function showContextMenu(): void {
   const contextMenuElement = document.createElement('div');
   contextMenuElement.classList.add('context-menu');
   contextMenuElement.id = 'context-menu';
+  contextMenuElement.tabIndex = 0;
 
   contextMenuElement.innerHTML = contextMenuHTML;
 
@@ -65,4 +66,6 @@ function showContextMenu(): void {
     contextMenuElement.style.top = 'unset';
     contextMenuElement.style.bottom = `${(window.innerHeight - y) + 8}px`;
   }
+
+  contextMenuElement.focus();
 }
