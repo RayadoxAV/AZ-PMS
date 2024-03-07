@@ -3,9 +3,20 @@
   March 2024
 */
 
+import 'dotenv/config';
 import { app, BrowserWindow, ipcMain, Menu } from 'electron';
 import path from 'path';
 import { manageEvents } from './ui/events/ipcEvents';
+import { GlobalSharedObject } from './util/misc';
+import { ArgumentsManager } from './util/argsManager';
+
+declare global {
+  var shared: GlobalSharedObject;
+}
+
+global.shared = {
+  args: ArgumentsManager.parseArguments()
+};
 
 Menu.setApplicationMenu(null);
 
