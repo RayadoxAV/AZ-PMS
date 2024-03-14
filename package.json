@@ -5,7 +5,7 @@
   "main": "src/main.js",
   "scripts": {
     "test": "node src/tests/test.js",
-    "dev": "electron . --path \"C:/users/rpaz/documents/testing/az_pms/SUPP-5.Legacy Retirement FY24.xlsx\" --id SUPP-5",
+    "dev": "electron . --path \"C:/users/rpaz/documents/testing/az_pms/TST-3 Recurring tasks.xlsx\" --id TST-3",
     "deploy": "node src/deployment/deployer.js"
   },
   "author": "Raymundo Paz",

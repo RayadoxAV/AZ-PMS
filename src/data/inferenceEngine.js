@@ -361,6 +361,7 @@ class InferenceEngine {
                 }
               }
             } else {
+            
               // Report and add to DB
               let taskCompletionDate = Util.getActualDate(task);
               // TODO: Handle errors gracefully
@@ -378,6 +379,9 @@ class InferenceEngine {
             }
 
           } else if (task.progress >= 0.75) {
+            if (task.flag === 3) {
+              continue;
+            }
             /* NOTE: Algorithm
               1. If it has a completion date that is close and it is in work and does not have a risk flag. I'm just going to ignore the calculated risks if any.
             */
@@ -542,6 +546,10 @@ class InferenceEngine {
             }
           }
         } else if (task.status === 1 && task.progress >= 0.75 && dateDifference < 2) {
+          if (task.flag === 3 || task.flag === 4) {
+            continue;
+          }
+
           accomplishmentsString += `- [${task.name}] is at ${(task.progress * 100).toFixed(0)}% progress.\n`;
         }
       }
@@ -571,8 +579,11 @@ class InferenceEngine {
           const task = milestone.tasks[j];
           // NOTE: If someone wants to report a milestone. Report it in its entirety
           // if (task.target > 0 || task.flag === 0) {
-            reportingItems.push(task);
           // }
+
+          if (task.status !== 4) {
+            reportingItems.push(task);
+          }
         }
 
       } else if (milestone.flag === 2) {
@@ -668,6 +679,9 @@ class InferenceEngine {
 
             task.name = task.name + ' (Risk)';
             
+            reportingItems.push(task);
+          } else if (task.flag === 3 || task.flag === 4) {
+            task.name = task.name + ' (Recurring)';
             reportingItems.push(task);
           }
         }

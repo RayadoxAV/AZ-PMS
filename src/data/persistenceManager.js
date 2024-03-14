@@ -23,10 +23,10 @@ const readFile = promisify(fs.readFile);
 /* DB = Some random file on xterra */
 class PersistenceManager {
 
-  // static dbPath = 'C:/Users/rpaz/Documents/testing/az_pms/db/reporting.json';
-  static dbPath = '\\\\xterra\\analysis\\Merch FY2024 Workplans\\data\\db\\reporting.json';
-  static dbFolder = '\\\\xterra\\analysis\\Merch FY2024 Workplans\\data\\db';
-  // static dbFolder = 'C:/Users/rpaz/Documents/testing/az_pms/db';
+  static dbPath = 'C:/Users/rpaz/Documents/testing/az_pms/db/reporting.json';
+  // static dbPath = '\\\\xterra\\analysis\\Merch FY2024 Workplans\\data\\db\\reporting.json';
+  // static dbFolder = '\\\\xterra\\analysis\\Merch FY2024 Workplans\\data\\db';
+  static dbFolder = 'C:/Users/rpaz/Documents/testing/az_pms/db';
 
   static dbTemplate =
     {

@@ -492,6 +492,14 @@ class Util {
         flagInt = 2;
         break;
 
+      case 'Recurrent':
+        flagInt = 3;
+        break;
+
+      case 'Recurrent / Report':
+        flagInt = 4;
+        break;
+
       default:
         flagInt = -1;
         break;
@@ -513,6 +521,14 @@ class Util {
 
       case 2:
         flagText = 'Risk';
+        break;
+
+      case 3:
+        flagText = 'Recurrent';
+        break;
+
+      case 4:
+        flagText = 'Recurrent / Report';
         break;
 
       default:
@@ -630,8 +646,15 @@ class Util {
       return timeResult;
     }
 
+    if (task.flag === 3 || task.flag === 4) {
+      timeResult.onTime = true;
+      timeResult.timeBehind = 0;
+      return timeResult;
+    }
+
     if (workplanType === 0) {
       timeResult.unit = 'weeks';
+
 
       const startWeek = task.startDate.week;
       const finishWeek = Util.getFinishDate(task).week;
@@ -643,7 +666,8 @@ class Util {
       const progressUnit = 1 / taskActualDuration;
       let accumulatedProgress = progressUnit;
 
-      const ranges = new Array(taskActualDuration);
+
+      const ranges = new Array(Math.ceil(taskActualDuration));
       for (let i = 0; i < ranges.length; i++) {
         ranges[i] = Number.parseFloat(accumulatedProgress.toFixed(3));
         accumulatedProgress += progressUnit;
