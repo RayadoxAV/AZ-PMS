@@ -154,19 +154,39 @@ function loadProjectData(workplanString) {
   }
 
   document.getElementById('target-date').innerText = `Target date: ${maxDate.getFullYear()}/${maxDate.getMonth() + 1}/${maxDate.getDate()}`
-  
+
   const currentWeek = dateToWeek(new Date());
 
   accomplishmentsTitle.innerText = `Accomplishments (WK${currentWeek})`;
+
   fillReport(workplan);
+
+
 }
 
 function fillReport(workplan) {
+  const isTranslation = workplan.projectId === 'TR-1';
+
+  if (isTranslation) {
+    const table = document.getElementById('report-table');
+    const remainingHeader = table.querySelector('thead > tr > th:nth-child(7)');
+
+    const testColumn = table.querySelector('thead > tr > th:nth-child(8)');
+
+    if (testColumn.innerText !== 'Worked last week') {
+      const lastWeekHeader = document.createElement('th');
+      lastWeekHeader.innerText = 'Worked last week';
+
+      remainingHeader.after(lastWeekHeader);
+    }
+
+    // tHead.appendChild(sometihg);
+  }
 
   const tableBody = document.getElementById('report-body');
 
   let tableHTML = '';
-  
+
   for (let i = 0; i < workplan.report.reportingItems.length; i++) {
     const item = workplan.report.reportingItems[i];
 
@@ -196,9 +216,9 @@ function fillReport(workplan) {
       } else if (item.workStatus === 2) {
         status = 'out-of-track';
       }
-  
-      tableHTML += 
-      `<tr class="milestone">
+
+      tableHTML +=
+        `<tr class="milestone">
         <td>${item.name}</td>
         <td>${startDate}</td>
         <td>${finishDate}</td>
@@ -206,6 +226,7 @@ function fillReport(workplan) {
         <td></td>
         <td>${item.target === -1 ? '' : numberWithCommas(item.target)}</td>
         <td>${item.remaining === 0 ? '' : numberWithCommas(item.remaining)}</td>
+        ${isTranslation ? '<td></td>' : ''}
         <td>
           <div class="progress-bar ${status}" style="--progress: ${(item.progress * 100).toFixed(0)}%;">
             <span>${(item.progress * 100).toFixed(0)}%</span>
@@ -253,9 +274,9 @@ function fillReport(workplan) {
       } else if (item.workStatus === 2) {
         status = 'out-of-track';
       }
-      
+
       tableHTML +=
-      `<tr>
+        `<tr>
         <td>${item.name}</td>
         <td>${startDate || 'TBD'}</td>
         <td>${finishDate || 'TBD'}</td>
@@ -263,6 +284,7 @@ function fillReport(workplan) {
         <td>${actualDate || ''}</td>
         <td>${item.target === -1 ? '' : numberWithCommas(item.target)}</td>
         <td>${(item.target > 0) ? numberWithCommas(item.remaining) : ''}</td>
+        ${isTranslation ? `<td>${item.workedLastWeek > 0 ? numberWithCommas(optionalFieldWrapper(item, 'workedLastWeek')) : ''}</td>` : ''}
         <td>
           <div class="progress-bar ${status}" style="--progress: ${(item.progress * 100).toFixed(0)}%;">
             <span>${(item.progress * 100).toFixed(0)}%</span>
@@ -312,7 +334,7 @@ function numberWithCommas(x) {
 function convertToHTML() {
   const domToImg = require('dom-to-image');
 
-  function filterNodes (node) {
+  function filterNodes(node) {
     return (node.tagName !== 'BUTTON');
     // return true;
   }
@@ -346,4 +368,12 @@ function dateToWeek(date) {
   const searchString = `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
   const week = dates[searchString];
   return week;
+}
+
+
+function optionalFieldWrapper(item, fieldName) {
+  if (item[fieldName] !== undefined && item[fieldName] !== null) {
+    return item[fieldName];
+  }
+  return '';
 }

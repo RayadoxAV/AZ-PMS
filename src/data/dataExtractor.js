@@ -386,7 +386,7 @@ class DataExtractor {
    * @param {String} version 
    * @returns 
    */
-  getMilestoneData(bridge, workplanSheet, type, version) {
+  getMilestoneData(bridge, workplanSheet, type, version, projectId) {
 
     const milestones = [];
 
@@ -436,7 +436,7 @@ class DataExtractor {
 
               milestone.row = rowNumber;
 
-              const tasks = this.getTaskData(bridge, workplanSheet, type, version, milestone.row);
+              const tasks = this.getTaskData(bridge, workplanSheet, type, version, milestone.row, projectId);
 
               milestone.tasks = tasks;
 
@@ -912,7 +912,7 @@ class DataExtractor {
   //   return tasks;
   // }
 
-  getTaskData(bridge, workplanSheet, type, version, startRow) {
+  getTaskData(bridge, workplanSheet, type, version, startRow, projectId) {
     const tasks = [];
 
     if (version === 'v3') {
@@ -1057,6 +1057,13 @@ class DataExtractor {
           task.completed = Util.getValue(workplanSheet, `${taskCompletedColumn}${startRow + i}`, 'number');
           task.target = Util.getValue(workplanSheet, `${taskTargetColumn}${startRow + i}`, 'number');
           task.remaining = task.target - task.completed;
+
+          if (projectId === 'TR-1') {
+            const workedLastWeekColumn = bridge.get(38).match(/[a-z]+|[^a-z]+/gi)[0];
+            const workedLastWeek = Util.getValue(workplanSheet, `${workedLastWeekColumn}${startRow + i}`, 'number');
+            
+            task.workedLastWeek = workedLastWeek;
+          }
 
           task.remarks = Util.getValue(workplanSheet, `${taskRemarksColumn}${startRow + i}`, 'string');
           task.comments = Util.getValue(workplanSheet, `${taskCommentsColumn}${startRow + i}`, 'string');

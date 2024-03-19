@@ -100,7 +100,7 @@ class DataManager {
 
     Object.assign(workplan, projectData);
 
-    const milestoneData = dataExtractor.getMilestoneData(bridge, workplanSheet, workplan.type, workplan.version);
+    const milestoneData = dataExtractor.getMilestoneData(bridge, workplanSheet, workplan.type, workplan.version, workplan.projectId);
 
     workplan.milestones = milestoneData;
 

@@ -580,6 +580,13 @@ class InferenceEngine {
           // NOTE: If someone wants to report a milestone. Report it in its entirety
           // if (task.target > 0 || task.flag === 0) {
           // }
+          if (task.flag === 2) {
+            task.name = task.name + ' (Risk)';
+          }
+
+          if (task.flag === 3 || task.flag === 4) {
+            task.name = task.name + ' (Recurring)';
+          }
 
           if (task.status !== 4) {
             reportingItems.push(task);
@@ -593,6 +600,14 @@ class InferenceEngine {
 
         for (let j = 0; j < milestone.tasks.length; j++) {
           const task = milestone.tasks[j];
+
+          if (task.flag === 2) {
+            task.name = task.name + ' (Risk)';
+          }
+
+          if (task.flag === 3 || task.flag === 4) {
+            task.name = task.name + ' (Recurring)';
+          }
 
           reportingItems.push(task);
         }
@@ -681,6 +696,12 @@ class InferenceEngine {
             
             reportingItems.push(task);
           } else if (task.flag === 3 || task.flag === 4) {
+
+            if (!addedMilestone) {
+              reportingItems.push(milestone);
+              addedMilestone = true;
+            }
+
             task.name = task.name + ' (Recurring)';
             reportingItems.push(task);
           }

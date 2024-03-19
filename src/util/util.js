@@ -45,7 +45,8 @@ class Util {
     'jira id',                     // 34
     'task duration (Days/Hours)',  // 35
     'original sprint',             // 36
-    'last updated'                 // 37
+    'last updated',                // 37
+    'worked last week'             // 38
   ];
 
   // Required fields that a Workplan of this version MUST have in order to be considered of this version
