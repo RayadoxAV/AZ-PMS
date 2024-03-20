@@ -161,7 +161,11 @@ function loadProjectData(workplanString) {
 
   fillReport(workplan);
 
+  const isTranslation = workplan.projectId === 'TR-1';
 
+  if (isTranslation) {
+    fillSubmissionsReport(workplan);
+  }
 }
 
 function fillReport(workplan) {
@@ -179,8 +183,6 @@ function fillReport(workplan) {
 
       remainingHeader.after(lastWeekHeader);
     }
-
-    // tHead.appendChild(sometihg);
   }
 
   const tableBody = document.getElementById('report-body');
@@ -189,6 +191,10 @@ function fillReport(workplan) {
 
   for (let i = 0; i < workplan.report.reportingItems.length; i++) {
     const item = workplan.report.reportingItems[i];
+
+    if (isTranslation && item.name === 'New Submissions') {
+      break;
+    }
 
     if (item.tasks) {
 
@@ -376,4 +382,94 @@ function optionalFieldWrapper(item, fieldName) {
     return item[fieldName];
   }
   return '';
+}
+
+function fillSubmissionsReport(workplan) {
+  const currentWeek = dateToWeek(new Date());
+
+  const reportTable = document.getElementById('report-table');
+
+  const submissionsTable = document.createElement('table');
+  submissionsTable.classList.add('milestone-container');
+  submissionsTable.style.borderTop = '2px solid #475469';
+  submissionsTable.style.marginTop = '1rem';
+
+  const thead = document.createElement('thead');
+
+  const tbody = document.createElement('tbody');
+
+
+
+  let shouldSkip = true;
+
+  let bodyHTML = '';
+  
+  for (let i = 0; i < workplan.report.reportingItems.length; i++) {
+    const item = workplan.report.reportingItems[i];
+
+    if (item.name === 'New Submissions') {
+      shouldSkip = false;
+
+      thead.innerHTML = 
+      `
+        <tr>
+          <th>${item.name}</th>
+          <th>Start date</th>
+          <th>Finish date</th>
+          <th>Total translated</th>
+          <th>Received (WK${currentWeek - 1})</th>
+          <th>Worked (WK${currentWeek - 1})</th>
+          <th>Progress</th>
+        </tr>
+      `;
+
+      continue;
+    }
+
+    if (shouldSkip) {
+      continue;
+    }
+
+    let startDate = undefined;
+    let finishDate = undefined;
+    let actualDate = undefined;
+
+    if (item.startDate) {
+      if (item.startDate.date) {
+        startDate = item.startDate.date.split('T')[0].replace(/\-/g, '/');
+      }
+    }
+
+    if (item.finishDate) {
+      if (item.finishDate.date) {
+        finishDate = item.finishDate.date.split('T')[0].replace(/\-/g, '/');
+      }
+    }
+
+
+    bodyHTML += 
+    `
+      <tr>
+        <td>${item.name}</td>
+        <td>${startDate}</td>
+        <td>${finishDate}</td>
+        <td>${numberWithCommas(item.completed)}</td>
+        <td>${numberWithCommas(item.receivedLastWeek)}</td>
+        <td>${numberWithCommas(item.workedLastWeek)}</td>
+        <td>
+          <div class="progress-bar on-track" style="--progress: ${(item.workedLastWeek / item.receivedLastWeek * 100).toFixed(0)}%;">
+            <span>${(item.workedLastWeek / item.receivedLastWeek * 100).toFixed(2)}%</span>
+            <div class="progress-background"></div>
+          </div>
+        </td>
+      </tr>
+    `;
+  }
+
+  tbody.innerHTML = bodyHTML;
+
+  submissionsTable.appendChild(thead);
+  submissionsTable.appendChild(tbody);
+
+  reportTable.after(submissionsTable);
 }

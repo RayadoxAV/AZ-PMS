@@ -1062,7 +1062,11 @@ class DataExtractor {
             const workedLastWeekColumn = bridge.get(38).match(/[a-z]+|[^a-z]+/gi)[0];
             const workedLastWeek = Util.getValue(workplanSheet, `${workedLastWeekColumn}${startRow + i}`, 'number');
             
+            const receivedLastWeekColumn = bridge.get(39).match(/[a-z]+|[^a-z]+/gi)[0];
+            const receivedLastWeek = Util.getValue(workplanSheet, `${receivedLastWeekColumn}${startRow + i}`, 'number');
+
             task.workedLastWeek = workedLastWeek;
+            task.receivedLastWeek = receivedLastWeek;
           }
 
           task.remarks = Util.getValue(workplanSheet, `${taskRemarksColumn}${startRow + i}`, 'string');

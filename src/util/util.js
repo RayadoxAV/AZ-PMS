@@ -46,7 +46,8 @@ class Util {
     'task duration (Days/Hours)',  // 35
     'original sprint',             // 36
     'last updated',                // 37
-    'worked last week'             // 38
+    'worked last week',            // 38
+    'received last week'           // 39
   ];
 
   // Required fields that a Workplan of this version MUST have in order to be considered of this version
