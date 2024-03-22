@@ -43,9 +43,10 @@ export class ErrorManager {
   static throwError(error: CustomError): CustomError | undefined {
     Logger.log(error.body, LogType.ERROR);
     const window = BrowserWindow.getAllWindows()[0];
-
     if (window) {
       window.webContents.send('error', { message: error.userMessage });
+    } else {
+      console.log(error);
     }
 
     if (error.shouldPropagate) {

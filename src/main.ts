@@ -9,6 +9,10 @@ import path from 'path';
 import { manageEvents } from './ui/events/ipcEvents';
 import { GlobalSharedObject } from './util/misc';
 import { ArgumentsManager } from './util/argsManager';
+import { DataCollector } from './data/processing/dataCollector';
+import { CustomWorkbook } from './data/data';
+import { DataExtractor } from './data/processing/dataExtractor';
+import { DataTransformator } from './data/processing/dataTransformator';
 
 declare global {
   var shared: GlobalSharedObject;
@@ -30,6 +34,8 @@ const createWindow = () => {
   const mainWindow = new BrowserWindow({
     width: 1280,
     height: 720,
+    minWidth: 800,
+    minHeight: 480,
     frame: false,
     title: 'AZ-PMS',
     webPreferences: {
@@ -69,6 +75,8 @@ const createWindow = () => {
 
   mainWindow.webContents.openDevTools({ mode: 'right'});
   mainWindow.maximize();
+
+
 };
 
 app.on('ready', createWindow);
@@ -85,4 +93,18 @@ app.on('activate', () => {
   }
 });
 
+  // TODO: Remove this
+  const result = new DataCollector().provideWorkbook();
+
+  const dataExtractor = new DataExtractor();
+  result.then((workbook: CustomWorkbook) => {
+    const resultIndex = dataExtractor.evaluateSheets(workbook, 'PR-7');
+    if (resultIndex !== -1) {
+      new DataTransformator().sheetToWorkplan(workbook.sheets[resultIndex]);
+    }
+
+
+  });
+
 manageEvents();
+

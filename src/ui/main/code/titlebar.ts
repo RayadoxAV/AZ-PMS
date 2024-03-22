@@ -9,14 +9,14 @@ export function initTitlebar() {
   const closeButton = document.getElementById('titlebar-close-button');
 
   minimizeButton.addEventListener('click', () => {
-    window.electronAPI.applyEvent('Main', 'minimize');
+    window.windowBridge.applyEvent('Main', 'minimize');
   });
 
   maximizeButton.addEventListener('click', () => {
-    window.electronAPI.applyEvent('Main', 'maximize');
+    window.windowBridge.applyEvent('Main', 'maximize');
   });
 
   closeButton.addEventListener('click', () => {
-    window.electronAPI.applyEvent('Main', 'close');
+    window.windowBridge.applyEvent('Main', 'close');
   });
 }

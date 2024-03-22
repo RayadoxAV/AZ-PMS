@@ -161,8 +161,80 @@
           <span class="text">Copy report</span>
         </button>
       </div>
-      <div class="container" data-index="2" style="display: none;">
-        Una gráfica de gantt interactiva que te muestra, actualmente donde estás en el tiempo y a lo mejor te puede mostrar donde deberías estar.
+      <div class="container gantt-section" data-index="2" style="display: none;">
+        <!-- Una gráfica de gantt interactiva que te muestra, actualmente donde estás en el tiempo y a lo mejor te puede mostrar donde deberías estar. -->
+        <div class="gantt-chart">
+          <div class="header">
+            backg
+          </div>
+          <div class="body">
+            <div class="sidebar">
+              <div style="height: 2rem;">
+                a
+              </div>
+              <div class="parent">
+                <div class="name-container" tabindex="0">
+                  <i class="icon" data-icon="arrow-expand"></i>
+                  <span class="name">Some milestone</span>
+                </div>
+                <div class="children-wrapper">
+                  <div class="children" style="--level: 0.5rem;">
+                    <div class="name-container" tabindex="0"><span class="name">1. Some task</span></div>
+                    <div class="parent">
+                      <div class="name-container" tabindex="0">
+                        <i class="icon" data-icon="arrow-expand"></i>
+                        <span class="name">2. Some task</span>
+                      </div>
+                      <div class="children-wrapper">
+                        <div class="children" style="--level: 1rem;">
+                          <div class="name-container" tabindex="0"><span class="name">2.1 Some subtask</span></div>
+                          <div class="name-container" tabindex="0"><span class="name">2.2 Some subtask</span></div>
+                          <div class="name-container" tabindex="0"><span class="name">2.3 Some subtask</span></div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="name-container" tabindex="0"><span class="name">3. Some task</span></div>
+                  </div>
+                </div>
+              </div>
+              <div class="parent">
+                <div class="name-container">
+                  <i class="icon" data-icon="arrow-expand"></i>
+                  <span class="name">Some milestone</span>
+                </div>
+                <div class="children-wrapper">
+                  <div class="children" style="--level: 0.5rem;">
+                    <div class="name-container"><span class="name">4. Some task</span></div>
+                    <div class="parent">
+                      <div class="name-container">
+                        <i class="icon" data-icon="arrow-expand"></i>
+                        <span class="name">5. Some task</span>
+                      </div>
+                      <div class="children-wrapper">
+                        <div class="children" style="--level: 1rem;">
+                          <div class="name-container"><span class="name">5.1 Some subtask</span></div>
+                          <div class="name-container"><span class="name">5.2 Some subtask</span></div>
+                          <div class="name-container"><span class="name">5.3 Some subtask</span></div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="name-container"><span class="name">6. Some task</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="timeline">
+              <div class="header" style="height: 2rem;">hola</div>
+              <canvas id="timeline-canvas" width="1500" height="400"></canvas>
+            </div>
+          </div>
+          <!-- <div class="gantt-row">
+            <div class="task">
+              <span>name</span>
+            </div>
+            <div class="length">1</div>
+          </div> -->
+        </div>
       </div>
       <div class="container" data-index="3" style="display: none;">
         <p>Una pantalla donde mediante gráficas se puede ver como ha ido progresando un proyecto completo, sus tareas y a lo mejor predicciones de como va a progresar.</p>

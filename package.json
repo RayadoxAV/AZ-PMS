@@ -5,12 +5,12 @@
   "description": "The AutoZone Project Management Software",
   "main": ".vite/build/main.js",
   "scripts": {
-    "dev": "electron-forge start",
+    "dev": "electron-forge start -- --path \"C:/users/rpaz/documents/testing/az_pms/MERCH-1 Backup.xlsx\" --id MERCH-1",
     "package": "electron-forge package",
     "make": "electron-forge make",
     "publish": "electron-forge publish",
     "lint": "eslint --ext .ts,.tsx .",
-    "test": "tsc -p ./src/tests/tsconfig.json && node ./src/tests/out/tests/testHandler.js"
+    "test": "tsc -p ./tests/tsconfig.json && node ./tests/out/tests/testHandler.js"
   },
   "devDependencies": {
     "@electron-forge/cli": "^7.3.0",

@@ -49,8 +49,7 @@ export class ArgumentsManager {
       link: `${argumentMap.get('--link')}`
     };
 
-
-    if ((!args.path && !args.link) || !args.link) {
+    if ((!args.path && !args.link) || !args.projectId) {
       // TODO: Error state, send to error manager
       // throw new Error('Not enough arguments');
       ErrorManager.throwError(new CustomError('Soomething bad happened', 'Exceptoin', true, false, 'Mamaste riel mijo'))

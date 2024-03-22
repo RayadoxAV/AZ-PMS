@@ -3,15 +3,18 @@
   March 2024
 */
 
+import { ipcRenderer } from 'electron';
 import { initBlockerUI } from './blockerUI';
 import { handleContextMenu } from './contextMenu';
 import { initNavigationMenu, selectContainer } from './navMenu';
 import { handleOptionsMenu } from './optionsMenu';
 import { initTitlebar } from './titlebar';
 import { InternalState } from './types';
+import { initGanttUI } from './ganttUI';
 
 declare global {
-  var electronAPI: any;
+  var windowBridge: any;
+  var backendBridge: any;
   var internalState: InternalState;
 };
 
@@ -52,6 +55,7 @@ function listenGlobalEvents(): void {
   });
 
   window.addEventListener('click', (event) => {
+    /* TODO: Handle in other file */
     const matchesContextMenu = ((event.target as HTMLElement).matches('div.context-menu') || (event.target as HTMLElement).matches('div.context-menu > *'));
     if (!matchesContextMenu) {
       window.internalState.contextMenuVisible = false;
@@ -61,6 +65,19 @@ function listenGlobalEvents(): void {
 
     if (!matchesOptionsMenu) {
       window.internalState.optionsMenuVisible = false;
+    }
+
+    const matchesGanttSidebarElement = ((event.target as HTMLElement).matches('div.parent > div.name-container > i.icon'));
+    if (matchesGanttSidebarElement) {
+      const icon = event.target as HTMLElement;
+
+      const parent = icon.parentElement.parentElement;
+      
+      parent.classList.toggle('collapsed');
+
+      // const icon = parent.querySelector('div.name-container > i.icon');
+
+      parent.classList.contains('collapsed') ? icon.setAttribute('data-icon', 'arrow-collapse') : icon.setAttribute('data-icon', 'arrow-expand');
     }
 
   });
@@ -78,9 +95,14 @@ function main(): void {
   initTitlebar();
 
   initNavigationMenu();
-  selectContainer(1);
+  selectContainer(2);
 
   initBlockerUI();
+  initGanttUI();
+
+  window.backendBridge.onErrorReceived((value: any) => {
+    console.log(value);
+  })
 }
 
 main();
