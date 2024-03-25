@@ -1,5 +1,16 @@
+export interface GanttObject {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  borderColor: string;
+  bgColor: string;
+  draw: Function;
+}
 
-export class GanttRect {
+
+
+export class GanttRect implements GanttObject {
   public x: number;
   public y: number;
   public width: number;
@@ -33,7 +44,7 @@ export class GanttRect {
   }
 }
 
-export class GanttRange {
+export class GanttRange implements GanttObject {
   public x: number;
   public y: number;
   public width: number;

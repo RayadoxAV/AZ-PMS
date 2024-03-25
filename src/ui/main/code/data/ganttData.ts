@@ -15,8 +15,13 @@ export class GanttMilestone {
   public index: number;
   public ganttRange: GanttRange;
 
-  constructor() {
-
+  constructor(name: string, duration: GanttDuration, startDate: any, finishDate: {}, index: number) {
+    this.name = name;
+    this.duration = duration;
+    this.startDate = startDate;
+    this.finishDate = finishDate;
+    this.index = index;
+    this.tasks = [];
   }
 
   public draw(context: CanvasRenderingContext2D): void {
@@ -32,12 +37,20 @@ export class GanttTask {
   public finishDate: {};
   public newFinishDate: {};
   public actualDate: {};
-  public progress: {};
+  public progress: number;
   public index: number;
   public ganttRect: GanttRect;
 
-  constructor() {
-
+  constructor(name: string, duration: GanttDuration, startDate: any, finishDate: any, newFinishDate: any, actualDate: any, progress: number, index: number) {
+    this.name = name;
+    this.duration = duration;
+    this.startDate = startDate;
+    this.finishDate = finishDate;
+    this.newFinishDate = newFinishDate;
+    this.actualDate = actualDate;
+    this.progress = progress;
+    this.index = index;
+    this.subtasks = [];
   }
 
   public draw(context: CanvasRenderingContext2D): void {

@@ -94,17 +94,17 @@ app.on('activate', () => {
 });
 
   // TODO: Remove this
-  const result = new DataCollector().provideWorkbook();
+/* const result = new DataCollector().provideWorkbook();
 
-  const dataExtractor = new DataExtractor();
-  result.then((workbook: CustomWorkbook) => {
-    const resultIndex = dataExtractor.evaluateSheets(workbook, 'PR-7');
-    if (resultIndex !== -1) {
-      new DataTransformator().sheetToWorkplan(workbook.sheets[resultIndex]);
-    }
+const dataExtractor = new DataExtractor();
+result.then((workbook: CustomWorkbook) => {
+  const resultIndex = dataExtractor.evaluateSheets(workbook, 'PR-7');
+  if (resultIndex !== -1) {
+    new DataTransformator().sheetToWorkplan(workbook.sheets[resultIndex]);
+  }
 
 
-  });
-
+});
+ */
 manageEvents();
 
