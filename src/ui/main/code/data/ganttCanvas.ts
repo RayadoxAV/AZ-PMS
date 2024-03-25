@@ -1,4 +1,4 @@
-export interface GanttObject {
+export interface GanttCanvasObject {
   x: number;
   y: number;
   width: number;
@@ -8,9 +8,7 @@ export interface GanttObject {
   draw: Function;
 }
 
-
-
-export class GanttRect implements GanttObject {
+export class GanttRect implements GanttCanvasObject {
   public x: number;
   public y: number;
   public width: number;
@@ -44,7 +42,7 @@ export class GanttRect implements GanttObject {
   }
 }
 
-export class GanttRange implements GanttObject {
+export class GanttRange implements GanttCanvasObject {
   public x: number;
   public y: number;
   public width: number;
