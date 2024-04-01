@@ -3,13 +3,14 @@
   March 2024
 */
 
+import { nPlusColumn, workplanFields } from '../../util/util';
 import { PerformanceMeter } from '../../util/performanceMeter';
-import { CustomWorksheet } from '../data';
+import { CustomWorksheet, CustomCell } from '../data';
 
 export class DataTransformator {
   public sheetToWorkplan(inputSheet: CustomWorksheet): void {
     const perfMeter = new PerformanceMeter();
-    perfMeter.start();
+  perfMeter.start();
 
     /* Steps for the conversion:
       1. Determine the Workplan Version (1, 2, 3) and the Workplan Type (Daily, Scrum , Weekly)
@@ -37,6 +38,93 @@ export class DataTransformator {
         6.2
         6.3
     */
+    
+    const map = new Map<string, any>();
+
+/*     for (let i = 0; i < workplanFields.length; i++) {
+      const field = workplanFields[i];
+      
+      for (let cellIndex = 0; cellIndex < inputSheet.cells.length; cellIndex++) {
+        const cellValue = inputSheet.cells[cellIndex].value;
+
+        if (!map.get(field.name)) {
+          if (`${cellValue}`.toLocaleLowerCase() === field.displayName.toLocaleLowerCase()) {
+            console.log(inputSheet.cells[cellIndex].address);
+            map.set(field.name, { address: inputSheet.cells[cellIndex].address, direction: field.findValue });
+          }
+        } else {
+          if (field.name === 'remarks' && `${cellValue}`.toLocaleLowerCase() === 'remarks') {
+            console.log(field.name);
+            map.set('remarks', { address: inputSheet.cells[cellIndex].address, direction: field.findValue });
+          }
+        }
+      }
+
+      // console.log(field.displayName, field.aliases);
+    }
+  */
+
+      for (let i = 0; i < inputSheet.cells.length; i++) {
+      const cell = inputSheet.cells[i];
+      const cellValue = `${cell.value}`.toLocaleLowerCase();
+     
+      for (let j = 0; j < workplanFields.length; j++) {
+        const field = workplanFields[j];
+
+        if (field.aliases.length > 0) {
+          if (field.aliases.includes(`${cell.value}`)) {
+            // console.log(cellValue);
+            // TODO: Manage cases per type of field 
+          }
+        } else {
+          if (field.displayName === 'Remarks' && cellValue === 'remarks') {
+            if (!map.has('projectRemarks')) {
+              map.set('projectRemarks', { cell: cell, findValue: field.findValue });
+            } else {
+              map.set('remarks', { cell: cell, findValue: field.findValue });
+            }
+          } else if (cellValue === field.displayName.toLocaleLowerCase()) {
+            // console.log(cellValue, cell.address);
+            map.set(field.name, { cell: cell, findValue: field.findValue });
+          }
+        }
+      }
+    }
+
+    // console.log(map);
+
+    // NOTE: Obtain values based on mapped addresses and 'find-value' prop
+
+    const testObject: any = {};
+    
+    map.forEach((value: any, key: string) => {
+      if (value.findValue.includes('immediate')) {
+        const direction = value.findValue.split('-')[1];
+
+        let result: CustomCell = undefined;
+        if (direction === 'below') {
+          result = inputSheet.getCell(`${value.cell.colName}${value.cell.rowNumber + 1}`);
+        } else if (direction === 'right') {
+          result = inputSheet.getCell(`${nPlusColumn(value.cell.colName, 1)}${value.cell.rowNumber}`);
+        }
+        testObject[key] = result.value;
+      }
+    });
+
+    // map.forEach((value: any, key: string): void => {
+      
+    // });
+
+    for (let i = 0; i < inputSheet.rows.length; i++) {
+      const row = inputSheet.rows[i];
+      
+      const firstCell = row.cells[0];
+
+      
+    }
+
+
+    console.log(testObject);
 
     perfMeter.end();
     perfMeter.log('Worksheet into Workplan transformation');

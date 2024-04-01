@@ -8,32 +8,111 @@ import { GanttMilestone, GanttTask } from './data/ganttData';
 import { drawArrow } from './util/canvasUtilities';
 
 export function initGanttUI(): void {
-  
-  const milestone1 = new GanttMilestone('Milestone 1', { weeks: 4, days: 20 }, '', '', 0);
-  const task11 = new GanttTask('1. Task', { weeks: 2, days: 10 }, '', '', '', '', 1, 1);
-  
-  const task12 = new GanttTask('2. Task', { weeks: 1, days: 5 }, '', '', '', '', 0.75, 2);
-  const task121= new GanttTask('2.1 Task', { weeks: 1, days: 5 }, '', '', '', '', 1, 3);
 
-  task12.subtasks = [task121];
-  const task13 = new GanttTask('3. Task', { weeks: 4, days: 20 }, '', '', '', '', 0.5, 4);
- 
+  // const milestone1 = new GanttMilestone(
+  //   'Milestone 1',
+  //   { weeks: 4, days: 20 },
+  //   {
+  //     date: new Date('28-08-2023'),
+  //     week: 1,
+  //     fiscalYear: 24
+  //   },
+  //   {
+  //     date: new Date('22-09-2023'),
+  //     week: 4,
+  //     fiscalYear: 24
+  //   },
+  //   0);
 
-  milestone1.tasks = [task11, task12, task13];
+  // const task11 = new GanttTask(
+  //   '1. Task',
+  //   { weeks: 2, days: 10 },
+  //   {
+  //     date: new Date(),
+  //     week: 1,
+  //     fiscalYear: 24
+  //   },
+  //   {
+  //     date: new Date(),
+  //     week: 1,
+  //     fiscalYear: 24
+  //   },
+  //   {
+  //     date: new Date(),
+  //     week: 1,
+  //     fiscalYear: 24
+  //   },
+  //   {
+  //     date: new Date(),
+  //     week: 1,
+  //     fiscalYear: 24
+  //   },
+  //   1,
+  //   1);
 
-  const milestone2 = new GanttMilestone('Milestone 2', { weeks: 6, days: 30 }, '', '', -1);
+  // const task12 = new GanttTask(
+  //   '2. Task',
+  //   { weeks: 1, days: 5 },
+  //   {
+  //     date: new Date(),
+  //     week: 2,
+  //     fiscalYear: 24
+  //   },
+  //   {
+  //     date: new Date(),
+  //     week: 1,
+  //     fiscalYear: 24
+  //   },
+  //   {
+  //     date: new Date(),
+  //     week: 1,
+  //     fiscalYear: 24
+  //   },
+  //   {
+  //     date: new Date(),
+  //     week: 1,
+  //     fiscalYear: 24
+  //   },
+  //   0.75,
+  //   2);
 
-  milestone2.tasks = [task11, task12, task13];
+  // const task13 = new GanttTask(
+  //   '3. Task',
+  //   { weeks: 2, days: 10 },
+  //   {
+  //     date: new Date(),
+  //     week: 3,
+  //     fiscalYear: 24
+  //   },
+  //   {
+  //     date: new Date(),
+  //     week: 2,
+  //     fiscalYear: 24
+  //   },
+  //   {
+  //     date: new Date(),
+  //     week: 3,
+  //     fiscalYear: 24
+  //   },
+  //   {
+  //     date: new Date(),
+  //     week: 4,
+  //     fiscalYear: 24
+  //   },
+  //   0.5,
+  //   3);
 
-  const testStruct = {
-    milestones: [
-      milestone1,
-      milestone1
-    ]
-  };
 
-  initSideview(testStruct);
-  const result = initGanttView(testStruct);
+  // milestone1.tasks = [task11, task12, task13];
+
+  // const testStruct = {
+  //   milestones: [
+  //     milestone1,
+  //   ]
+  // };
+
+  // initSideview(testStruct);
+  // initGanttView(testStruct);
 
 }
 
@@ -46,16 +125,16 @@ function initSideview(projectStructure: any): void {
   for (let i = 0; i < projectStructure.milestones.length; i++) {
     const milestone = projectStructure.milestones[i] as GanttMilestone;
 
-    structureHTML += 
-    `
+    structureHTML +=
+      `
       <div class="parent">
         <div class="name-container" tabindex="0">
           <i class="icon" data-icon="arrow-expand"></i>
           <span class="name">${milestone.name}</span>
         </div>
-        ${milestone.tasks.length > 0 ? 
-          generateTasksHTML(milestone.tasks, 1) : ''
-        }
+        ${milestone.tasks.length > 0 ?
+        generateTasksHTML(milestone.tasks, 1) : ''
+      }
       </div>
     `;
   }
@@ -71,8 +150,8 @@ function generateTasksHTML(tasks: GanttTask[], level: number): string {
     const task = tasks[i];
 
     if (task.subtasks.length > 0) {
-      tasksHTML += 
-      `<div class="parent">
+      tasksHTML +=
+        `<div class="parent">
         <div class="name-container" tabindex="0">
         <i class="icon" data-icon="arrow-expand"></i>
         <span class="name">${task.name}</span></div>
@@ -84,7 +163,7 @@ function generateTasksHTML(tasks: GanttTask[], level: number): string {
   }
 
   tasksHTML += '</div></div>';
-  
+
   return tasksHTML;
 }
 
@@ -103,13 +182,13 @@ function initGanttView(projectStructure: any) {
 
     const ganttRange = new GanttRange(8, 32 * milestone.index, milestone.duration.weeks * 100, 32, '#E2E2E3', '#E2E2E3');
     ganttObjects.push(ganttRange);
-    
+
     if (milestone.tasks.length > 0) {
       const objects = generateTasksGantt(milestone.tasks);
       ganttObjects.push(...objects);
     }
 
-    
+
   }
 
   for (let i = 0; i < ganttObjects.length; i++) {
@@ -120,11 +199,11 @@ function initGanttView(projectStructure: any) {
 function generateTasksGantt(tasks: GanttTask[]): GanttCanvasObject[] {
 
   const ganttObjects: GanttCanvasObject[] = [];
-  
-  for (let i = 0; i < tasks.length; i ++) {
+
+  for (let i = 0; i < tasks.length; i++) {
     const task = tasks[i];
 
-    const ganttRect = new GanttRect(8, (32 * task.index) + 4, task.duration.weeks * 100, 24, '#f56565', '#f5d0d0');
+    const ganttRect = new GanttRect(8 + ((task.startDate.week - 1) * 100), (32 * task.index) + 4, task.duration.weeks * 100, 24, '#f56565', '#f5d0d0');
     ganttObjects.push(ganttRect);
 
     if (task.subtasks.length > 0) {

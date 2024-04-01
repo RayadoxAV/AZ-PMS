@@ -3,7 +3,7 @@
   March 2024
 */
 
-import { Cell, RichText, Row, Workbook, Worksheet } from 'exceljs';
+import { Cell, FillPattern, RichText, Row, Workbook, Worksheet } from 'exceljs';
 import { XOR, isDate, isCellErrorValue, isCellFormulaValue, isCellHyperlinkValue, isCellRichTextValue, isCellSharedFormulaValue, isErrorValue } from '../../util/util';
 import { CustomCell, CustomRow, CustomWorkbook, CustomWorksheet } from '../data';
 import { existsSync } from 'fs';
@@ -100,7 +100,45 @@ export class DataCollector {
             customCell.rowNumber = customRow.rowNumber;
             customCell.colName = cell.address.match(/[a-z]+|[^a-z]+/gi)[0] || '';
             customCell.value = this.getCellValueFromExJs(cell);
+
+
+            // TODO: Figure out what the hell is happening
+            // if (cell.style.fill) {
+            //   if (cell.style.fill.type === 'pattern') {
+            //     const fill = cell.style.fill as FillPattern;
+            //     if (fill.pattern === 'none') {
+            //       customCell.type = 'task'
+            //     } else if (fill.pattern === 'solid') {
+            //       if (fill.fgColor) {
+
+            //         let typeResult = '';
+
+            //         // if (fill.fgColor.tint === 0)
+            //         // @ts-ignore
+            //         if (fill.fgColor.tint === 0.7999816888943144) {
+            //           typeResult = 'milestone'
+            //           // @ts-ignore
+            //         } else if (fill.fgColor.tint === -0.0499893185216834) {
+            //           typeResult = 'subtask';
+            //         }
+
+            //         if (!typeResult) {
+            //           console.log(cell.address, fill);
+            //         }
+
+            //         console.log(cell.address, typeResult);
+            //       }
+            //     }
+            //   }
+
+            // } else {
+            //   customCell.type = 'task';
+            // }
+
+            // customCell.background = cell.style.fill.typ
   
+            // console.log(cell.address, cell.style.fill);
+
             customRow.cells.push(customCell);
             customSheet.cells.push(customCell);
           });

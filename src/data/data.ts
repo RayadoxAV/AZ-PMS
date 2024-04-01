@@ -1,4 +1,4 @@
-import { BlockerDate, Flag, Status, TimeStatus, WorkplanType, WorkplanVersion } from '../util/misc';
+import { BlockerDate, Flag, Status, TimeStatus, WorkplanType } from '../util/misc';
 
 export class CustomWorkbook {
   public name: string;
@@ -76,6 +76,29 @@ export class CustomWorksheet {
 
     return resultCells;
   }
+
+  public getCell(address: string): CustomCell {
+    
+    const [column, rowString] = address.match(/[a-z]+|[^a-z]+/gi);
+
+    const rowNumber = Number.parseInt(rowString);
+
+    for (let i = 0; i < this.rows.length; i++) {
+      const row = this.rows[i];
+      
+      if (row.rowNumber === rowNumber) {
+        for (let j = 0; j < row.cells.length; j++) {
+          const cell = row.cells[j];
+
+          if (cell.colName === column) {
+            return cell;
+          }
+        }
+      }
+    }
+    return;
+  }
+
 }
 
 export class CustomRow {
@@ -93,7 +116,7 @@ export class CustomCell {
   public colName: string;
   public address: string;
   public value: any;
-  public background: string;
+  public type: string;
 
   constructor() {
     this.rowNumber = -1;
@@ -102,45 +125,47 @@ export class CustomCell {
     this.value = {
 
     };
-    this.background = '';
+    this.type = '';
   }
 }
 
-export class Workplan {
-  public projectId: string;
-  public projectName: string;
-  public projectObjective: string;
-  public projectOwner: string;
-  public projectStartDate: BlockerDate;
-  public projectRemarks: string;
-  public projectProgress: number;
-  public projectPlannedProgress: number;
-  public projectStatus: Status;
-  public projectTimeStatus: TimeStatus;
-  public version: WorkplanVersion;
-  public type: WorkplanType;
 
-  public milestone: Task[];
 
-  constructor() {
 
-  }
-}
+// export class Workplan {
+//   public projectId: string;
+//   public projectName: string;
+//   public projectObjective: string;
+//   public projectOwner: string;
+//   public projectStartDate: BlockerDate;
+//   public projectRemarks: string;
+//   public projectProgress: number;
+//   public projectPlannedProgress: number;
+//   public projectStatus: Status;
+//   public projectTimeStatus: TimeStatus;
+//   public type: WorkplanType;
 
-export class Milestone {
-  public flag: Flag;
-  public numerator: string;
-  public name: string;
-  public responsible: string;
-  public status: Status;
-  public progress: number;
+//   public milestone: Task[];
+
+//   constructor() {
+
+//   }
+// }
+
+// export class Milestone {
+//   public flag: Flag;
+//   public numerator: string;
+//   public name: string;
+//   public responsible: string;
+//   public status: Status;
+//   public progress: number;
   
 
-  constructor() {
+//   constructor() {
 
-  }
-}
+//   }
+// }
 
-export class Task {
+// export class Task {
 
-}
+// }

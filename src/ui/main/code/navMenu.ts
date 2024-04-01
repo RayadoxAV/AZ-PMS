@@ -17,7 +17,7 @@ export function initNavigationMenu(): void {
       }
     } else {
       navItem.onclick = () => {
-        console.log('Open window');
+        window.windowBridge.applyEvent('Main', 'open-window', { targetWindow: 'Settings' });
       }
     }
   }

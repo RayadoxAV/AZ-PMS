@@ -1,3 +1,4 @@
+import { UIBlockerDate } from '../types';
 import { GanttRange, GanttRect } from "./ganttCanvas";
 
 export interface GanttDuration {
@@ -10,12 +11,12 @@ export class GanttMilestone {
   public name: string;
   public duration: GanttDuration;
   public tasks: GanttTask[];
-  public startDate: {};
-  public finishDate: {};
+  public startDate: UIBlockerDate;
+  public finishDate: UIBlockerDate;
   public index: number;
   public ganttRange: GanttRange;
 
-  constructor(name: string, duration: GanttDuration, startDate: any, finishDate: {}, index: number) {
+  constructor(name: string, duration: GanttDuration, startDate: UIBlockerDate, finishDate: UIBlockerDate, index: number) {
     this.name = name;
     this.duration = duration;
     this.startDate = startDate;
@@ -33,15 +34,15 @@ export class GanttTask {
   public name: string;
   public duration: GanttDuration;
   public subtasks: GanttTask[];
-  public startDate: {};
-  public finishDate: {};
-  public newFinishDate: {};
-  public actualDate: {};
+  public startDate: UIBlockerDate;
+  public finishDate: UIBlockerDate;
+  public newFinishDate: UIBlockerDate;
+  public actualDate: UIBlockerDate;
   public progress: number;
   public index: number;
   public ganttRect: GanttRect;
 
-  constructor(name: string, duration: GanttDuration, startDate: any, finishDate: any, newFinishDate: any, actualDate: any, progress: number, index: number) {
+  constructor(name: string, duration: GanttDuration, startDate: UIBlockerDate, finishDate: UIBlockerDate, newFinishDate: UIBlockerDate, actualDate: UIBlockerDate, progress: number, index: number) {
     this.name = name;
     this.duration = duration;
     this.startDate = startDate;

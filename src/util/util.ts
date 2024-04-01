@@ -4,6 +4,7 @@
 */
 
 import { CellErrorValue, CellFormulaValue, CellHyperlinkValue, CellRichTextValue, CellSharedFormulaValue, ErrorValue } from 'exceljs';
+import { WorkplanField } from './misc';
 
 export function XOR(a: any, b: any): boolean {
   return (a || b) && !(a && b);
@@ -78,3 +79,316 @@ export function isErrorValue(value: any): value is ErrorValue {
   return result;
 }
 
+export function nPlusColumn(column: string, shift: number): string {
+  let resultColumn = '';
+  column.toUpperCase();
+  // console.log(column.charCodeAt(0));
+  if (column.length === 1) {
+    const char = column.charCodeAt(0) + shift;
+
+    if (char > 90) {
+      return 'A' + String.fromCharCode(char - 90 + 64);
+    } else {
+      return String.fromCharCode(char);
+    }
+
+  } else {
+    // TODO: Implement
+    console.log('IMPLEMENT THIS');
+    return '';
+  }
+}
+
+/* 
+
+TODO: Translate
+La idea es tener todos los campos que un Workplan puede tener contemplados aqui.
+Si se agrega uno de repente, se agrega aqui y todos los workplans que lo tengan van a tenerlo dentro del programa.
+
+  name: Nombre de como se va a manejar la propiedad dentro del codigo.
+  displayName: Como se llama dentro de un Workplan cualquiera.
+  useCases: Partes de la aplicacion donde se usa el campo.
+  aliases: Todos los otros nombres con los que se conoce al campo
+  expectedType: El tipo esperado del campo en el Workplan.
+*/
+export const workplanFields: WorkplanField[] = [
+  {
+    name: 'projectId',
+    displayName: 'Project Id',
+    mandatory: true,
+    useCases: ['blocker', 'blocker-report'],
+    aliases: [],
+    expectedType: 'string',
+    findValue: 'immediate-below'
+  },
+  {
+    name: 'projectName',
+    displayName: 'Project Name',
+    mandatory: true,
+    useCases: ['blocker', 'blocker-report', 'gantt', 'charts', 'historic'],
+    aliases: [],
+    expectedType: 'string',
+    findValue: 'immediate-below'
+  },
+  {
+    name: 'projectObjective',
+    displayName: 'Project Objective',
+    mandatory: false,
+    useCases: ['blocker', 'blocker-report'],
+    aliases: [],
+    expectedType: 'string',
+    findValue: 'immediate-below'
+  },
+  {
+    name: 'projectStartDate',
+    displayName: 'Project Start Date',
+    mandatory: true,
+    useCases: ['blocker', 'blocker-report', 'gantt', 'charts', 'historic'],
+    aliases: [],
+    expectedType: '{BlockerDate}',
+    findValue: 'immediate-below'
+  },
+  {
+    name: 'totalProgress',
+    displayName: 'Total Progress',
+    mandatory: true,
+    useCases: ['blocker', 'blocker-report', 'gantt', 'charts', 'historic'],
+    aliases: [],
+    expectedType: 'number',
+    findValue: 'immediate-right'
+  },
+  {
+    name: 'plannedProgress',
+    displayName: 'Planned Progress',
+    mandatory: true,
+    useCases: ['blocker', 'blocker-report', 'gantt', 'charts', 'historic'],
+    aliases: [],
+    expectedType: 'number',
+    findValue: 'immediate-right'
+  },
+  {
+    name: 'projectRemarks',
+    displayName: 'Remarks',
+    mandatory: true,
+    useCases: ['blocker', 'blocker-report'],
+    aliases: [],
+    expectedType: 'string',
+    findValue: 'immediate-below'
+  },
+  {
+    name: 'flag',
+    displayName: 'Flags',
+    mandatory: true,
+    useCases: ['blocker', 'blocker-report'],
+    aliases: [],
+    expectedType: 'string',
+    findValue: 'column-down'
+  },
+  {
+    name: 'label',
+    displayName: 'Label',
+    mandatory: false,
+    useCases: ['blocker', 'blocker-report'],
+    aliases: [],
+    expectedType: 'string',
+    findValue: 'column-down'
+  },
+  {
+    name: 'taskNumber',
+    displayName: '#',
+    mandatory: true,
+    useCases: ['blocker', 'blocker-report', 'gantt', 'charts', 'historic'],
+    aliases: [],
+    expectedType: 'string',
+    findValue: 'column-down'
+  },
+  {
+    name: 'taskName',
+    displayName: 'Task',
+    mandatory: true,
+    useCases: ['blocker', 'blocker-report', 'gantt', 'charts', 'historic'],
+    aliases: [],
+    expectedType: 'string',
+    findValue: 'column-down'
+  },
+  {
+    name: 'subtask',
+    displayName: 'Sub-task',
+    mandatory: false,
+    useCases: ['blocker', 'blocker-report', 'gantt', 'charts', 'historic'],
+    aliases: [],
+    expectedType: 'string',
+    findValue: 'column-down'
+  },
+  {
+    name: 'jiraId',
+    displayName: 'Jira Id',
+    mandatory: false,
+    useCases: ['blocker', 'blocker-report', 'gantt'],
+    aliases: [],
+    expectedType: 'string',
+    findValue: 'column-down'
+  },
+  {
+    name: 'responsible',
+    displayName: 'Responsible',
+    mandatory: true,
+    useCases: ['blocker', 'blocker-report', 'gantt'],
+    aliases: [],
+    expectedType: 'string',
+    findValue: 'column-down'
+  },
+  {
+    name: 'status',
+    displayName: 'Status',
+    mandatory: true,
+    useCases: ['blocker', 'blocker-report', 'gantt', 'charts', 'historic'],
+    aliases: [],
+    expectedType: 'string',
+    findValue: 'column-down'
+  },
+  {
+    name: 'progress',
+    displayName: 'Progress',
+    mandatory: true,
+    useCases: ['blocker', 'blocker-report', 'gantt', 'charts', 'historic'],
+    aliases: [],
+    expectedType: 'number',
+    findValue: 'column-down'
+  },
+  {
+    name: 'storyPoints',
+    displayName: 'Story Points',
+    mandatory: false,
+    useCases: ['blocker', 'blocker-report', 'gantt'],
+    aliases: [],
+    expectedType: 'number',
+    findValue: 'column-down'
+  },
+  {
+    name: 'duration',
+    displayName: 'Task Duration',
+    mandatory: true,
+    useCases: ['blocker', 'blocker-report', 'gantt', 'charts', 'historic'],
+    aliases: ['Task Duration (Weeks)', 'Task Duration (Days)', 'Estimated Time', 'Estimated Time (Days)'],
+    expectedType: 'number',
+    findValue: 'column-down'
+  },
+  {
+    name: 'startDate',
+    displayName: 'Start Date',
+    mandatory: true,
+    useCases: ['blocker', 'blocker-report', 'gantt', 'charts', 'historic'],
+    aliases: ['Start date week'],
+    expectedType: 'number/date',
+    findValue: 'column-down'
+  },
+  {
+    name: 'finishDate',
+    displayName: 'Finish Date',
+    mandatory: true,
+    useCases: ['blocker', 'blocker-report', 'gantt', 'charts', 'historic'],
+    aliases: ['Finish date Week'],
+    expectedType: 'number/date',
+    findValue: 'column-down'
+  },
+  {
+    name: 'newFinishDate',
+    displayName: 'New Finish Date',
+    mandatory: true,
+    useCases: ['blocker', 'blocker-report', 'gantt', 'charts', 'historic'],
+    aliases: [],
+    expectedType: 'number/date',
+    findValue: 'column-down'
+  },
+  {
+    name: 'actualDate',
+    displayName: 'Actual Date',
+    mandatory: true,
+    useCases: ['blocker', 'blocker-report', 'gantt', 'charts', 'historic'],
+    aliases: [],
+    expectedType: 'number/date',
+    findValue: 'column-down'
+  },
+  {
+    name: 'predecessor',
+    displayName: 'Task Predecessor',
+    mandatory: false,
+    useCases: ['gantt'],
+    aliases: [],
+    expectedType: 'string',
+    findValue: 'column-down'
+  },
+  {
+    name: 'completedCount',
+    displayName: 'Completed (if applicable)',
+    mandatory: false,
+    useCases: ['blocker', 'blocker-report', 'charts'],
+    aliases: [],
+    expectedType: 'number',
+    findValue: 'column-down'
+  },
+  {
+    name: 'targetCount',
+    displayName: 'Target (if applicable)',
+    mandatory: false,
+    useCases: ['blocker', 'blocker-report', 'charts'],
+    aliases: [],
+    expectedType: 'number',
+    findValue: 'column-down'
+  },
+  {
+    name: 'remainingCount',
+    displayName: 'Remaining (if applicable)',
+    mandatory: false,
+    useCases: ['blocker', 'blocker-report', 'charts'],
+    aliases: [],
+    expectedType: 'number',
+    findValue: 'column-down'
+  },
+  {
+    name: 'receivedLastWeekCount',
+    displayName: 'Received Last Week',
+    mandatory: false,
+    useCases: ['blocker', 'blocker-report'],
+    aliases: [],
+    expectedType: 'number',
+    findValue: 'column-down'
+  },
+  {
+    name: 'workedLastWeekCount',
+    displayName: 'Worked Last Week',
+    mandatory: false,
+    useCases: ['blocker', 'blocker-report'],
+    aliases: [],
+    expectedType: 'number',
+    findValue: 'column-down'
+  },
+  {
+    name: 'remarks',
+    displayName: 'Remarks',
+    mandatory: true,
+    useCases: ['blocker', 'blocker-report'],
+    aliases: [],
+    expectedType: 'string',
+    findValue: 'column-down'
+  },
+  {
+    name: 'comments',
+    displayName: 'Comments',
+    mandatory: false,
+    useCases: ['blocker', 'blocker-report'],
+    aliases: [],
+    expectedType: 'string',
+    findValue: 'column-down'
+  },
+  {
+    name: 'lastUpdated',
+    displayName: 'Last updated',
+    mandatory: false,
+    useCases: ['blocker', 'blocker-report'],
+    aliases: [],
+    expectedType: 'date',
+    findValue: 'column-down'
+  }
+];

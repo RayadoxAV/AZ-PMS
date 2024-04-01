@@ -13,3 +13,11 @@ export interface ScreenPos {
   x: number;
   y: number;
 };
+
+export interface UIBlockerDate {
+  date: Date,
+  week: number,
+  fiscalYear: number,
+  dateUTC?: number
+};
+

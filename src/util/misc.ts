@@ -40,5 +40,15 @@ export enum Flag {
   RecurrentReport = 'Recurrent / Report'
 }
 
-export type WorkplanVersion = 1 | 2| 3;
+
 export type WorkplanType = 'Daily' | 'Weekly' | 'Scrum';
+
+export type WorkplanField = {
+  name: string;
+  displayName: string;
+  mandatory: boolean;
+  useCases: string[];
+  aliases: string[];
+  expectedType: string;
+  findValue: string;
+}

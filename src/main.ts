@@ -94,7 +94,7 @@ app.on('activate', () => {
 });
 
   // TODO: Remove this
-/* const result = new DataCollector().provideWorkbook();
+const result = new DataCollector().provideWorkbook();
 
 const dataExtractor = new DataExtractor();
 result.then((workbook: CustomWorkbook) => {
@@ -105,6 +105,6 @@ result.then((workbook: CustomWorkbook) => {
 
 
 });
- */
+
 manageEvents();
 

@@ -6,7 +6,7 @@
 import { contextBridge, ipcRenderer } from 'electron';
 
 contextBridge.exposeInMainWorld('windowBridge', {
-  applyEvent: (window: string, event: string) => ipcRenderer.send('window-events', { window: window, event: event })
+  applyEvent: (window: string, event: string, args: any) => ipcRenderer.send('window-events', { window: window, event: event, args: args })
 });
 
 contextBridge.exposeInMainWorld('backendBridge', {
