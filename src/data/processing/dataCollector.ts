@@ -3,12 +3,12 @@
   March 2024
 */
 
-import { Cell, FillPattern, RichText, Row, Workbook, Worksheet } from 'exceljs';
+import { Cell, Color, FillPattern, RichText, Row, Workbook, Worksheet } from 'exceljs';
 import { XOR, isDate, isCellErrorValue, isCellFormulaValue, isCellHyperlinkValue, isCellRichTextValue, isCellSharedFormulaValue, isErrorValue } from '../../util/util';
 import { CustomCell, CustomRow, CustomWorkbook, CustomWorksheet } from '../data';
 import { existsSync } from 'fs';
 import { PerformanceMeter } from '../../util/performanceMeter'
-import { CellError } from '../../util/misc';
+import { CellError, CellType } from '../../util/misc';
 import { Logger, LogType } from '../../util/logger';
 
 export class DataCollector {
@@ -67,12 +67,10 @@ export class DataCollector {
 
       const customWorkbook = this.convertExJsToCWB(workbook);
       customWorkbook.path = path;
-      customWorkbook.name = path.split('/').pop()!!;
+      customWorkbook.name = path.split('/').pop();
 
       return customWorkbook;
-    } catch (error) {
-
-    }
+    } catch (error) { /* empty */ }
     return new CustomWorkbook();
   }
 
@@ -88,63 +86,69 @@ export class DataCollector {
         const customSheet = new CustomWorksheet();
 
         customSheet.name = worksheet.name;
-  
+
         worksheet.eachRow((row: Row, rowNumber: number) => {
           const customRow = new CustomRow();
           customRow.rowNumber = rowNumber;
-  
+
           row.eachCell((cell: Cell, colNumber: number) => {
-  
+
             const customCell = new CustomCell();
             customCell.address = cell.address;
             customCell.rowNumber = customRow.rowNumber;
             customCell.colName = cell.address.match(/[a-z]+|[^a-z]+/gi)[0] || '';
             customCell.value = this.getCellValueFromExJs(cell);
 
+            let cellType: CellType;
 
-            // TODO: Figure out what the hell is happening
-            // if (cell.style.fill) {
-            //   if (cell.style.fill.type === 'pattern') {
-            //     const fill = cell.style.fill as FillPattern;
-            //     if (fill.pattern === 'none') {
-            //       customCell.type = 'task'
-            //     } else if (fill.pattern === 'solid') {
-            //       if (fill.fgColor) {
+            if (worksheet.name === 'Workplan ACES') {
+              // console.log(cell.address, cell.style.fill, worksheet.name);
+            }
 
-            //         let typeResult = '';
 
-            //         // if (fill.fgColor.tint === 0)
-            //         // @ts-ignore
-            //         if (fill.fgColor.tint === 0.7999816888943144) {
-            //           typeResult = 'milestone'
-            //           // @ts-ignore
-            //         } else if (fill.fgColor.tint === -0.0499893185216834) {
-            //           typeResult = 'subtask';
-            //         }
+            if (cell.style.fill) {
+              if (cell.style.fill.type === 'pattern') {
+                const fill = cell.style.fill as FillPattern;
+                if (fill.pattern === 'none') {
+                  cellType = 'Task';
+                } else if (fill.pattern === 'solid') {
+                  if (fill.fgColor) {
+                      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                      // @ts-ignore
+                    if (fill.fgColor.tint === -0.499984740745262) {
+                      cellType = 'Header'
+                      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                      // @ts-ignore
+                    } else if (fill.fgColor.tint === -0.249977111117893) {
+                      cellType = 'Header 2';
+                      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                      // @ts-ignore
+                    } else if (fill.fgColor.tint === 0.7999816888943144) {
+                      cellType = 'Milestone';
+                      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                      // @ts-ignore
+                    } else if (fill.fgColor.tint === -0.0499893185216834) {
+                      cellType = 'Subtask';
+                    } else {
+                      // console.log(fill.fgColor.tint, fill.fgColor.tint === -0.0499893185216834, cell.address);
+                      cellType = 'Task';
+                    }
+                  } else {
+                    cellType = 'Task';
+                  }
+                }
+              }
+            } else {
+              cellType = 'Task';
+            }
 
-            //         if (!typeResult) {
-            //           console.log(cell.address, fill);
-            //         }
-
-            //         console.log(cell.address, typeResult);
-            //       }
-            //     }
-            //   }
-
-            // } else {
-            //   customCell.type = 'task';
-            // }
-
-            // customCell.background = cell.style.fill.typ
-  
-            // console.log(cell.address, cell.style.fill);
-
+            customCell.type = cellType;
             customRow.cells.push(customCell);
             customSheet.cells.push(customCell);
           });
           customSheet.rows.push(customRow);
         });
-  
+
         customWorkbook.sheets.push(customSheet);
       }
     });
@@ -162,20 +166,13 @@ export class DataCollector {
     }
 
     if (cell.value === undefined) {
-      return { errorType: 'undefined' };
+      return undefined;
     }
 
     if (typeof cell.value === 'object') {
 
       if (isDate(cell.value)) {
         return cell.value;
-      }
-
-      if (isCellErrorValue(cell.value)) {
-        const value: CellError = {
-          errorType: cell.value.error
-        };
-        return value;
       }
 
       if (isCellErrorValue(cell.value)) {
@@ -208,7 +205,7 @@ export class DataCollector {
             return cell.value.result;
           }
         } else {
-          return { errorType: 'undefined' };
+          return undefined;
         }
 
       }
@@ -222,7 +219,7 @@ export class DataCollector {
           }
         }
       } else {
-        return { errorType: 'undefined' };
+        return undefined;
       }
 
       // const b = isCellFormulaValue(cell.value);
@@ -243,10 +240,12 @@ export class DataCollector {
       // console.log(cell.value);
       return cell.value;
     }
-    return { errorType: 'undefined' };
+
+    return undefined;
   }
 
   async provideByLink(link: string): Promise<CustomWorkbook> {
+    console.log(link);
     return new CustomWorkbook();
   }
 }

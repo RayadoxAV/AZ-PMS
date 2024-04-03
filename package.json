@@ -5,7 +5,7 @@
   "description": "The AutoZone Project Management Software",
   "main": ".vite/build/main.js",
   "scripts": {
-    "dev": "electron-forge start -- --path \"C:/users/rpaz/documents/testing/az_pms/MERCH-1 Backup.xlsx\" --id MERCH-1",
+    "dev": "electron-forge start -- --path \"C:/users/rpaz/documents/testing/az_pms/MERCH-1 Backup.xlsx\" --id PR-7",
     "package": "electron-forge package",
     "make": "electron-forge make",
     "publish": "electron-forge publish",

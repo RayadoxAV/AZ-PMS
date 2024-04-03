@@ -1,4 +1,4 @@
-import { BlockerDate, Flag, Status, TimeStatus, WorkplanType } from '../util/misc';
+import { BlockerDate, Flag, Status, TimeStatus, WorkplanType, CellType, Label, Duration, WPDate, CellError } from '../util/misc';
 
 export class CustomWorkbook {
   public name: string;
@@ -96,7 +96,20 @@ export class CustomWorksheet {
         }
       }
     }
-    return;
+    const notFoundCell = new CustomCell();
+    notFoundCell.value = undefined;
+
+    return notFoundCell;
+  }
+
+  public getRow(rowNumber: number): CustomRow {
+    for (let i = 0 ; i < this.rows.length; i++) {
+      const row = this.rows[i];
+
+      if (row.rowNumber === rowNumber) {
+        return row;
+      }
+    }
   }
 
 }
@@ -115,22 +128,85 @@ export class CustomCell {
   public rowNumber: number;
   public colName: string;
   public address: string;
-  public value: any;
-  public type: string;
+  public value: number | string | boolean | Date| CellError;
+  public type: CellType;
 
   constructor() {
     this.rowNumber = -1;
     this.colName = '';
     this.address = '';
-    this.value = {
-
-    };
-    this.type = '';
+    this.value = undefined;
+    this.type = undefined;
   }
 }
 
 
 
+export class Milestone {
+  public flag: Flag;
+  public label?: Label;
+  public number: string;
+  public name: string;
+  public jiraId?: string;
+  public responsible?: string;
+  public status: Status;
+  public progress: number;
+  public storyPoints?: number;
+  public duration: Duration;
+  public startDate: WPDate;
+  public finishDate: WPDate;
+  public newFinishDate: WPDate;
+  public actualDate: WPDate;
+  public predecessor?: string;
+  public completedCount?: number;
+  public targetCount?: number;
+  public remainingCount?: number;
+  public receivedLastWeekCount?: number;
+  public workedLastWeekCount?: number;
+  public remarks: string;
+  public comments: string;
+  public lastUpdated: WPDate;
+  public tasks: Task[];
+
+  constructor() {
+    this.tasks = [];
+  }
+}
+
+export class Task {
+  public flag: Flag;
+  public label?: Label;
+  public number: string;
+  public name: string;
+  public jiraId?: string;
+  public responsible: string;
+  public status: Status;
+  public progress: number;
+  public storyPoints?: number;
+  public duration: Duration;
+  public startDate: WPDate;
+  public finishDate: WPDate;
+  public newFinishDate: WPDate;
+  public actualDate: WPDate;
+  public predecessor?: string;
+  public completedCount?: number;
+  public targetCount?: number;
+  public remainingCount?: number;
+  public receivedLastWeekCount?: number;
+  public workedLastWeekCount?: number;
+  public remarks: string;
+  public comments: string;
+  public lastUpdated: WPDate;
+  public subtasks: Task[];
+
+  constructor() {
+    this.subtasks = [];
+  }
+
+  toString(): string {
+    return `Task [${this.number} ${this.name} -> ${this.status} - ${this.progress}]`;
+  }
+}
 
 // export class Workplan {
 //   public projectId: string;

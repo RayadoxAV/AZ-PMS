@@ -33,6 +33,7 @@ export enum TimeStatus {
 }
 
 export enum Flag {
+  None = 'None',
   Completed = 'Completed',
   Risk = 'Risk',
   Report = 'Report',
@@ -40,6 +41,12 @@ export enum Flag {
   RecurrentReport = 'Recurrent / Report'
 }
 
+export enum Label {
+  None = 'None',
+  UAT = 'UAT',
+  Development = 'Development',
+  AD = 'Analysis and Design'
+}
 
 export type WorkplanType = 'Daily' | 'Weekly' | 'Scrum';
 
@@ -52,3 +59,15 @@ export type WorkplanField = {
   expectedType: string;
   findValue: string;
 }
+
+export type CellType = 'Header' | 'Header 2' | 'Milestone' | 'Task' | 'Subtask' | undefined;
+
+export type Duration = {
+  weeks: number;
+  days: number;
+}
+
+export type WPDate = {
+  weekNo: number;
+  date: Date
+};

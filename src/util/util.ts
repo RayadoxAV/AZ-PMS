@@ -34,11 +34,10 @@ export function isCellFormulaValue(value: any): value is CellFormulaValue {
 }
 
 export function isCellSharedFormulaValue(value: any): value is CellSharedFormulaValue {
-  // return (value as CellSharedFormulaValue).sharedFormula !== undefined;
-  return false;
+  return (value as CellSharedFormulaValue).sharedFormula !== undefined;
 }
 
-export function isErrorValue(value: any): value is ErrorValue {
+export function isErrorValue(value: unknown): value is ErrorValue {
   const mValue = value as ErrorValue;
 
   let result = false;
@@ -80,7 +79,6 @@ export function isErrorValue(value: any): value is ErrorValue {
 }
 
 export function nPlusColumn(column: string, shift: number): string {
-  let resultColumn = '';
   column.toUpperCase();
   // console.log(column.charCodeAt(0));
   if (column.length === 1) {
@@ -181,7 +179,7 @@ export const workplanFields: WorkplanField[] = [
     mandatory: true,
     useCases: ['blocker', 'blocker-report'],
     aliases: [],
-    expectedType: 'string',
+    expectedType: 't:Flag',
     findValue: 'column-down'
   },
   {
@@ -190,11 +188,11 @@ export const workplanFields: WorkplanField[] = [
     mandatory: false,
     useCases: ['blocker', 'blocker-report'],
     aliases: [],
-    expectedType: 'string',
+    expectedType: 't:Label',
     findValue: 'column-down'
   },
   {
-    name: 'taskNumber',
+    name: 'number',
     displayName: '#',
     mandatory: true,
     useCases: ['blocker', 'blocker-report', 'gantt', 'charts', 'historic'],
@@ -203,7 +201,7 @@ export const workplanFields: WorkplanField[] = [
     findValue: 'column-down'
   },
   {
-    name: 'taskName',
+    name: 'name',
     displayName: 'Task',
     mandatory: true,
     useCases: ['blocker', 'blocker-report', 'gantt', 'charts', 'historic'],
@@ -232,7 +230,7 @@ export const workplanFields: WorkplanField[] = [
   {
     name: 'responsible',
     displayName: 'Responsible',
-    mandatory: true,
+    mandatory: false,
     useCases: ['blocker', 'blocker-report', 'gantt'],
     aliases: [],
     expectedType: 'string',
@@ -244,7 +242,7 @@ export const workplanFields: WorkplanField[] = [
     mandatory: true,
     useCases: ['blocker', 'blocker-report', 'gantt', 'charts', 'historic'],
     aliases: [],
-    expectedType: 'string',
+    expectedType: 't:Status',
     findValue: 'column-down'
   },
   {

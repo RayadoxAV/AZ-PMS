@@ -13,6 +13,7 @@ import { DataCollector } from './data/processing/dataCollector';
 import { CustomWorkbook } from './data/data';
 import { DataExtractor } from './data/processing/dataExtractor';
 import { DataTransformator } from './data/processing/dataTransformator';
+import { Logger, LogType } from './util/logger';
 
 declare global {
   var shared: GlobalSharedObject;
@@ -98,9 +99,13 @@ const result = new DataCollector().provideWorkbook();
 
 const dataExtractor = new DataExtractor();
 result.then((workbook: CustomWorkbook) => {
-  const resultIndex = dataExtractor.evaluateSheets(workbook, 'PR-7');
+  const resultIndex = dataExtractor.evaluateSheets(workbook, global.shared.args.projectId);
+  
   if (resultIndex !== -1) {
     new DataTransformator().sheetToWorkplan(workbook.sheets[resultIndex]);
+  } else {
+    // TODO: Handle no valid worksheet found in workbook and propagate to error manager
+    Logger.log('No valid sheet found', LogType.ERROR);
   }
 
 
