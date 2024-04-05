@@ -49,6 +49,8 @@ function listenForEvents() {
 function loadProjectData(workplanString) {
   const workplan = JSON.parse(workplanString);
 
+  console.log(workplan);
+
   /* Blocker */
   blockerTitle.innerText = workplan.projectName;
   blockerAccElement.innerText = workplan.accomplishments;

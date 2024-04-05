@@ -425,6 +425,14 @@ class DataExtractor {
               milestone.completed = Util.getValue(workplanSheet, `${milestoneCompletedColumn}${rowNumber}`, 'number');
               milestone.target = Util.getValue(workplanSheet, `${milestoneTargetColumn}${rowNumber}`, 'number');
 
+              if (milestone.target === -1) {
+                milestone.target = 0;
+              }
+
+              if (milestone.completed === -1) {
+                milestone.completed = 0;
+              }
+
               milestone.remaining = milestone.target - milestone.completed;
 
               if (isNaN(milestone.remaining)) {
@@ -1056,6 +1064,15 @@ class DataExtractor {
 
           task.completed = Util.getValue(workplanSheet, `${taskCompletedColumn}${startRow + i}`, 'number');
           task.target = Util.getValue(workplanSheet, `${taskTargetColumn}${startRow + i}`, 'number');
+
+          if (task.completed === -1) {
+            task.completed = 0;
+          }
+
+          if (task.target === -1) {
+            task.target = 0;
+          }
+
           task.remaining = task.target - task.completed;
 
           if (projectId === 'TR-1') {
