@@ -630,7 +630,7 @@ class Util {
       unit: ''
     };
 
-    if (task.progress >= 1 || task.status === 2 || task.status === 4) {
+    if (task.progress >= 1 || task.status === 2 || task.status === 4 || task.status === 0) {
       timeResult.onTime = true;
       timeResult.timeBehind = 0;
       return timeResult;

@@ -36,6 +36,7 @@ function listenForEvents() {
     switch (args.name) {
       case 'project-loaded': {
         loadProjectData(args.data);
+        setupEventsPostLoad();
         break;
       }
 
@@ -44,6 +45,7 @@ function listenForEvents() {
       }
     }
   });
+
 }
 
 function loadProjectData(workplanString) {
@@ -232,12 +234,19 @@ function fillReport(workplan) {
         <td>${finishDate}</td>
         <td></td>
         <td></td>
-        <td>${item.target === -1 ? '' : numberWithCommas(item.target)}</td>
+        <td>${item.target > 0 ? numberWithCommas(item.target) : ''}</td>
         <td>${item.remaining === 0 ? '' : numberWithCommas(item.remaining)}</td>
         ${isTranslation ? '<td></td>' : ''}
         <td>
           <div class="progress-bar ${status}" style="--progress: ${(item.progress * 100).toFixed(0)}%;">
             <span>${(item.progress * 100).toFixed(0)}%</span>
+            <div class="progress-background"></div>
+          </div>
+        </td>
+        <td class="invisible">
+          <input style="width: 50%;">
+          <div id="progress-bar-${i}" class="progress-bar on-track" style="--progress: 0%; width: 50%;" data-status="0">
+            <span contenteditable="true">0%</span>
             <div class="progress-background"></div>
           </div>
         </td>
@@ -290,12 +299,19 @@ function fillReport(workplan) {
         <td>${finishDate || 'TBD'}</td>
         <td>${newFinishDate || ''}</td>
         <td>${actualDate || ''}</td>
-        <td>${item.target === -1 ? '' : numberWithCommas(item.target)}</td>
+        <td>${item.target > 0 ? numberWithCommas(item.target) : ''}</td>
         <td>${(item.target > 0) ? numberWithCommas(item.remaining) : ''}</td>
         ${isTranslation ? `<td>${item.workedLastWeek > 0 ? numberWithCommas(optionalFieldWrapper(item, 'workedLastWeek')) : ''}</td>` : ''}
         <td>
           <div class="progress-bar ${status}" style="--progress: ${(item.progress * 100).toFixed(0)}%;">
             <span>${(item.progress * 100).toFixed(0)}%</span>
+            <div class="progress-background"></div>
+          </div>
+        </td>
+        <td class="invisible">
+          <input style="width: 50%;">
+          <div id="progress-bar-${i}" class="progress-bar on-track" style="--progress: 0%; width: 50%;" data-status="0">
+            <span contenteditable="true">0%</span>
             <div class="progress-background"></div>
           </div>
         </td>
@@ -474,4 +490,36 @@ function fillSubmissionsReport(workplan) {
   submissionsTable.appendChild(tbody);
 
   reportTable.after(submissionsTable);
+}
+
+function setupEventsPostLoad() {
+  
+  const statuses = ['on-track', 'behind', 'out-of-track'];
+
+  document.querySelectorAll('table.milestone-container > tbody > tr > td:last-child > div.progress-bar').forEach((element) => {
+    const progressBarElement = element;
+
+    const span = progressBarElement.querySelector('span');
+    span.addEventListener('keyup', (event) => {
+      progressBarElement.style = `--progress: ${event.target.innerText}; width: 50%;`;
+    });
+
+    progressBarElement.addEventListener('click', (event) => {
+      // console.log(event.target, event.currentTarget);
+
+      if (event.target.matches('div.progress-bar')) {
+        let status = Number.parseInt(progressBarElement.getAttribute('data-status'));
+        progressBarElement.classList.remove(statuses[status]);
+        if (status < 2) {
+          status += 1;
+        } else {
+          status = 0;
+        }
+        progressBarElement.setAttribute('data-status', status);
+        progressBarElement.classList.add(statuses[status]);
+
+      }
+    });
+
+  });
 }

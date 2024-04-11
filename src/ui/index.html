@@ -55,11 +55,15 @@
       <span class="icon expand"></span>
       <span class="tooltip">Expand</span>
     </button>
-    <button class="menu-item" style="--index: 6" id="settings-button">
+    <button class="menu-item" style="--index: 6" id="toggle-last-week-column">
+      <span class="icon toggle"></span>
+      <span class="tooltip">Toggle Last Week column</span>
+    </button>
+    <button class="menu-item" style="--index: 7" id="settings-button">
       <span class="icon settings"></span>
       <span class="tooltip">Settings</span>
     </button>
-    <button class="menu-item" style="--index: 7" id="help-button">
+    <button class="menu-item" style="--index: 8" id="help-button">
       <span class="icon help"></span>
       <span class="tooltip">Help</span>
     </button>
@@ -144,6 +148,7 @@
             <th>Target</th>
             <th>Remaining</th>
             <th>Progress</th>
+            <th class="invisible">Last Week Progress</th>
           </tr>
         </thead>
         <tbody id="report-body">

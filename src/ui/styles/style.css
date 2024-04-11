@@ -401,8 +401,19 @@ table.milestone-container > tbody > tr > td:first-child {
   text-align: start;
 }
 
-table.milestone-container > tbody > tr > td:last-child {
+table.milestone-container > tbody > tr > td:nth-child(8) {
   padding: 0.125rem;
+}
+
+table.milestone-container > tbody > tr > td:nth-child(9) {
+  display: flex;
+}
+
+table.milestone-container > tbody > tr > td:nth-child(9) > input {
+  background-color: transparent;
+  font-size: 14px;
+  border: none;
+  text-align: center;
 }
 
 table.milestone-container > tbody > tr > td > div.progress-bar > span {
@@ -430,6 +441,7 @@ div.progress-bar > div.progress-background {
   height: 100%;
   top: 0;
   max-width: 100%;
+  pointer-events: none;
 }
 
 div.progress-bar.on-track > div.progress-background {
@@ -592,6 +604,16 @@ button > span.icon.menu {
 button > span.icon.reload {
   background-image: url('../assets/icons/reload.svg');
   background-position: center;
+}
+
+button > span.icon.toggle {
+  background-image: url('../assets/icons/eye.svg');
+  background-position: center;
+}
+
+
+.invisible {
+  display: none !important;
 }
 
 div.menu-container {

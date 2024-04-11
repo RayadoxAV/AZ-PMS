@@ -1,4 +1,4 @@
-const { ipcRenderer, webFrame } = require('electron');
+const { ipcRenderer, webFrame, desktopCapturer } = require('electron');
 
 const fabMenu = document.getElementById('fab-menu');
 const menuContainer = document.getElementById('menu-container');
@@ -9,6 +9,7 @@ const zoomOutButton = document.getElementById('zoom-out-button');
 const zoomResetButton = document.getElementById('zoom-reset-button');
 const collapseButton = document.getElementById('information-collapse-button');
 const expandButton = document.getElementById('information-expand-button');
+const toggleButton = document.getElementById('toggle-last-week-column');
 const settingsButton = document.getElementById('settings-button');
 const helpButton = document.getElementById('help-button');
 
@@ -88,6 +89,28 @@ function init() {
   expandButton.addEventListener('click', () => {
     accInformationDiv.classList.remove('collapsed');
     risksInformationDiv.classList.remove('collapsed');
+  });
+
+  toggleButton.addEventListener('click', () => {
+    const table = document.getElementById('report-table');
+
+    console.log(table);
+
+    const header = table.querySelector('th:last-child');
+
+    if (header.innerHTML === 'Last Week Progress') {
+      // header.style.display = 'none';
+      header.classList.toggle('invisible');
+
+      const tableRows = table.querySelectorAll('tr');
+
+      for (let i = 1; i < tableRows.length; i++) {
+        const row = tableRows[i];
+
+        const td = row.querySelector('td:last-child');
+        td.classList.toggle('invisible');
+      }
+    }
   });
 
   settingsButton.addEventListener('click', () => {
