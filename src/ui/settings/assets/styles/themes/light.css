@@ -1,0 +1,37 @@
+/* 
+  Raymundo Paz
+  April 2024
+*/
+
+:root {
+  --window-background: #FFFFFF;
+
+  --titlebar-background: #FFFFFF;
+  --titlebar-color: #3C3C43;
+
+  --general-text-color: #3c3c43;
+  --contrast-text-color: #FFFFFF;
+
+  --window-control-background: transparent;
+  --window-control-color: #222222;
+  --window-control-background-hover: #E0E0E0;
+  --window-control-close-background: #e81123;
+  --window-control-close-color: #FFFFFF;
+
+  --scrollbar-track-background: transparent;
+  --scrollbar-thumb-background: #CCCCCC;
+  --scrollbar-thumb-background-hover: #C0C0C0;
+  --scrollbar-thumb-background-active: #B0B0B0;
+
+  /* Information container */
+  --information-container-background: #FFFFFF;
+
+  /* Sidebar */
+  --sidebar-background: #FFFFFF;
+  --sidebar-border-color: #E2E2E3;
+  
+  --sidebar-button-background: transparent;
+  --sidebar-button-background-hover: #f5d0d0;
+  --sidebar-button-background-active: #ffdfdf;
+  --sidebar-button-active-background: #f56565;
+}

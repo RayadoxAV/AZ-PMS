@@ -3,13 +3,13 @@
   March 2024
 */
 
-import { Cell, Color, FillPattern, RichText, Row, Workbook, Worksheet } from 'exceljs';
-import { XOR, isDate, isCellErrorValue, isCellFormulaValue, isCellHyperlinkValue, isCellRichTextValue, isCellSharedFormulaValue, isErrorValue } from '../../util/util';
+import { Cell, FillPattern, RichText, Row, Workbook, Worksheet } from 'exceljs';
+import { XOR, isDate, isCellErrorValue, isCellFormulaValue, isCellHyperlinkValue, isCellRichTextValue, isCellSharedFormulaValue } from '../../util/util';
 import { CustomCell, CustomRow, CustomWorkbook, CustomWorksheet } from '../data';
 import { existsSync } from 'fs';
 import { PerformanceMeter } from '../../util/performanceMeter'
 import { CellError, CellType } from '../../util/misc';
-import { Logger, LogType } from '../../util/logger';
+// import { Logger, LogType } from '../../util/logger';
 
 export class DataCollector {
   async provideWorkbook(args?: string[]): Promise<CustomWorkbook> {
@@ -91,7 +91,7 @@ export class DataCollector {
           const customRow = new CustomRow();
           customRow.rowNumber = rowNumber;
 
-          row.eachCell((cell: Cell, colNumber: number) => {
+          row.eachCell((cell: Cell) => {
 
             const customCell = new CustomCell();
             customCell.address = cell.address;
@@ -100,11 +100,6 @@ export class DataCollector {
             customCell.value = this.getCellValueFromExJs(cell);
 
             let cellType: CellType;
-
-            if (worksheet.name === 'Workplan ACES') {
-              // console.log(cell.address, cell.style.fill, worksheet.name);
-            }
-
 
             if (cell.style.fill) {
               if (cell.style.fill.type === 'pattern') {

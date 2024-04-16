@@ -4,7 +4,7 @@
 */
 
 import 'dotenv/config';
-import { app, BrowserWindow, ipcMain, Menu } from 'electron';
+import { app, BrowserWindow, Menu } from 'electron';
 import path from 'path';
 import { manageEvents } from './ui/events/ipcEvents';
 import { GlobalSharedObject } from './util/misc';
@@ -16,6 +16,7 @@ import { DataTransformator } from './data/processing/dataTransformator';
 import { Logger, LogType } from './util/logger';
 
 declare global {
+  // eslint-disable-next-line no-var
   var shared: GlobalSharedObject;
 }
 
@@ -107,7 +108,6 @@ result.then((workbook: CustomWorkbook) => {
     // TODO: Handle no valid worksheet found in workbook and propagate to error manager
     Logger.log('No valid sheet found', LogType.ERROR);
   }
-
 
 });
 

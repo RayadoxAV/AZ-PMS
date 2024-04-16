@@ -1,0 +1,211 @@
+/* 
+  Raymundo Paz
+  April 2024
+*/
+
+* {
+  box-sizing: border-box;
+  font-family: 'Roboto', sans-serif;
+}
+
+body {
+  margin: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: var(--window-background);
+}
+
+::-webkit-scrollbar {
+  width: 0.625rem;
+  height: 0.625rem;
+}
+
+::-webkit-scrollbar-track {
+  background-color: var(--scrollbar-track-background);
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--scrollbar-thumb-background);
+  border-radius: 0.5rem;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--scrollbar-thumb-background-hover);
+}
+
+::-webkit-scrollbar-thumb:active {
+  background-color: var(--scrollbar-thumb-background-active);
+}
+
+div.title-bar {
+  display: flex;
+  height: 2.5rem;
+  overflow: hidden;
+  user-select: none;
+  -webkit-app-region: drag;
+  flex-shrink: 0;
+  background-color: var(--titlebar-background);
+}
+
+div.title-bar > div.information-container {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  flex: 20;
+  border-right: 0.0625rem solid var(--sidebar-border-color);
+  background-color: var(--information-container-background);
+}
+
+div.title-bar > div.information-container > span.title {
+  font-size: 1.75rem;
+  font-weight: 900;
+  padding-left: 1rem;
+  color: var(--titlebar-color);
+}
+
+div.title-bar > div.window-controls {
+  margin-left: auto;
+  display: flex;
+  gap: 0;
+  flex: 80;
+}
+
+div.window-controls > button.control {
+  width: 3rem;
+  height: 100%;
+  border: none;
+  border-radius: 0rem;
+  transition: all 150ms cubic-bezier(0.2, 0, 0, 1);
+  -webkit-app-region: no-drag;
+  background-color: var(--window-control-background);
+  color: var(--window-control-color);
+}
+
+div.window-controls > button.control:hover {
+  background-color: var(--window-control-background-hover);
+}
+
+div.window-controls > button.control[data-type="close"]:hover {
+  background-color: var(--window-control-close-background);
+  color: var(--window-control-close-color);
+}
+
+div.window-controls > button.control:first-child {
+  margin-left: auto;
+}
+
+div.main-container {
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  overflow: hidden;
+}
+
+div.main-container > nav.sidebar {
+  display: flex;
+  flex-direction: column;
+  flex: 20;
+  gap: 0.25rem;
+  border-right: 0.0625rem solid var(--sidebar-border-color);
+  background-color: var(--sidebar-background);
+}
+
+nav.sidebar > button.sidebar-button {
+  position: relative;
+  display: flex;
+  border: none;
+  background-color: var(--sidebar-button-background);
+  margin-left: 1rem;
+  margin-right: 1rem;
+  padding: 0.75rem 0.5rem;
+  gap: 0.5rem;
+  align-items: center;
+  border-radius: 0.5rem;
+  text-align: left;
+  cursor: pointer;
+  transition: all 150ms cubic-bezier(0.2, 0, 0, 1);
+}
+
+nav.sidebar > button.sidebar-button:hover {
+  background-color: var(--sidebar-button-background-hover);
+}
+
+nav.sidebar > button.sidebar-button:first-child {
+  margin-top: 2rem;
+}
+
+nav.sidebar > button.sidebar-button > i.icon {
+  display: block;
+  width: 1.25rem;
+  aspect-ratio: 1;
+  background-color: var(--general-text-color);
+  mask-size: 100%;
+  mask-repeat: no-repeat;
+  pointer-events: none;
+}
+
+nav.sidebar > button.sidebar-button > span.text {
+  font-size: 0.9375rem;
+  font-weight: 500;
+  user-select: none;
+}
+
+nav.sidebar > button.sidebar-button.active {
+  background-color: var(--sidebar-button-background-active);
+}
+
+nav.sidebar > button.sidebar-button.active::before {
+  content: '';
+  display: block;
+  width: 0.25rem;
+  top: 0;
+  height: 100%;
+  background-color: var(--sidebar-button-active-background);
+  position: absolute;
+  left: 0rem;
+  border-radius: 0.5rem 0rem 0rem 0.5rem;
+  animation-name: indicatorEnter;
+  animation-duration: 150ms;
+  animation-fill-mode: forwards;
+  animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+
+div.main-container > div.content {
+  display: flex;
+  flex: 80;
+}
+
+
+/* Icons */
+
+i.icon[data-icon="appearance"] {
+  mask-image: url('/assets/icons/appearance.svg');
+}
+
+i.icon[data-icon="behavior"] {
+  mask-image: url('/assets/icons/behavior.svg');
+}
+
+i.icon[data-icon="persistence"] {
+  mask-image: url('/assets/icons/persistence.svg');
+}
+
+i.icon[data-icon="debug"] {
+  mask-image: url('/assets/icons/debug.svg');
+}
+
+/* Animations */
+@keyframes indicatorEnter {
+  0% {
+    transform: scaleY(50%);
+    opacity: 0;
+  }
+  
+  100% {
+    transform: scaleY(100%);
+    opacity: 1;
+  } 
+}

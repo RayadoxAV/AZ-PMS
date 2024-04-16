@@ -59,16 +59,41 @@ export function manageWindowEvents(_: any, ...args: any[]): void {
               minHeight: 600,
               frame: false,
               title: 'AZ-PMS - Settings',
+              webPreferences: {
+                preload: path.join(__dirname, 'preload.js')
+              }
+            }
+          );
+          settingsWindow.webContents.openDevTools();
+
+          if (SETTINGS_WINDOW_VITE_DEV_SERVER_URL) {
+            settingsWindow.loadURL(SETTINGS_WINDOW_VITE_DEV_SERVER_URL);
+          } else {
+            settingsWindow.loadFile(path.join(__dirname, `../ui/settigns/${SETTINGS_WINDOW_VITE_NAME}/index.html`))
+          }
+
+        } else if (targetWindow === 'Help') {
+          const helpWindow = new BrowserWindow(
+            {
+              width: 1280,
+              height: 720,
+              minWidth: 800,
+              minHeight: 600,
+              frame: false,
+              title: 'AZ-PMS - Help',
+              webPreferences: {
+                preload: path.join(__dirname, 'preload.js')
+              }
             }
           );
 
-            if (SETTINGS_WINDOW_VITE_DEV_SERVER_URL) {
-              settingsWindow.loadURL(SETTINGS_WINDOW_VITE_DEV_SERVER_URL);
-            } else {
-              settingsWindow.loadFile(path.join(__dirname, `../ui/settings_window/${SETTINGS_WINDOW_VITE_NAME}/index.html`))
-            }
+          helpWindow.webContents.openDevTools();
 
-        } else if (targetWindow === 'Help') {
+          if (HELP_WINDOW_VITE_DEV_SERVER_URL) {
+            helpWindow.loadURL(HELP_WINDOW_VITE_DEV_SERVER_URL);
+          } else {
+            helpWindow.loadFile(path.join(__dirname, `../ui/help_window/${HELP_WINDOW_VITE_NAME}/index.html`))
+          }
 
         } else {
           // TODO: Error. Unknown window

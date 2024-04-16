@@ -3,6 +3,7 @@
   March 2024
 */
 
+import { CustomCell } from '../data/data';
 import { ArgumentsObject } from './argsManager';
 
 export interface GlobalSharedObject {
@@ -69,5 +70,10 @@ export type Duration = {
 
 export type WPDate = {
   weekNo: number;
-  date: Date
+  date: Date;
+  fiscalYear: number;
 };
+
+export type WorkplanBridge = Map<string, WorkplanBridgeValue>;
+
+export type WorkplanBridgeValue = { cell: CustomCell, field: WorkplanField };

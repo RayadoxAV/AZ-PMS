@@ -5,12 +5,59 @@
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+    rel="stylesheet">
   <title>Settings</title>
+  <link rel="stylesheet" href="/assets/styles/style.css">
+  <link rel="stylesheet" href="/assets/styles/themes/light.css">
+  <link rel="stylesheet" href="/assets/styles/codicons/codicon.css">
 </head>
+
 <body>
-  <h1>Settings</h1>
+  <div class="title-bar">
+    <div class="information-container">
+      <span class="title">Settings</span>
+    </div>
+    <div class="window-controls">
+      <button id="titlebar-minimize-button" class="control codicon codicon-chrome-minimize"></button>
+      <button id="titlebar-maximize-button" class="control codicon codicon-chrome-maximize"></button>
+      <button id="titlebar-close-button" class="control codicon codicon-chrome-close" data-type="close"></button>
+    </div>
+  </div>
+  <div class="main-container">
+    <nav class="sidebar">
+      <button class="sidebar-button" data-target="container" data-target-index="0">
+        <i class="icon" data-icon="appearance" data-icon="appearance"></i>
+        <span class="text">Appearance</span>
+      </button>
+      <button class="sidebar-button" data-target="container" data-target-index="1">
+        <i class="icon" data-icon="behavior"></i>
+        <span class="text">Behavior</span>
+      </button>
+      <button class="sidebar-button" data-target="container" data-target-index="2">
+        <i class="icon" data-icon="persistence"></i>
+        <span class="text">Persistence</span>
+      </button>
+      <button class="sidebar-button" data-target="container" data-target-index="3">
+        <i class="icon" data-icon="debug"></i>
+        <span class="text">Debug</span>
+      </button>
+    </nav>
+    <div class="content">
+      <div class="container" data-index="0">a</div>
+      <div class="container" data-index="1">b</div>
+      <div class="container" data-index="2">c</div>
+      <div class="container" data-index="3">d</div>
+    </div>
+  </div>
+  <script type="module" src="./code/index.ts"></script>
 </body>
+
 </html>

@@ -1,4 +1,4 @@
-import { BlockerDate, Flag, Status, TimeStatus, WorkplanType, CellType, Label, Duration, WPDate, CellError } from '../util/misc';
+import { Flag, Status, CellType, Label, Duration, WPDate, CellError, TimeStatus } from '../util/misc';
 
 export class CustomWorkbook {
   public name: string;
@@ -35,12 +35,16 @@ export class CustomWorksheet {
       startCell = temp;
     }
 
-    let [startCellColumn, startRow] = startCell.match(/[a-z]+|[^a-z]+/gi);
-    let [endCellColumn, endRow] = endCell.match(/[a-z]+|[^a-z]+/gi);
+    const startResult = startCell.match(/[a-z]+|[^a-z]+/gi);
+    let startCellColumn = startResult[0];
+    const startRow = startResult[1];
+
+    const endResult = endCell.match(/[a-z]+|[^a-z]+/gi);
+    let endCellColumn = endResult[0];
+    const endRow = endResult[1];
 
     let startRowNumber = Number.parseInt(startRow);
     let endRowNumber = Number.parseInt(endRow);
-
 
     if (endCellColumn < startCellColumn) {
       const temp = endCellColumn;
@@ -53,7 +57,6 @@ export class CustomWorksheet {
       endRowNumber = startRowNumber;
       startRowNumber = temp;
     }
-
 
     const resultCells: CustomCell[] = [];
 
@@ -71,8 +74,6 @@ export class CustomWorksheet {
         }
       }
     }
-
-    
 
     return resultCells;
   }
@@ -204,7 +205,26 @@ export class Task {
   }
 
   toString(): string {
-    return `Task [${this.number} ${this.name} -> ${this.status} - ${this.progress}]`;
+    return `Task [${this.number} ${this.name} -> ${JSON.stringify(this.duration)}]`;
+  }
+}
+
+export class Workplan {
+  public projectId: string;
+  public projectName: string;
+  public projectObjective: string;
+  public projectStartDate: WPDate;
+  public totalProgress: number;
+  public plannedProgress: number;
+  public projectRemarks: string;
+  public status: Status;
+  public timeStatus: TimeStatus;
+
+
+  public activities: Milestone[];
+
+  constructor() {
+    this.activities = [];
   }
 }
 

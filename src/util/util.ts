@@ -5,6 +5,7 @@
 
 import { CellErrorValue, CellFormulaValue, CellHyperlinkValue, CellRichTextValue, CellSharedFormulaValue, ErrorValue } from 'exceljs';
 import { WorkplanField } from './misc';
+import { Workplan } from '../data/data';
 
 export function XOR(a: any, b: any): boolean {
   return (a || b) && !(a && b);
@@ -78,6 +79,19 @@ export function isErrorValue(value: unknown): value is ErrorValue {
   return result;
 }
 
+export function isWorkplan(value: any): value is Workplan {
+  return 'projectId' in value &&
+    'projectName' in value &&
+    'projectObjective' in value &&
+    'projectStartDate' in value &&
+    'totalProgress' in value &&
+    'plannedProgress' in value &&
+    'projectRemarks' in value &&
+    'status' in value &&
+    'timeStatus' in value &&
+    'activities' in value;
+}
+
 export function nPlusColumn(column: string, shift: number): string {
   column.toUpperCase();
   // console.log(column.charCodeAt(0));
@@ -97,6 +111,25 @@ export function nPlusColumn(column: string, shift: number): string {
   }
 }
 
+export function getFiscalYear(date: Date): number {
+  const august = new Date(`${date.getFullYear()}/08/31`);
+  let lastSaturday: Date = undefined;
+
+  for (let i = 0; i < 8; i++) {
+    const testDate = new Date(august.getTime() - (i * 86400000));
+
+    if (testDate.getDay() === 6) {
+      lastSaturday = testDate;
+    }
+  }
+
+  if (date.getTime() <= lastSaturday.getTime()) {
+    return date.getFullYear();
+  } else {
+    return date.getFullYear() + 1;
+  }
+}
+
 /* 
 
 TODO: Translate
@@ -109,6 +142,7 @@ Si se agrega uno de repente, se agrega aqui y todos los workplans que lo tengan 
   aliases: Todos los otros nombres con los que se conoce al campo
   expectedType: El tipo esperado del campo en el Workplan.
 */
+//#region Workplan Fields
 export const workplanFields: WorkplanField[] = [
   {
     name: 'projectId',
@@ -269,7 +303,7 @@ export const workplanFields: WorkplanField[] = [
     mandatory: true,
     useCases: ['blocker', 'blocker-report', 'gantt', 'charts', 'historic'],
     aliases: ['Task Duration (Weeks)', 'Task Duration (Days)', 'Estimated Time', 'Estimated Time (Days)'],
-    expectedType: 'number',
+    expectedType: 't:Duration',
     findValue: 'column-down'
   },
   {
@@ -277,8 +311,8 @@ export const workplanFields: WorkplanField[] = [
     displayName: 'Start Date',
     mandatory: true,
     useCases: ['blocker', 'blocker-report', 'gantt', 'charts', 'historic'],
-    aliases: ['Start date week'],
-    expectedType: 'number/date',
+    aliases: ['Start date week', 'Start Date'],
+    expectedType: 't:WPDate',
     findValue: 'column-down'
   },
   {
@@ -286,8 +320,8 @@ export const workplanFields: WorkplanField[] = [
     displayName: 'Finish Date',
     mandatory: true,
     useCases: ['blocker', 'blocker-report', 'gantt', 'charts', 'historic'],
-    aliases: ['Finish date Week'],
-    expectedType: 'number/date',
+    aliases: ['Finish date Week', 'Finish Date'],
+    expectedType: 't:WPDate',
     findValue: 'column-down'
   },
   {
@@ -296,7 +330,7 @@ export const workplanFields: WorkplanField[] = [
     mandatory: true,
     useCases: ['blocker', 'blocker-report', 'gantt', 'charts', 'historic'],
     aliases: [],
-    expectedType: 'number/date',
+    expectedType: 't:WPDate',
     findValue: 'column-down'
   },
   {
@@ -305,7 +339,7 @@ export const workplanFields: WorkplanField[] = [
     mandatory: true,
     useCases: ['blocker', 'blocker-report', 'gantt', 'charts', 'historic'],
     aliases: [],
-    expectedType: 'number/date',
+    expectedType: 't:WPDate',
     findValue: 'column-down'
   },
   {
@@ -390,3 +424,13 @@ export const workplanFields: WorkplanField[] = [
     findValue: 'column-down'
   }
 ];
+
+//#region: Custom Events
+export type CustomKeyboardEvent = {
+  key: string;
+  modifiers: {
+    ctrl?: boolean,
+    shift?: boolean,
+    alt?: boolean
+  }
+};

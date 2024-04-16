@@ -1,6 +1,6 @@
 /* 
   Raymundo Paz
-  March 2024
+  April 2024
 */
 
 export function initTitlebar(): void {
@@ -9,14 +9,14 @@ export function initTitlebar(): void {
   const closeButton = document.getElementById('titlebar-close-button');
 
   minimizeButton.addEventListener('click', () => {
-    window.windowBridge.applyEvent('Main', 'minimize');
+    window.windowBridge.applyEvent('Settings', 'minimize');
   });
 
   maximizeButton.addEventListener('click', () => {
-    window.windowBridge.applyEvent('Main', 'maximize');
+    window.windowBridge.applyEvent('Settings', 'maximize');
   });
 
   closeButton.addEventListener('click', () => {
-    window.windowBridge.applyEvent('Main', 'close');
+    window.windowBridge.applyEvent('Settings', 'close');
   });
 }

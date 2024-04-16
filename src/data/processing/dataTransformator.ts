@@ -3,46 +3,17 @@
   March 2024
 */
 
-import { nPlusColumn, workplanFields } from '../../util/util';
+import { getFiscalYear, isWorkplan, nPlusColumn, workplanFields } from '../../util/util';
 import { PerformanceMeter } from '../../util/performanceMeter';
-import { CustomWorksheet, CustomCell, Milestone, Task } from '../data';
-import { Duration, Flag, Label, Status, WPDate, WorkplanField } from '../../util/misc';
+import { CustomWorksheet, CustomCell, Milestone, Task, Workplan } from '../data';
+import { Duration, Flag, Label, Status, WPDate, WorkplanBridge, WorkplanField } from '../../util/misc';
 
 export class DataTransformator {
   public sheetToWorkplan(inputSheet: CustomWorksheet): void {
     const perfMeter = new PerformanceMeter();
     perfMeter.start();
 
-    /* Steps for the conversion:
-      1. Determine the Workplan Version (1, 2, 3) and the Workplan Type (Daily, Scrum , Weekly)
-        1.1
-        1.2
-        1.3
-      2. Basing us on the version and type, we generate a bridge that tells us where to find all the relevant data.
-        2.1
-        2.2
-        2.3
-      3. Iterate over all of the bridge entries to get the project data.
-        3.1
-        3.2
-        3.3
-      4. Search and generate all the milestones
-        4.1 Iterate over the rows that are inside of the Milestone range and look for the Milestone color (#d6dce4)
-        4.2 Take as much fields as needed.
-        4.3
-      5. Search and generate all the tasks.
-        5.1
-        5.2
-        5.3
-      6. Calculate Work Status, Time Status and other calculated fields
-        6.1
-        6.2
-        6.3
-    */
-
-    const bridge = new Map<string, { cell: CustomCell, field: WorkplanField }>();
-
-
+    const bridge: WorkplanBridge = new Map();
 
     for (let i = 0; i < inputSheet.cells.length; i++) {
       const cell = inputSheet.cells[i];
@@ -52,9 +23,17 @@ export class DataTransformator {
         const field = workplanFields[j];
 
         if (field.aliases.length > 0) {
+          for (let k = 0; k < field.aliases.length; k++) {
+            const alias = field.aliases[k];
+
+            if (cellValue === alias.toLocaleLowerCase()) {
+              bridge.set(field.name, { cell: cell, field: field});
+            }
+          }
+
           if (field.aliases.includes(`${cell.value}`)) {
-            // console.log(cellValue);
             // TODO: Manage cases per type of field 
+            console.log(field, cell.value);
           }
         } else {
           if (field.displayName === 'Remarks' && cellValue === 'remarks') {
@@ -64,18 +43,16 @@ export class DataTransformator {
               bridge.set('remarks', { cell: cell, field: field });
             }
           } else if (cellValue === field.displayName.toLocaleLowerCase()) {
-            // console.log(cellValue, cell.address);
             bridge.set(field.name, { cell: cell, field: field });
           }
         }
       }
     }
 
-
     // NOTE: Obtain values based on mapped addresses and 'find-value' prop
 
-    const testObject: any = {};
-
+    const workplan = new Workplan();
+  
     bridge.forEach((value: { cell: CustomCell, field: WorkplanField }, key: string) => {
       if (value.field.findValue.includes('immediate')) {
         const direction = value.field.findValue.split('-')[1];
@@ -86,9 +63,17 @@ export class DataTransformator {
         } else if (direction === 'right') {
           result = inputSheet.getCell(`${nPlusColumn(value.cell.colName, 1)}${value.cell.rowNumber}`);
         }
-        testObject[key] = result.value;
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        workplan[key as keyof Workplan] = result.value;
       }
     });
+
+    workplan.activities = [];
+    workplan.timeStatus = undefined;
+    workplan.status = undefined;
+
+    console.log('isWorkplan', isWorkplan(workplan));
 
     // console.log(bridge);
     // map.forEach((value: any, key: string): void => {
@@ -108,39 +93,49 @@ export class DataTransformator {
       }
     }
 
-    const milestoneRows = [];
-
     for (let i = 0; i < inputSheet.rows.length; i++) {
       const row = inputSheet.rows[i];
 
       if (row.rowNumber >= dataRowNumber) {
-        const firstCell = row.cells[0];
 
-        if (firstCell.type === 'Milestone') {
-          milestoneRows.push(firstCell.rowNumber);
-        }
+        console.log(row.cells[0].value, row.cells[1].value, row.cells[2].value);
+
       }
     }
 
-    for (let i = 0; i < milestoneRows.length; i++) {
+    // const milestoneRows = [];
 
-      if (i === milestoneRows.length - 1) {
-        this.generateMilestone(milestoneRows[i], -1, inputSheet, bridge);
-      } else {
-        this.generateMilestone(milestoneRows[i], milestoneRows[i + 1] - 1, inputSheet, bridge);
-      }
+    // for (let i = 0; i < inputSheet.rows.length; i++) {
+    //   const row = inputSheet.rows[i];
 
-    }
+    //   if (row.rowNumber >= dataRowNumber) {
+    //     const firstCell = row.cells[0];
+
+    //     if (firstCell.type === 'Milestone') {
+    //       milestoneRows.push(firstCell.rowNumber);
+    //     }
+    //   }
+    // }
+
+    // for (let i = 0; i < milestoneRows.length; i++) {
+
+    //   if (i === milestoneRows.length - 1) {
+    //     this.generateMilestone(milestoneRows[i], -1, inputSheet, bridge);
+    //   } else {
+    //     this.generateMilestone(milestoneRows[i], milestoneRows[i + 1] - 1, inputSheet, bridge);
+    //   }
+
+    // }
 
     // console.log(testObject);
+    // console.log(bridge);
 
     perfMeter.end();
     perfMeter.log('Worksheet into Workplan transformation');
   }
+  //#region Generate milestones
+/*   private generateMilestone(startRow: number, endRow: number, inputSheet: CustomWorksheet, bridge: WorkplanBridge) {
 
-  private generateMilestone(startRow: number, endRow: number, inputSheet: CustomWorksheet, bridge: Map<string, { cell: CustomCell, field: WorkplanField }>) {
-
-    // const row = inputSheet.getRow(startRow);
 
     const milestone = new Milestone();
 
@@ -162,30 +157,27 @@ export class DataTransformator {
     milestone.comments = this.findValue('comments', inputSheet, bridge, startRow) as string;
     milestone.lastUpdated = this.findValue('lastUpdated', inputSheet, bridge, startRow) as WPDate;
     // TODO: Get tasks
-    
+
 
     const tasks = this.generateTasks(startRow, endRow, inputSheet, bridge);
     milestone.tasks = tasks;
 
-    // TODO: Check if they are present in the workplan.
-    // If they are, calculate to make sure they are correct.
-    // If not, calculate normally
+    TODO: Calculate these parameters
+    - If they are present in workplan -> Check to see if they are correct.
+    - If they are not -> Assign them
 
+    Milestone
+    status
+    duration
+    startDate
+    finishDate.
+    newFinishDate
+    actualDate
 
-    // milestone.status
-    // milestone.duration = this.findValue('duration', inputSheet, bridge)
-    // milestone.startDate
-    // milestone.finishDate.
-    // milestone.newFinishDate
-    // milestone.actualDate
-    
+  } */
 
-
-    
-    // console.log(milestone);
-  }
-
-private generateTasks(startRow: number, endRow: number, inputSheet: CustomWorksheet, bridge: Map<string, { cell: CustomCell, field: WorkplanField }>): Task[] {
+  //#region Generate tasks
+ /*  private generateTasks(startRow: number, endRow: number, inputSheet: CustomWorksheet, bridge: WorkplanBridge): Task[] {
     // console.log(startRow, endRow);
     startRow = startRow + 1;
 
@@ -206,7 +198,7 @@ private generateTasks(startRow: number, endRow: number, inputSheet: CustomWorksh
       // console.log(testCell.value, testCell.type);
 
       if (testCell.type === 'Task') {
-        
+
         const task = new Task();
 
         task.flag = this.findValue('flag', inputSheet, bridge, row.rowNumber) as Flag;
@@ -235,19 +227,19 @@ private generateTasks(startRow: number, endRow: number, inputSheet: CustomWorksh
         // console.log(task.flag, task.number, task.name);
 
         // console.log(task.toString());
-        console.log(task);
+        // console.log(task.toString());
 
       } else {
         // console.log('manage subtasks');
         // TODO: Manage subtasks
       }
-      
+                                                                                          
       // console.log(testCell.type);
     }
 
   }
 
-  private findValue(name: string, inputSheet: CustomWorksheet, bridge: Map<string, { cell: CustomCell, field: WorkplanField }>, rowNumber: number): number | string | boolean | WPDate | undefined | Flag | Label | Duration {
+  private findValue(name: string, inputSheet: CustomWorksheet, bridge: WorkplanBridge, rowNumber: number): number | string | boolean | WPDate | undefined | Flag | Label | Duration {
 
     const bridgeValue = bridge.get(name);
 
@@ -291,7 +283,7 @@ private generateTasks(startRow: number, endRow: number, inputSheet: CustomWorksh
               result = 0;
             }
           } else if (typeof value === 'object') {
-            console.log(value);
+            // console.log(value);
           }
 
           return result;
@@ -365,10 +357,96 @@ private generateTasks(startRow: number, endRow: number, inputSheet: CustomWorksh
           return Status.NotStarted;
         }
 
+        case 't:Duration': {
+          let actualDurationValue = undefined;
+          if (typeof value === 'string') {
+            actualDurationValue = Number.parseInt(value.match(/[^a-z\s]/gi)[0]) || 0;
+          } else if (typeof value === 'number') {
+            actualDurationValue = value;
+          }
+
+          if (bridgeValue.cell.value === 'Task Duration (Weeks)') {
+            const duration: Duration = {
+              weeks: actualDurationValue,
+              days: actualDurationValue * 5
+            };
+
+            return duration;
+          } else if (bridgeValue.cell.value === 'Task Duration (Days)') {
+            const duration: Duration = {
+              weeks: Math.ceil(actualDurationValue / 5),
+              days: actualDurationValue
+            };
+
+            return duration;
+          } else if (bridgeValue.cell.value === 'Estimated Time' || bridgeValue.cell.value === 'Estimated Time (Days)') {
+            const duration: Duration = {
+              weeks: Math.ceil(actualDurationValue / 5),
+              days: actualDurationValue
+            };
+
+            return duration;
+          } else {
+            // Assume weeks
+            const duration: Duration = {
+              weeks: actualDurationValue,
+              days: actualDurationValue * 5
+            };
+
+            return duration;
+          }
+        }
+
+        case 't:WPDate': {
+          // console.log(name, typeof value);
+          if (!value) {
+            const date: WPDate = {
+              date: undefined,
+              weekNo: undefined,
+              fiscalYear: undefined
+            };
+
+            return date;
+          }
+
+          if (typeof value === 'object') {
+            const date: WPDate = {
+              date: new Date(value.toString()),
+              weekNo: 1,
+              fiscalYear: getFiscalYear(new Date(value.toString()))
+            };
+
+            // console.log(date, 'aaa');
+
+          } else if (typeof value === 'number') {
+            // console.log(value % 1 !== 0);
+            // console.log(value);
+
+            if (value % 1 === 0) {
+              const date: WPDate = {
+                date: undefined,
+                weekNo: Number.parseInt(`${value}`),
+                fiscalYear: 2024
+              }
+              
+              return date;
+            } else {
+              // console.log(value);
+            }
+
+          
+            // console.log(date);
+          } else {
+            console.log('WTFF');
+          }
+          // console.log(name, value, typeof value);
+          break;
+        }
+
         default: {
           return `${value}`;
         }
       }
     }
-  }
+  } */
 }
