@@ -219,7 +219,7 @@ export class Workplan {
   public projectRemarks: string;
   public status: Status;
   public timeStatus: TimeStatus;
-
+  public durationAndDateFormat: number;
 
   public activities: Milestone[];
 

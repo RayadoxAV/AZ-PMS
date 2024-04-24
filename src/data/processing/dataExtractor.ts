@@ -16,7 +16,8 @@ export class DataExtractor {
   
     for (let i = 0; i < workbook.sheets.length; i++) {
       const worksheet = workbook.sheets[i];
-      const result = this.evaluateSheet(worksheet, 'A1:S10', projectId);
+      // TODO: Change this range for settings range.
+      const result = this.evaluateSheet(worksheet, 'A1:V10', projectId);
 
       if (result) {
         validSheetIndex = i;

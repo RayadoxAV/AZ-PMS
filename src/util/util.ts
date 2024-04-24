@@ -92,6 +92,13 @@ export function isWorkplan(value: any): value is Workplan {
     'activities' in value;
 }
 
+export function customIsDate(value: any): value is Date {
+  if (typeof value !== 'object') {
+    return false;
+  }
+  return 'getFullYear' in value;
+}
+
 export function nPlusColumn(column: string, shift: number): string {
   column.toUpperCase();
   // console.log(column.charCodeAt(0));
@@ -123,10 +130,85 @@ export function getFiscalYear(date: Date): number {
     }
   }
 
+
   if (date.getTime() <= lastSaturday.getTime()) {
     return date.getFullYear();
   } else {
     return date.getFullYear() + 1;
+  }
+}
+
+export function getFiscalWeek(date: Date): number {
+  const fiscalYear = getFiscalYear(date);
+
+  const lastFiscalYear = fiscalYear - 1;
+  const august = new Date(`${lastFiscalYear}/08/31`);
+  let lastSaturday: Date = undefined;
+
+  for (let i = 0; i < 8; i++) {
+    const testDate = new Date(august.getTime() - (i * 86400000));
+
+    if (testDate.getDay() === 6) {
+      lastSaturday = testDate;
+      break;
+    }
+  }
+
+  let weekCount = 1;
+
+  // NOTE: Why 400? Cause I don't want to deal with leap years.
+  for (let i = 1; i < 400; i++) {
+    const testDate = new Date(lastSaturday.getTime() + (i * 86400000));
+    if (testDate.getTime() > date.getTime()) {
+      break;
+    }
+
+    if (i % 7 === 0) {
+      weekCount += 1;
+    }
+
+    if (testDate.getDate() === date.getTime()) {
+      break;
+    }
+  }
+
+  return weekCount;
+}
+
+export function getDateFromFiscal(week: number, year: number, side: number) {
+  const lastFiscalYear = year - 1;
+  const august = new Date(`${lastFiscalYear}/08/31`);
+  let lastSaturday: Date = undefined;
+
+  for (let i = 0; i < 8; i++) {
+    const testDate = new Date(august.getTime() - (i * 86400000));
+
+    if (testDate.getDay() === 6) {
+      lastSaturday = testDate;
+      break;
+    }
+  }
+
+
+  let weekCount = 1;
+
+  for (let i = 1; i < 400; i++) {
+    const testDate = new Date(lastSaturday.getTime() + (i * 86400000));
+    if (weekCount > week) {
+      break;
+    }
+
+    if (i % 7 === 0) {
+      weekCount += 1;
+    }
+
+    if (weekCount === week) {
+      if (side === 0 && testDate.getDay() === 1) {
+        return testDate;
+      } else if (side === 1 && testDate.getDay() === 5) {
+        return testDate;
+      }
+    }
   }
 }
 
@@ -177,7 +259,7 @@ export const workplanFields: WorkplanField[] = [
     mandatory: true,
     useCases: ['blocker', 'blocker-report', 'gantt', 'charts', 'historic'],
     aliases: [],
-    expectedType: '{BlockerDate}',
+    expectedType: 't:WPDate',
     findValue: 'immediate-below'
   },
   {
@@ -420,7 +502,7 @@ export const workplanFields: WorkplanField[] = [
     mandatory: false,
     useCases: ['blocker', 'blocker-report'],
     aliases: [],
-    expectedType: 'date',
+    expectedType: 't:WPDate',
     findValue: 'column-down'
   }
 ];
