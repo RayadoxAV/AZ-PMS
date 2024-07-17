@@ -10,6 +10,7 @@ const zoomResetButton = document.getElementById('zoom-reset-button');
 const collapseButton = document.getElementById('information-collapse-button');
 const expandButton = document.getElementById('information-expand-button');
 const toggleButton = document.getElementById('toggle-last-week-column');
+// const reduceWidthButton = document.getElementById('reduce-width-button');
 const settingsButton = document.getElementById('settings-button');
 const helpButton = document.getElementById('help-button');
 
@@ -31,6 +32,7 @@ reportTitle.onclick = () => {
 }
 
 function init() {
+  
   const fabRect = fabMenu.getBoundingClientRect();
   
   menuContainer.style.top = `${fabRect.top + fabRect.height + 16}px`;
@@ -121,6 +123,41 @@ function init() {
   helpButton.addEventListener('click', () => {
     ipcRenderer.send('window-events', { name: 'open-help-window', window: 'Help' });
   });
+
+  // reduceWidthButton.addEventListener('click', () => {
+    // const table = document.getElementById('report-table');
+
+    // const tableRows = table.querySelectorAll('tr');
+
+    // let greatestWidth = -1;
+
+    // for (let i = 1; i < tableRows.length; i++) {
+    //   const row = tableRows[i];
+    //   const td = row.querySelector('td:first-child');
+    //   const span = document.createElement('span');
+    //   document.body.appendChild(span);
+
+    //   span.style.font = 'Roboto';
+    //   span.style.font = `${14}px`;
+    //   span.style.height = 'auto';
+    //   span.style.width = 'auto';
+    //   span.style.whiteSpace = 'no-wrap';
+    //   span.innerHTML =  td.innerHTML;
+
+    //   const width = Math.ceil(span.clientWidth);
+    //   console.log(td.clientWidth, width, td.innerHTML);
+    //   document.body.removeChild(span);
+
+    //   if (width > greatestWidth) {
+    //     greatestWidth = width;
+    //   }
+
+
+    // }
+
+    // console.log(greatestWidth);
+  
+  // });
 }
 
 init();

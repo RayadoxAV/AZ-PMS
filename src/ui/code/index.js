@@ -1,5 +1,10 @@
 const { ipcRenderer } = require("electron");
 
+window.data = {
+  isTranslation: false,
+  selectedReport: 0
+};
+
 /* Blocker */
 const blockerTitle = document.getElementById('blocker-title');
 const blockerAccElement = document.getElementById('blocker-acc');
@@ -19,11 +24,37 @@ const accomplishmentsTitle = document.getElementById('accomplishments-week');
 
 const copyReport = document.getElementById('copy-report');
 
+const dialogContainer = document.getElementById('dialog-container');
+const closeDialogButton = document.getElementById('close-dialog');
+const chooseReportSelect = document.getElementById('choose-report-select');
+const dialogCancelButton = document.getElementById('dialog-cancel');
+const dialogSelectButton = document.getElementById('dialog-select');
+
 function init() {
+
+  closeDialogButton.addEventListener('click', () => {
+    dialogContainer.style.display = 'none';
+  });
+
+  dialogCancelButton.addEventListener('click', () => {
+    dialogContainer.style.display = 'none';
+  });
+
+  dialogSelectButton.addEventListener('click', () => {
+    window.data.selectedReport = Number.parseInt(chooseReportSelect.value);
+    dialogContainer.style.display = 'none';
+    convertToHTML();
+
+  });
+
   listenForEvents();
 
   copyReport.addEventListener('click', () => {
-    convertToHTML();
+    if (window.data.isTranslation) {
+      dialogContainer.style.display = 'flex';
+    } else {
+      convertToHTML();
+    }
   });
 
   ipcRenderer.send('data-events', { name: 'load-project' });
@@ -51,7 +82,6 @@ function listenForEvents() {
 function loadProjectData(workplanString) {
   const workplan = JSON.parse(workplanString);
 
-  console.log(workplan);
 
   /* Blocker */
   blockerTitle.innerText = workplan.projectName;
@@ -168,7 +198,55 @@ function loadProjectData(workplanString) {
   const isTranslation = workplan.projectId === 'TR-1';
 
   if (isTranslation) {
+    window.data = {
+      isTranslation: isTranslation,
+      selectedReport: 0
+    };
     fillSubmissionsReport(workplan);
+
+    /* Para traducciones se tienen dos reportes.
+    El blocker report con fechas y todo normal.
+    Y el blocker report para el reporte semanal */
+    /* Realmente uno es modificación del otro. Puedo agregar HTML dinamico bajo el reporte para no tener que modificar index.html
+    Sip, y simplemente lo someto a las mismas modificaciones para que se puedan alterar los status del proyecto.
+    Y quitamos las todas las fechas para el reporte semanal.
+    
+    */
+
+    generateTranslationsWeeklyReport(workplan);
+
+    const statuses = ['on-track', 'behind', 'out-of-track'];
+
+    reportStatusContainer.addEventListener('click', (event) => {
+
+
+      const progressContainer = event.target;
+      let currentStatusInt = stringToWorkStatusInt(progressContainer.classList[1]);
+
+      const trReportStatus = document.getElementById('tr-weekly-report-status');
+      const trReportProgressBar = document.getElementById('tr-weekly-report-progress-bar');
+
+      progressContainer.classList.remove(statuses[currentStatusInt]);
+      reportProgressBar.classList.remove(statuses[currentStatusInt]);
+
+      trReportStatus.classList.remove(statuses[currentStatusInt]);
+      trReportProgressBar.classList.remove(statuses[currentStatusInt]);
+
+      if (currentStatusInt === 2) {
+        currentStatusInt = 0;
+      } else {
+        currentStatusInt += 1;
+      }
+
+      progressContainer.classList.add(statuses[currentStatusInt]);
+      progressContainer.innerHTML = intToWorkStatusText(currentStatusInt);
+      reportProgressBar.classList.add(statuses[currentStatusInt]);
+
+      trReportStatus.classList.add(statuses[currentStatusInt]);
+      trReportStatus.innerHTML = intToWorkStatusText(currentStatusInt);
+      trReportProgressBar.classList.add(statuses[currentStatusInt]);
+
+    });
   }
 }
 
@@ -244,8 +322,7 @@ function fillReport(workplan) {
           </div>
         </td>
         <td class="invisible">
-          <input style="width: 50%;">
-          <div id="progress-bar-${i}" class="progress-bar on-track" style="--progress: 0%; width: 50%;" data-status="0">
+          <div id="progress-bar-${i}" class="progress-bar difference" style="--progress: 0%; width: 100%;" data-status="0">
             <span contenteditable="true">0%</span>
             <div class="progress-background"></div>
           </div>
@@ -303,14 +380,15 @@ function fillReport(workplan) {
         <td>${(item.target > 0) ? numberWithCommas(item.remaining) : ''}</td>
         ${isTranslation ? `<td>${item.workedLastWeek > 0 ? numberWithCommas(optionalFieldWrapper(item, 'workedLastWeek')) : ''}</td>` : ''}
         <td>
-          <div class="progress-bar ${status}" style="--progress: ${(item.progress * 100).toFixed(0)}%;">
+          ${item.flag !== 3
+          ? `<div class="progress-bar ${status}" style="--progress: ${(item.progress * 100).toFixed(0)}%;">
             <span>${(item.progress * 100).toFixed(0)}%</span>
             <div class="progress-background"></div>
-          </div>
+          </div>` : ''
+        }
         </td>
         <td class="invisible">
-          <input style="width: 50%;">
-          <div id="progress-bar-${i}" class="progress-bar on-track" style="--progress: 0%; width: 50%;" data-status="0">
+          <div id="progress-bar-${i}" class="progress-bar difference" style="--progress: 0%; width: 100%;" data-status="0">
             <span contenteditable="true">0%</span>
             <div class="progress-background"></div>
           </div>
@@ -346,6 +424,30 @@ function intToWorkStatusText(workStatusInt) {
   return workStatusText;
 }
 
+function stringToWorkStatusInt(workStatusString) {
+  let workStatusInt = -1;
+
+  switch (workStatusString) {
+    case 'on-track':
+      workStatusInt = 0;
+      break;
+
+    case 'behind':
+      workStatusInt = 1;
+      break;
+
+    case 'out-of-track':
+      workStatusInt = 2;
+      break;
+
+    default:
+      workStatusInt = 0;
+      break;
+  }
+
+  return workStatusInt;
+}
+
 function numberWithCommas(x) {
   try {
     const number = x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -363,7 +465,11 @@ function convertToHTML() {
     // return true;
   }
 
-  domToImg.toPng(report, { filter: filterNodes }).then((dataUrl) => {
+  const translationsReport = document.getElementById('tr-report');
+
+  const node = window.data.selectedReport === 0 ? report : translationsReport;
+
+  domToImg.toPng(node, { filter: filterNodes }).then((dataUrl) => {
     const byteCharacters = atob(dataUrl.substring(22));
 
     const byteNumbers = new Array(byteCharacters.length);
@@ -421,15 +527,15 @@ function fillSubmissionsReport(workplan) {
   let shouldSkip = true;
 
   let bodyHTML = '';
-  
+
   for (let i = 0; i < workplan.report.reportingItems.length; i++) {
     const item = workplan.report.reportingItems[i];
 
     if (item.name === 'New Submissions') {
       shouldSkip = false;
 
-      thead.innerHTML = 
-      `
+      thead.innerHTML =
+        `
         <tr>
           <th>${item.name}</th>
           <th>Start date</th>
@@ -465,8 +571,8 @@ function fillSubmissionsReport(workplan) {
     }
 
 
-    bodyHTML += 
-    `
+    bodyHTML +=
+      `
       <tr>
         <td>${item.name}</td>
         <td>${startDate}</td>
@@ -475,7 +581,7 @@ function fillSubmissionsReport(workplan) {
         <td>${numberWithCommas(item.receivedLastWeek)}</td>
         <td>${numberWithCommas(item.workedLastWeek)}</td>
         <td>
-          <div class="progress-bar on-track" style="--progress: ${(item.workedLastWeek / item.receivedLastWeek * 100).toFixed(0)}%;">
+          <div class="progress-bar difference" style="--progress: ${(item.workedLastWeek / item.receivedLastWeek * 100).toFixed(0)}%;">
             <span>${(item.workedLastWeek / item.receivedLastWeek * 100).toFixed(2)}%</span>
             <div class="progress-background"></div>
           </div>
@@ -492,16 +598,200 @@ function fillSubmissionsReport(workplan) {
   reportTable.after(submissionsTable);
 }
 
+function generateTranslationsWeeklyReport(workplan) {
+  const reportContainer = document.createElement('div');
+  reportContainer.classList.add('report');
+  reportContainer.id = 'tr-report';
+
+  const projectStatus = workplan.projectStatus;
+  const projectProgress = (workplan.projectProgress * 100).toFixed(0);
+
+  reportContainer.innerHTML =
+    `<div class="header">
+    <span class="title">${workplan.projectName}</span>
+    <div style="display: flex">
+      <div id="tr-weekly-report-status" class="status-container ${intToStatusClass(projectStatus)}">${intToWorkStatusText(projectStatus)}</div>
+      <div class="progress-container">
+        <div id="tr-weekly-report-progress-bar" class="progress-bar ${intToStatusClass(projectStatus)}" style="--progress: ${projectProgress}%">
+          <span>${projectProgress}%</span>
+          <div class="progress-background"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+    <table class="milestone-container">
+      <thead>
+        <tr>
+          <th>Milestones</th>
+          <th>Target</th>
+          <th>Remaining</th>
+          <th>Worked Last Week</th>
+          <th>Progress</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${generateRows(workplan.report.reportingItems)}
+      </tbody>
+    </table>
+    ${generateSubmissionRows(workplan.report.reportingItems)}
+  `;
+
+  const container = document.getElementById('main-container');
+
+
+  container.appendChild(reportContainer);
+
+  function generateRows(reportingItems) {
+
+    let tableHTML = '';
+
+    for (let i = 0; i < reportingItems.length; i++) {
+      const item = reportingItems[i];
+
+      if (item.name === 'New Submissions') {
+        break;
+      }
+
+      if (item.tasks) {
+        let status = undefined;
+
+        if (item.workStatus === 0) {
+          status = 'on-track';
+        } else if (item.workStatus === 1) {
+          status = 'behind';
+        } else if (item.workStatus === 2) {
+          status = 'out-of-track';
+        }
+
+        tableHTML +=
+          `<tr class="milestone">
+            <td>${item.name}</td>
+            <td>${item.target > 0 ? numberWithCommas(item.target) : ''}</td>
+            <td>${item.remaining === 0 ? '' : numberWithCommas(item.remaining)}</td>
+            <td></td>
+            <td>
+              <div class="progress-bar ${status}" style="--progress: ${(item.progress * 100).toFixed(2)}%">
+                <span>${(item.progress * 100).toFixed(0)}%</span>
+                <div class="progress-background"></div>
+              </div>
+            </td>
+          </tr>`;
+      } else {
+        let status = undefined;
+
+        if (item.workStatus === 0) {
+          status = 'on-track';
+        } else if (item.workStatus === 1) {
+          status = 'behind';
+        } else if (item.workStatus === 2) {
+          status = 'out-of-track';
+        }
+
+        tableHTML +=
+          `<tr>
+          <td>${item.name}</td>
+          <td>${item.target > 0 ? numberWithCommas(item.target) : ''}</td>
+          <td>${item.target > 0 ? numberWithCommas(item.remaining) : ''}</td>
+          <td></td>
+          <td>
+            ${item.flag !== 3
+            ?
+            `<div class="progress-bar ${status}" style="--progress: ${(item.progress * 100).toFixed(0)}%">
+                <span>${(item.progress * 100).toFixed(0)}%</span>
+                <div class="progress-background"></div>
+              </div>` : ''
+          }
+          </td>
+        </tr>`;
+      }
+    }
+
+    return tableHTML;
+  }
+
+  function generateSubmissionRows(reportingItems) {
+    let tableHTML =
+      `<table class="milestone-container" style="border-top: 2px solid #475469; margin-top: 1rem;">
+      <thead>`;
+
+    let shouldSkip = true;
+
+
+    for (let i = 0; i < reportingItems.length; i++) {
+      const item = reportingItems[i];
+
+      if (item.name === 'New Submissions') {
+        shouldSkip = false;
+
+        tableHTML +=
+          `<tr>
+          <th>${item.name}</th>
+          <th>Total translated</th>
+          <th>Received (WK)</th>
+          <th>Worked(WK)</th>
+          <th>Progress</th>
+        </tr>
+        </thead>
+        <tbody>`;
+
+        continue;
+      }
+      if (shouldSkip) {
+        continue;
+      }
+
+      tableHTML +=
+        `<tr>
+        <td style="height: 20px">${item.name}</td>
+        <td>${numberWithCommas(item.completed)}</td>
+        <td>${numberWithCommas(item.receivedLastWeek)}</td>
+        <td>${numberWithCommas(item.workedLastWeek)}</td>
+        <td>
+          <div class="progress-bar difference" style="--progress: ${(item.workedLastWeek / item.receivedLastWeek * 100).toFixed(0)}%;">
+            <span>${(item.workedLastWeek / item.receivedLastWeek * 100).toFixed(2)}%</span>
+            <div class="progress-background"></div>
+          </div>
+        </td>
+      </tr>`;
+    }
+
+    tableHTML += '</tbody></table>';
+
+    return tableHTML;
+  }
+
+  function intToStatusClass(statusInput) {
+    let statusClass = '';
+
+    switch (statusInput) {
+      case 0:
+        statusClass = 'on-track';
+        break;
+      case 1:
+        statusClass = 'behind';
+        break;
+      case 2:
+        statusClass = 'out-of-track';
+        break;
+      default:
+        statusClass = 'on-track';
+        break;
+    }
+
+    return statusClass;
+  }
+}
+
 function setupEventsPostLoad() {
-  
-  const statuses = ['on-track', 'behind', 'out-of-track'];
+
+  const statuses = ['difference', 'out-of-track'];
 
   document.querySelectorAll('table.milestone-container > tbody > tr > td:last-child > div.progress-bar').forEach((element) => {
     const progressBarElement = element;
 
     const span = progressBarElement.querySelector('span');
     span.addEventListener('keyup', (event) => {
-      progressBarElement.style = `--progress: ${event.target.innerText}; width: 50%;`;
+      progressBarElement.style = `--progress: ${event.target.innerText}; width: 100%;`;
     });
 
     progressBarElement.addEventListener('click', (event) => {
@@ -510,7 +800,7 @@ function setupEventsPostLoad() {
       if (event.target.matches('div.progress-bar')) {
         let status = Number.parseInt(progressBarElement.getAttribute('data-status'));
         progressBarElement.classList.remove(statuses[status]);
-        if (status < 2) {
+        if (status < 1) {
           status += 1;
         } else {
           status = 0;

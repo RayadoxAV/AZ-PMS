@@ -34,6 +34,8 @@ class DataManager {
           return;
         }
 
+        console.log('aa');
+
         await PersistenceManager.createDBIfNotExists();
         await this.loadProject({ path, projectId });
         break;

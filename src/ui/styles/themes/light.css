@@ -61,6 +61,9 @@
   --progress-gradient-out-of-track: linear-gradient(90deg, rgba(255, 85, 90, 1) 0%, rgba(255, 255, 255, 1) 100%);
   --progress-border-out-of-track: 1px solid #ff555a;
 
+  --progress-gradient-difference: linear-gradient(90deg, rgba(0, 138, 239, 1) 0%, rgba(215, 236, 251, 1) 100%);
+  --progress-border-difference: 1px solid #008aef;
+
   --fab-background: #d2dbe7;
   --fab-border: #c4ccd7;
   --fab-background-hover: #d7e1f1;

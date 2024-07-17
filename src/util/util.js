@@ -920,3 +920,19 @@ class Util {
 
 
 module.exports = Util;
+/* 
+1. Sacamos la cantidad de milisegudnos en un día: 86400000
+2. Obtenemos la verdadera fecha final de la finish date o de la new finish date
+3. Calculamos la duración de la tarea en días naturales.
+  Se describe como funcion del tiempo de la fecha final calculada menos la fecha inicial dividido entre la unidad de dias, mas un dia para tomar en cuenta el primer dia y mas 0.25 dias para acomodar para el hecho de que las fechas se generan a las 6 de la mañana hora local.
+4. Para determinar la duración laboral de la tarea iteramos desde cero hasta que i sea menor que la duración natural del tarea.
+  4.1 Generamos una nueva fecha a partir de la fecha de inicio y agregando i cantidad de días en cada iteración.
+  4.2 Si el día NO es sábado o domingo se le suma uno a la duración laboral de la tarea.
+5. Calculamos la unidad mínima de progreso. Es decir cuando se debería de avanzar por día a nivel teórico. Se describe como el inverso de la duracion laboral.
+6. Generamos un arreglo de tamaño duración labloral.
+7. Iteramos desde 0 hasta que i sea menor que la duración del arreglo
+  7.1 Se popula el arreglo en indice i con el progreso acumulado.
+  7.2 Se le suma una unidad de progreso al progreso acumulado.
+8. Calculamos la fecha actual
+9. Obtenemos la diferencia natural de días entre el día de hoy y la fecha de inicio que se describe como la fecha actual menos la fecha inicial dividido por la unidad del día.
+10.  */

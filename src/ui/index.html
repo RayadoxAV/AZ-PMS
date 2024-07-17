@@ -16,6 +16,24 @@
 </head>
 
 <body>
+  <div class="dialog-container" id="dialog-container" style="display: none;">
+    <div class="dialog">
+      <div class="header">
+        <span class="title">Choose a report to copy</span>
+        <button id="close-dialog">Close</button>
+      </div>
+      <div class="body">
+        <select name="choose-report-select" id="choose-report-select">
+          <option value="0">Meeting report</option>
+          <option value="1">Weekly report</option>
+        </select>
+      </div>
+      <div class="footer">
+        <button id="dialog-cancel">Cancel</button>
+        <button id="dialog-select">Select</button>
+      </div>
+    </div>
+  </div>
   <div class="title-bar">
     <div class="information-container">
       <span id="window-title" class="title">4Blocker</span>
@@ -59,17 +77,21 @@
       <span class="icon toggle"></span>
       <span class="tooltip">Toggle Last Week column</span>
     </button>
-    <button class="menu-item" style="--index: 7" id="settings-button">
+    <!-- <button class="menu-item" style="--index: 7" id="reduce-width-button">
+      <span class="icon width"></span>
+      <span class="tooltip">Reduce width</span>
+    </button> -->
+    <button class="menu-item" style="--index: 8" id="settings-button">
       <span class="icon settings"></span>
       <span class="tooltip">Settings</span>
     </button>
-    <button class="menu-item" style="--index: 8" id="help-button">
+    <button class="menu-item" style="--index: 9" id="help-button">
       <span class="icon help"></span>
       <span class="tooltip">Help</span>
     </button>
   </div>
 
-  <div class="main-container">
+  <div class="main-container" id="main-container">
     <div class="blocker">
       <span id="blocker-title" class="title"></span>
       <div class="header">
@@ -109,6 +131,7 @@
           d="M760-200H320q-33 0-56.5-23.5T240-280v-560q0-33 23.5-56.5T320-920h280l240 240v400q0 33-23.5 56.5T760-200ZM560-640v-200H320v560h440v-360H560ZM160-40q-33 0-56.5-23.5T80-120v-560h80v560h440v80H160Zm160-800v200-200 560-560Z" />
       </svg>
     </button>
+    
     <div class="report" id="report-container">
       <div class="header">
         <span id="report-title" class="title"></span>
