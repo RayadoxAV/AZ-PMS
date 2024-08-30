@@ -34,8 +34,6 @@ class DataManager {
           return;
         }
 
-        console.log('aa');
-
         await PersistenceManager.createDBIfNotExists();
         await this.loadProject({ path, projectId });
         break;
@@ -79,6 +77,7 @@ class DataManager {
 
     if (!workplanVersion) {
       // TODO: Emit error event to frontend
+      Logger.Log('No workplan version found', 3);
       return;
     }
 
@@ -90,6 +89,13 @@ class DataManager {
 
     if (!bridge) {
       // TODO: Emit error event to frontend. Therically there is no reason for this to fail.
+      Logger.Log('No bridge object found', 3);
+      return;
+    }
+
+    if (bridge.size === 0) {
+      // TODO: Emit error event to frontend.
+      Logger.Log('No entries found for Bridge Object', 3);
       return;
     }
 
@@ -120,9 +126,6 @@ class DataManager {
     workplan.report = inferenceEngine.generateReport(workplan);
 
     BrowserWindow.getAllWindows()[0].webContents.send('data-events', { name: 'project-loaded', data: JSON.stringify(workplan) });
-
-
-    // console.log(JSON.stringify(workplan));
 
     return workplan;
   }

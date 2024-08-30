@@ -5,73 +5,121 @@ const { Workplan } = require("./types");
 class InferenceEngine {
 
   static inferProjectWorkStatus(workplan) {
-    let onTime = 0;
-    let delayed = 0;
-    let late = 0;
-    let taskCount = 0;
 
-    let workStatus = -1;
-
-    let currentDate = undefined;
-
-    let dateDifference = 0;
-
-    if (workplan.type === 0) {
-      currentDate = Util.dateToWeek(new Date());
-    } else {
-      currentDate = new Date();
+    if (workplan.type !== 0) {
+      return 0;
     }
 
-    for (let i = 0; i < workplan.milestones.length; i++) {
-      const milestone = workplan.milestones[i];
-
-      for (let j = 0; j < milestone.tasks.length; j++) {
-        const task = milestone.tasks[j];
-        // Date Diffing
-        if (workplan.type === 0) {
-
-          if (task.newFinishDate) {
-            dateDifference = task.newFinishDate.week - currentDate;
-          } else if (task.finishDate) {
-            dateDifference = task.finishDate.week - currentDate;
-          } else {
-            dateDifference = 10000;
-          }
-
-        } else {
-          const dayUnit = 1000 * 60 * 60 * 24;
-
-          if (task.newFinishDate) {
-            dateDifference = Math.ceil((task.newFinishDate.date.getTime() - currentDate.getTime()) / dayUnit);
-          } else if (task.finishDate) {
-            dateDifference = Math.ceil((task.finishDate.date.getTime() - currentDate.getTime()) / dayUnit);
-          } else {
-            dateDifference = 10000;
-          }
-        }
-        
-        const timeResult = Util.isOnTime(task, workplan.type);
-
-        if (task.status !== 2 & dateDifference < 0) {
-          late++;
-        } else if (task.status !== 2 && task.status !== 4 && !timeResult.onTime) {
-          delayed++;
-        }
-        taskCount++;
+    if (workplan.version === 'v3') {
+      let onTime = 0;
+      let delayed = 0;
+      let late = 0;
+      let taskCount = 0;
+  
+      let workStatus = -1;
+  
+      let currentDate = undefined;
+  
+      let dateDifference = 0;
+  
+      if (workplan.type === 0) {
+        currentDate = Util.dateToWeek(new Date());
+      } else {
+        currentDate = new Date();
       }
+  
+      for (let i = 0; i < workplan.milestones.length; i++) {
+        const milestone = workplan.milestones[i];
+  
+        for (let j = 0; j < milestone.tasks.length; j++) {
+          const task = milestone.tasks[j];
+          // Date Diffing
+          if (workplan.type === 0) {
+  
+            if (task.newFinishDate) {
+              dateDifference = task.newFinishDate.week - currentDate;
+            } else if (task.finishDate) {
+              dateDifference = task.finishDate.week - currentDate;
+            } else {
+              dateDifference = 10000;
+            }
+  
+          } else {
+            const dayUnit = 1000 * 60 * 60 * 24;
+  
+            if (task.newFinishDate) {
+              dateDifference = Math.ceil((task.newFinishDate.date.getTime() - currentDate.getTime()) / dayUnit);
+            } else if (task.finishDate) {
+              dateDifference = Math.ceil((task.finishDate.date.getTime() - currentDate.getTime()) / dayUnit);
+            } else {
+              dateDifference = 10000;
+            }
+          }
+          const timeResult = Util.isOnTime(task, workplan.type, workplan.version);
+  
+          if (task.status !== 2 & dateDifference < 0) {
+            late++;
+          } else if (task.status !== 2 && task.status !== 4 && !timeResult.onTime) {
+            delayed++;
+          }
+          taskCount++;
+        }
+      }
+  
+      
+      onTime = taskCount - late - delayed;
+  
+      if (delayed >= 2) {
+        workStatus = 1;
+      } else if (late >= 3) {
+        workStatus = 2;
+      } else {
+        workStatus = 0;
+      }
+  
+      return workStatus;
+    } else if (workplan.version === 'v4') {
+
+      let onTime = 0;
+      let delayed = 0;
+      let late = 0;
+
+      let workStatus = 0;
+
+      for (let i = 0; i < workplan.milestones.length; i++) {
+        const milestone = workplan.milestones[i];
+
+        for (let j = 0; j < milestone.tasks.length; j++) {
+          const task = milestone.tasks[j];
+
+          const timeResult = Util.isOnTime(task, workplan.type, workplan.version);
+
+          if (task.status !== 2 && task.status !== 4 && !timeResult.onTime) {
+            if (timeResult.timeBehind > 2) {
+              late++;
+            } else {
+              delayed++;
+            }
+          } else {
+            onTime++;
+          }
+        }
+      }
+      
+      if (delayed >= 2) {
+        workStatus = 1;
+      } else if (late >= 3) {
+        workStatus = 2;
+      } else {
+        workStatus = 0;
+      }
+
+      return workStatus;
+
     }
 
-    onTime = taskCount - late - delayed;
 
-    if (delayed >= 2) {
-      workStatus = 1;
-    } else if (late >= 3) {
-      workStatus = 2;
-    } else {
-      workStatus = 0;
-    }
-
-    return workStatus;
+    return 0;
   }
 
   static inferMilestoneStartDate(milestone) {
@@ -195,7 +243,7 @@ class InferenceEngine {
     return status;
   }
 
-  static inferMilestoneWorkStatus(milestone, type) {
+  static inferMilestoneWorkStatus(milestone, type, version) {
     let workStatus = 0;
 
     if (milestone.tasks.length === 0) {
@@ -207,7 +255,7 @@ class InferenceEngine {
     for (let i = 0; i < milestone.tasks.length; i++) {
       const task = milestone.tasks[i];
 
-      if (task.status !== 2 && task.status !== 4 && !Util.isOnTime(task, type).onTime) {
+      if (task.status !== 2 && task.status !== 4 && !Util.isOnTime(task, type, version).onTime) {
         tasksLate++;
       }
     }
@@ -223,10 +271,10 @@ class InferenceEngine {
     return workStatus;
   }
 
-  static inferTaskWorkStatus(task, type) {
+  static inferTaskWorkStatus(task, type, version) {
     let workStatus = undefined;
 
-    const timeResult = Util.isOnTime(task, type);
+    const timeResult = Util.isOnTime(task, type, version);
 
     if (type === 0) {
       if (timeResult.timeBehind === 0) {
@@ -453,7 +501,7 @@ class InferenceEngine {
           // console.log(milestone.tasks);
           risksString += `- [${task.name}] ${task.remarks}\n`;
         } else {
-          const timeResult = Util.isOnTime(task, workplan.type);
+          const timeResult = Util.isOnTime(task, workplan.type, workplan.version);
           // console.log(task.name, timeResult);
 
 
@@ -650,7 +698,7 @@ class InferenceEngine {
 
               const today = new Date(new Date().getTime() - 21600000);
 
-              console.log(today);
+              // console.log(today);
 
             } else if (workplan.type === 2) {
               const tolerance = 10;

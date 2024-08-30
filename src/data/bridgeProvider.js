@@ -18,43 +18,75 @@ class BridgeProvider {
 
     const cells = Util.getRange(workplanSheet, 'A1:V10');
 
+    const fields = Array.from(workplanFields);
+
     for (let i = 0; i < cells.length; i++) {
 
       if (typeof cells[i].value === 'string') {
         const cellValue = `${cells[i].value}`.toLocaleLowerCase();
+        for (let j = 0; j < fields.length; j++) {
+          const currentField = fields[j];
 
-        for (let j = 0; j < workplanFields.length; j++) {
-          const currentField = Util.testFields[workplanFields[j]];
-          
-          if (currentField === 'remarks [project]' && cellValue === 'remarks') {
-            
-            if (!bridge.has(7)) {
-              
+          if (currentField === 'remarks [project]' && (cellValue === 'remarks' || cellValue === 'risk remarks')) {
+            if (cellValue === 'risk remarks') {
               const [col, row] = cells[i].address.match(/[a-z]+|[^a-z]+/gi);
-
-              bridge.set(7, `${col}${parseInt(row) + 1}`);
+              bridge.set('remarks', `${col}${parseInt(row) + 1}`);
+            } else if (cellValue === 'remarks') {
+              if (!bridge.has('remarks [project]')) {
+                const [col, row] = cells[i].address.match(/[a-z]+|[^a-z]+/gi);
+                bridge.set('remarks [project]', `${col}${parseInt(row) + 1}`);
+              }
             }
           } else if (cellValue === currentField) {
-
-            if (currentField === 'total progress' || currentField === 'planned progress') {
+            if (currentField === 'total progress' || currentField === 'planned progress' || currentField === 'task count') {
               const [col, row] = cells[i].address.match(/[a-z]+|[^a-z]+/gi);
               const nextCol = Util.getNextColumn(col, 1);
 
-              bridge.set(workplanFields[j], `${nextCol}${row}`);
+              bridge.set(currentField, `${nextCol}${row}`);
             } else {
               const [col, row] = cells[i].address.match(/[a-z]+|[^a-z]+/gi);
-              bridge.set(workplanFields[j], `${col}${parseInt(row) + 1}`);
+              bridge.set(currentField, `${col}${parseInt(row) + 1}`);
             }
           }
 
-          if (cellValue === 'remarks' && cells[i]['_mergeCount'] > 0) {
+          // NOTE: Skip merged cells for remarks field :D
+          if (cellValue === 'remarks' & cells[i]['_mergeCount'] > 0) {
             i += cells[i]['_mergeCount'];
           }
         }
+
+
+        //     for (let j = 0; j < workplanFields.length; j++) {
+        //       const currentField = Util.testFields[workplanFields[j]];
+
+        //       if (currentField === 'remarks [project]' && cellValue === 'remarks') {
+
+        //         if (!bridge.has(7)) {
+
+        //           const [col, row] = cells[i].address.match(/[a-z]+|[^a-z]+/gi);
+
+        //           bridge.set(7, `${col}${parseInt(row) + 1}`);
+        //         }
+        //       } else if (cellValue === currentField) {
+
+        //         if (currentField === 'total progress' || currentField === 'planned progress') {
+        //           const [col, row] = cells[i].address.match(/[a-z]+|[^a-z]+/gi);
+        //           const nextCol = Util.getNextColumn(col, 1);
+
+        //           bridge.set(workplanFields[j], `${nextCol}${row}`);
+        //         } else {
+        //           const [col, row] = cells[i].address.match(/[a-z]+|[^a-z]+/gi);
+        //           bridge.set(workplanFields[j], `${col}${parseInt(row) + 1}`);
+        //         }
+        //       }
+
+        //       if (cellValue === 'remarks' && cells[i]['_mergeCount'] > 0) {
+        //         i += cells[i]['_mergeCount'];
+        //       }
+        //     }
       }
     }
 
-    // Logger.Log('Bridge generated for workplan', 0);
     return bridge;
   }
 }
