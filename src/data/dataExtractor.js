@@ -745,10 +745,12 @@ class DataExtractor {
         Logger.Log('Not managed: Milestone data', 3);
       }
       const milestoneStatusColumn = bridge.get('status').match(/[a-z]+|[^a-z]+/gi)[0];
-
+      const index = Util.getColumnIndexByLetter(milestoneNameColumn);
       workplanSheet.eachRow((row, rowNumber) => {
-        const testCell = row['_cells'][0];
+        // TODO: Should probably get the cell for 
+       
 
+        const testCell = row['_cells'][index];
         if (testCell) {
           // console.log(testCell.style, testCell.address);
           if (testCell.style.fill) {
@@ -756,6 +758,7 @@ class DataExtractor {
               // console.log(testCell.style.fill, testCell.address);
 
               if ((testCell.style.fill.fgColor.argb === 'FFD6DCE4')) {
+                console.log('hola');
                 const milestone = new Milestone();
 
                 milestone.name = Util.getValue(workplanSheet, `${milestoneNameColumn}${rowNumber}`, 'string');

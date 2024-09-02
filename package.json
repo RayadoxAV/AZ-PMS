@@ -5,7 +5,7 @@
   "main": "src/main.js",
   "scripts": {
     "test": "node src/tests/test.js",
-    "dev": "electron . --path \"C:/Users/rpaz/Documents/Development/Resources/az-pms/Testing WPs/MERCH-1 FY25.xlsx\" --id PR-7",
+    "dev": "electron . --path \"C:/Users/rpaz/Documents/Development/Resources/az-pms/Testing WPs/IC-3.xlsx\" --id IC-3",
     "deploy": "node src/deployment/deployer.js"
   },
   "author": "Raymundo Paz",
