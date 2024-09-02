@@ -49,6 +49,14 @@ export enum Label {
   AD = 'Analysis and Design'
 }
 
+export type TimelineDeviation = {
+  isOnTime: boolean;
+  timeline: {
+    weeks: number,
+    days: number
+  }
+};
+
 export type WorkplanType = 'Daily' | 'Weekly' | 'Scrum';
 
 export type WorkplanField = {

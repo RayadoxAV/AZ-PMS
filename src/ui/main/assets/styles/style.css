@@ -5,8 +5,29 @@
 
 * {
   box-sizing: border-box;
-  font-family: 'Roboto', sans-serif;
 }
+
+body {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+}
+
+div.main-container {
+  height: 100%;
+  display: grid;
+  overflow: hidden;
+  grid-template-rows: 2.5rem minmax(0, 1fr);
+  grid-template-columns: 5rem minmax(0, 1fr);
+  grid-template-areas: 
+    "title-bar title-bar"
+    "nav-rail content";
+
+
+}
+
+/* 
+
 
 body {
   margin: 0;
@@ -180,10 +201,6 @@ div.container {
   animation-fill-mode: forwards;
 }
 
-/* SECTION: Blocker */
-
-/* 4Blocker */
-
 div.container.blocker-section {
   display: flex;
   flex-direction: column;
@@ -305,8 +322,6 @@ div.blocker > div.body > div.section:nth-child(2) {
 div.blocker > div.body > div.section:nth-child(3) {
   border-right: 1px solid var(--blocker-border);
 }
-
-/* Report */
 
 div.report {
   position: relative;
@@ -472,8 +487,6 @@ table.milestone-container > tbody > tr > td > div.progress-bar > span {
   font-size: 13px;
 }
 
-/* Progress Bar */
-
 div.progress-bar {
   width: 100%;
   height: 100%;
@@ -511,8 +524,6 @@ div.progress-bar.out-of-track > div.progress-background {
   background: var(--progress-gradient-out-of-track);
   border: var(--progress-border-out-of-track);
 }
-
-/* Context Menu */
 
 div.context-menu {
   position: absolute;
@@ -563,8 +574,6 @@ div.context-menu > div.divider {
   height: 1px;
   margin: 0.25rem 0.5rem;
 }
-
-/* FABs */
 
 button.fab-copy-report {
   position: absolute;
@@ -645,7 +654,6 @@ button.fab-options:active {
   border-radius: 0.5rem;
 }
 
-/* Options container */
 
 div.opts-menu-container {
   position: absolute;
@@ -653,8 +661,6 @@ div.opts-menu-container {
   flex-direction: column;
   gap: 0.25rem;
   z-index: 1;
-  /* bottom: 11rem; */
-  /* right: 1.25rem; */
 }
 
 div.opts-menu-container > button.option-item {
@@ -723,7 +729,6 @@ button.option-item:hover > i.icon {
   background-color: var(--opt-item-icon-active);
 }
 
-/* SECTION: Gantt */
 div.container.gantt-section {
   display: flex;
   flex-direction: column;
@@ -775,7 +780,6 @@ div.sidebar div.name-container {
   pointer-events: all;
   align-items: center;
   border-radius: 0.25rem;
-  /* border: 1px solid red; */
 }
 
 div.sidebar div.name-container > i.icon {
@@ -815,57 +819,6 @@ div.parent.collapsed > div.children-wrapper {
 }
 
 
-/* div.sidebar > div.parent {
-  display: flex;
-  flex-direction: column;
-}
-
-div.parent > div.name-container {
-  display: flex;
-  align-items: center;
-  padding: 0.25rem;
-  border: 1px solid red;
-  gap: 0.25rem;
-  height: 2rem;
-}
-
-div.parent > div.name-container > button {
-  background-color: transparent;
-  border: none;
-  height: 1.2rem;
-  width: 1.2rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 0;
-  cursor: pointer;
-}
-
-div.parent > div.name-container > button i.icon {
-  background-color: #333333;
-  display: block;
-  height: 1.2rem;
-  width: 1.2rem;
-  mask-size: 120%;
-  mask-repeat: no-repeat;
-  mask-position: center;
-}
-
-div.parent > div.name-container > span.name {
-  font-size: 15px;
-  user-select: none;
-  
-}
-
-div.parent > div.children {
-}
-
-div.children > div.name-container {
-  padding: 0.25rem;
-  border: 1px solid red;
-  height: 2rem;
-}
- */
 div.gantt-chart > div.body > div.timeline {
   width: 100%;
   overflow: auto;
@@ -878,22 +831,7 @@ div.timeline > canvas {
   height: 400px;
 }
 
-/* div.gantt-chart > div.gantt-row {
-  display: flex;
-  background-color: blue;
-  height: 2rem;
-}
 
-div.gantt-row > div.task {
-  display: flex;
-}
-
-div.gantt-row > div.length {
-  background-color: black;
-} */
-
-
-/* Icons */
 
 i.icon[data-icon="home"] {
   mask-image: url('/assets/icons/home.svg');
@@ -963,7 +901,6 @@ i.icon[data-icon=""] {
   
 }
 
-/* Animations */
 
 @keyframes containerEnter {
   from {
@@ -1003,4 +940,4 @@ i.icon[data-icon=""] {
     transform: translateY(0px) scale(100%);
     opacity: 1;
   }
-}
+} */

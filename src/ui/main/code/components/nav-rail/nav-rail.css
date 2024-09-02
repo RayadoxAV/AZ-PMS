@@ -1,0 +1,107 @@
+div.az-nav-rail {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  background-color: var(--nav-rail-background);
+  padding-top: 1rem;
+
+  > div.item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.25rem;
+    padding-bottom: 0.125rem;
+    padding-top: 0.125rem;
+    cursor: pointer;
+    background-color: var(--nav-rail-item-background);
+
+    > * {
+      pointer-events: none;
+      user-select: none;
+    }
+
+    > span.icon {
+      height: 2rem;
+      width: 3.5rem;
+      border-radius: 1.5rem;
+      background-color: var(--nav-rail-icon-background);
+      transition: background-color 150ms var(--default-timing);
+      
+      background-size: 1.5rem 1.5rem;
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+
+    > span.text {
+      line-height: 1rem;
+      font-family: 'Roboto', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      transition: font-weight 150ms var(--default-timing);
+    }
+  }
+
+  > div.item:hover {
+    
+    > span.icon {
+      background-color: var(--nav-rail-icon-hover-background);
+    }
+
+  }
+
+  > div.item.active {
+    > span.icon {
+      background-color: var(--nav-rail-icon-active-background);
+    }
+
+    > span.text {
+      font-weight: 700;
+    }
+  }
+}
+
+
+span.icon[data-icon="home"] {
+  background-image: url('/assets/icons/home_hollow_light.svg');
+}
+
+span.icon[data-icon="window"] {
+  background-image: url('/assets/icons/window_hollow_light.svg');
+}
+
+span.icon[data-icon="view_timeline"] {
+  background-image: url('/assets/icons/view_timeline_hollow_light.svg');
+}
+
+span.icon[data-icon="timeline"] {
+  background-image: url('/assets/icons/timeline_hollow_light.svg');
+}
+
+span.icon[data-icon="settings"] {
+  background-image: url('/assets/icons/settings_hollow_light.svg');
+}
+
+.active {
+  span.icon[data-icon="home"] {
+    background-image: url('/assets/icons/home_filled_light.svg');
+  }
+  
+  span.icon[data-icon="window"] {
+    background-image: url('/assets/icons/window_hollow_light.svg');
+  }
+  
+  span.icon[data-icon="view_timeline"] {
+    background-image: url('/assets/icons/view_timeline_hollow_light.svg');
+  }
+  
+  span.icon[data-icon="timeline"] {
+    background-image: url('/assets/icons/timeline_hollow_light.svg');
+  }
+  
+  span.icon[data-icon="settings"] {
+    background-image: url('/assets/icons/settings_filled_light.svg');
+  }
+}

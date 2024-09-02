@@ -9,11 +9,11 @@ import path from 'path';
 import { manageEvents } from './ui/events/ipcEvents';
 import { GlobalSharedObject } from './util/misc';
 import { ArgumentsManager } from './util/argsManager';
-import { DataCollector } from './data/processing/dataCollector';
-import { CustomWorkbook } from './data/data';
-import { DataExtractor } from './data/processing/dataExtractor';
-import { DataTransformator } from './data/processing/dataTransformator';
-import { Logger, LogType } from './util/logger';
+// import { DataCollector } from './data/processing/dataCollector';
+// import { CustomWorkbook } from './data/data';
+// import { DataExtractor } from './data/processing/dataExtractor';
+// import { DataTransformator } from './data/processing/dataTransformator';
+// import { Logger, LogType } from './util/logger';
 
 declare global {
   // eslint-disable-next-line no-var
@@ -51,34 +51,9 @@ const createWindow = () => {
   } else {
     mainWindow.loadFile(path.join(__dirname, `../ui/main_window/${MAIN_WINDOW_VITE_NAME}/index.html`));
   }
-/* 
-  const settingsWindow = new BrowserWindow({
-    width: 700,
-    height: 300
-  });
-
-  if (SETTINGS_WINDOW_VITE_DEV_SERVER_URL) {
-    settingsWindow.loadURL(SETTINGS_WINDOW_VITE_DEV_SERVER_URL);
-  } else {
-    settingsWindow.loadFile(path.join(__dirname, `../ui/settings_window/${SETTINGS_WINDOW_VITE_NAME}/index.html`));
-  }
-
-  const helpWindow = new BrowserWindow({
-    width: 400,
-    height: 600
-  });
-
-  if (HELP_WINDOW_VITE_DEV_SERVER_URL) {
-    helpWindow.loadURL(HELP_WINDOW_VITE_DEV_SERVER_URL);
-  } else {
-    helpWindow.loadFile(path.join(__dirname, `../ui/help_window/${HELP_WINDOW_VITE_NAME}/index.html`));
-  }
- */
 
   mainWindow.webContents.openDevTools({ mode: 'right'});
   mainWindow.maximize();
-
-
 };
 
 app.on('ready', createWindow);
@@ -96,20 +71,21 @@ app.on('activate', () => {
 });
 
   // TODO: Remove this
-const result = new DataCollector().provideWorkbook();
+// const result = new DataCollector().provideWorkbook();
 
-const dataExtractor = new DataExtractor();
-result.then((workbook: CustomWorkbook) => {
-  const resultIndex = dataExtractor.evaluateSheets(workbook, global.shared.args.projectId);
+// const dataExtractor = new DataExtractor();
+// result.then((workbook: CustomWorkbook) => {
+//   const resultIndex = dataExtractor.evaluateSheets(workbook, global.shared.args.projectId);
   
-  if (resultIndex !== -1) {
-    new DataTransformator().sheetToWorkplan(workbook.sheets[resultIndex]);
-  } else {
-    // TODO: Handle no valid worksheet found in workbook and propagate to error manager
-    Logger.log('No valid sheet found', LogType.ERROR);
-  }
+//   if (resultIndex !== -1) {
+//     // console.log(JSON.stringify(workbook.sheets[resultIndex]));
+//     new DataTransformator().sheetToWorkplan(workbook.sheets[resultIndex]);
+//   } else {
+//     // TODO: Handle no valid worksheet found in workbook and propagate to error manager
+//     Logger.log('No valid sheet found', LogType.ERROR);
+//   }
 
-});
+// });
 
 manageEvents();
 

@@ -2,7 +2,29 @@
   Raymundo Paz
   March 2024
 */
+
 :root {
+  --default-timing: cubic-bezier(0.2, 0, 0, 1);
+
+
+  --icon-light-color: #00ff00;
+  --icon-light-filled-color: #ffffff;
+
+  --window-background: #FFFFFF;
+
+  --title-bar-background: #FFFFFF;
+
+  --nav-rail-background: #FFFFFF;
+
+  --nav-rail-item-background: #FFFFFF;
+  --nav-rail-icon-background: #FFFFFF;
+  
+  --nav-rail-icon-hover-background: #f09a94;
+  
+  --nav-rail-icon-active-background: #d52b1e;
+}
+
+:roota {
 
   --window-background: #FFFFFF;
   --titlebar-background: #FFFFFF;
@@ -105,15 +127,5 @@
 
   --tooltip-background: #3c3c43;
   --tooltip-color: #FFFFFF;
-  /* --fab-background: #d2dbe7;
-  --fab-border: #c4ccd7;
-  --fab-background-hover: #d7e1f1;
-  --fab-background-active: #c1ccd8;
 
-  --menu-item-background: #e0e2e7;
-  --menu-item-border: #d4d7df;
-  --menu-item-background-hover: #e9eef9;
-  --menu-item-background-active: #d0d3da;
-
-   */
 }

@@ -167,7 +167,9 @@ export class DataCollector {
     if (typeof cell.value === 'object') {
 
       if (isDate(cell.value)) {
-        return cell.value;
+        const adjustedDate = new Date(cell.value.getTime() + 21600000);
+        console.log(adjustedDate.toString());
+        return adjustedDate;
       }
 
       if (isCellErrorValue(cell.value)) {

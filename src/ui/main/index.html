@@ -11,17 +11,35 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
-    href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
     rel="stylesheet">
   <title>Main</title>
+  <script type="module" src="./code/index.ts" defer></script>
   <link rel="stylesheet" href="/assets/styles/style.css">
   <link rel="stylesheet" href="/assets/styles/themes/light.css">
   <link rel="stylesheet" href="/assets/styles/codicons/codicon.css">
-
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 </head>
 
 <body>
-  <div class="title-bar">
+  <div class="main-container">
+    <div id="az-title-bar" class="title-bar">
+      <img class="icon" />
+      <span class="title">AZ-PMS</span>
+      <div class="window-controls">
+        <button class="codicon codicon-chrome-minimize"></button>
+        <button class="codicon codicon-chrome-maximize"></button>
+        <button class="codicon codicon-chrome-close"></button>
+      </div>
+    </div>
+    <az-nav-rail></az-nav-rail>
+    <div>holasdasdasdasdasdasdasdasdasda
+
+        
+    </div>
+
+  </div>
+  <!-- <div class="title-bar">
     <div class="information-container">
       <span id="window-title" class="title">AZ-PMS</span>
     </div>
@@ -38,7 +56,7 @@
         <span class="icon-container">
           <i class="icon" data-icon="home"></i>
         </span>
-        <span class="text">Home?</span>
+        <span class="text">Home</span>
       </div>
       <div class="nav-item" data-target="container" data-target-index="1" tabindex="0">
         <span class="icon-container">
@@ -168,7 +186,7 @@
         </button>
       </div>
       <div class="container gantt-section" data-index="2" style="display: none;">
-        <!-- Una gráfica de gantt interactiva que te muestra, actualmente donde estás en el tiempo y a lo mejor te puede mostrar donde deberías estar. -->
+        
         <div class="gantt-chart">
           <div class="header">
             backg
@@ -178,68 +196,12 @@
               <div style="height: 2rem;">
                 a
               </div>
-              <!-- <div class="parent">
-                <div class="name-container" tabindex="0">
-                  <i class="icon" data-icon="arrow-expand"></i>
-                  <span class="name">Some milestone</span>
-                </div>
-                <div class="children-wrapper">
-                  <div class="children" style="--level: 0.5rem;">
-                    <div class="name-container" tabindex="0"><span class="name">1. Some task</span></div>
-                    <div class="parent">
-                      <div class="name-container" tabindex="0">
-                        <i class="icon" data-icon="arrow-expand"></i>
-                        <span class="name">2. Some task</span>
-                      </div>
-                      <div class="children-wrapper">
-                        <div class="children" style="--level: 1rem;">
-                          <div class="name-container" tabindex="0"><span class="name">2.1 Some subtask</span></div>
-                          <div class="name-container" tabindex="0"><span class="name">2.2 Some subtask</span></div>
-                          <div class="name-container" tabindex="0"><span class="name">2.3 Some subtask</span></div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="name-container" tabindex="0"><span class="name">3. Some task</span></div>
-                  </div>
-                </div>
-              </div>
-              <div class="parent">
-                <div class="name-container">
-                  <i class="icon" data-icon="arrow-expand"></i>
-                  <span class="name">Some milestone</span>
-                </div>
-                <div class="children-wrapper">
-                  <div class="children" style="--level: 0.5rem;">
-                    <div class="name-container"><span class="name">4. Some task</span></div>
-                    <div class="parent">
-                      <div class="name-container">
-                        <i class="icon" data-icon="arrow-expand"></i>
-                        <span class="name">5. Some task</span>
-                      </div>
-                      <div class="children-wrapper">
-                        <div class="children" style="--level: 1rem;">
-                          <div class="name-container"><span class="name">5.1 Some subtask</span></div>
-                          <div class="name-container"><span class="name">5.2 Some subtask</span></div>
-                          <div class="name-container"><span class="name">5.3 Some subtask</span></div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="name-container"><span class="name">6. Some task</span></div>
-                  </div>
-                </div>
-              </div> -->
             </div>
             <div class="timeline">
               <div class="header" style="height: 2rem;">hola</div>
               <canvas id="timeline-canvas" width="1500" height="400"></canvas>
             </div>
           </div>
-          <!-- <div class="gantt-row">
-            <div class="task">
-              <span>name</span>
-            </div>
-            <div class="length">1</div>
-          </div> -->
         </div>
       </div>
       <div class="container" data-index="3" style="display: none;">
@@ -254,7 +216,7 @@
     </div>
   </div>
 
-  <script type="module" src="./code/index.ts"></script>
+  <script type="module" src="./code/index.ts"></script> -->
 </body>
 
 </html>

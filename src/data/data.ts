@@ -1,4 +1,5 @@
-import { Flag, Status, CellType, Label, Duration, WPDate, CellError, TimeStatus } from '../util/misc';
+import { getFiscalWeek } from '../util/util';
+import { Flag, Status, CellType, Label, Duration, WPDate, CellError, TimeStatus, TimelineDeviation } from '../util/misc';
 
 export class CustomWorkbook {
   public name: string;
@@ -200,12 +201,267 @@ export class Task {
   public lastUpdated: WPDate;
   public subtasks: Task[];
 
+  public timeStatus: TimeStatus;
+  public timelineDeviation: TimelineDeviation;
+
   constructor() {
     this.subtasks = [];
   }
 
   toString(): string {
     return `Task [${this.number} ${this.name} -> ${JSON.stringify(this.duration)}]`;
+  }
+
+  public calculateDuration(): boolean {
+    /* console.log(this.startDate.date.toString());
+    console.log(this.finishDate.date.toString());
+    console.log(this.newFinishDate.date.toString());
+    console.log('--------'); */
+
+    if (this.startDate.weekNo !== -0xFF && ( this.finishDate.weekNo !== -0xFF || this.newFinishDate.weekNo !== -0xFF )) {
+      
+      const finishDate = this.finishDate.weekNo !== -0xFF ? this.finishDate : this.newFinishDate;
+      const duration: Duration = {
+        weeks: ( finishDate.weekNo - this.startDate.weekNo + 1),
+        days: ((finishDate.date.getTime() - this.startDate.date.getTime()) / 86400000) + 1
+      };
+
+      if (duration.weeks === this.duration.weeks && duration.days === this.duration.days) {
+        return true;
+      } else {
+        this.duration = duration;
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  // TEST: Write test
+  public calculateDeviation(dateAndDurationFormat: number) {
+    const timelineDevation: TimelineDeviation = {
+      isOnTime: true,
+      timeline: {
+        weeks: 0,
+        days: 0
+      }
+    };
+
+    this.timelineDeviation = timelineDevation;
+
+    if (this.progress >= 1 || this.status === Status.Completed) {
+      // console.log(this.name, 'Completed');
+      return;
+    }
+
+    if (this.status === Status.Cancelled) {
+      // console.log(this.name, 'Cancelled');
+      return;
+    }
+    
+    if (this.status === Status.NotStarted) {
+      // console.log(this.name, 'Not Started');
+      return;
+    }
+
+    if (this.duration.days === -0xFF) {
+      // console.log(this.name, 'No Duration ');
+      return;
+    }
+
+    if (this.startDate.weekNo === -0xFF) {
+      // console.log(this.name, 'No Start Date');
+      return;
+    }
+
+    if (this.flag === Flag.Recurrent || this.flag === Flag.RecurrentReport) {
+      // console.log(this.name, 'Recurrent');
+      return;
+    }
+
+    if (dateAndDurationFormat === 0) {
+
+      const taskDuration = this.duration.weeks;
+      
+      const progressUnit = 1 / taskDuration;
+      let accumulatedProgress = progressUnit;
+
+      const ranges = new Array(taskDuration);
+
+      for (let i = 0; i < ranges.length; i++) {
+        ranges[i] = Number.parseFloat(accumulatedProgress.toFixed(3));
+        accumulatedProgress += progressUnit;
+      }
+
+      const currentWeek = getFiscalWeek(new Date());
+
+      const currentWeekIndex = currentWeek - this.startDate.weekNo;
+
+      let rangeIndex = -1;
+      let previousRange = 0;
+
+      for (let i = 0; i < ranges.length; i++) {
+        if (i === 0) {
+          previousRange = -0.1;
+        } else {
+          previousRange = ranges[i - 1];
+        }
+
+        if (this.progress > previousRange && this.progress <= ranges[i]) {
+          rangeIndex = i;
+          break;
+        }
+      }
+
+      if (currentWeekIndex > ranges.length) {
+        timelineDevation.isOnTime = false;
+        timelineDevation.timeline = {
+          weeks: currentWeekIndex - rangeIndex,
+          days: (currentWeek - rangeIndex) * 5
+        };
+        this.timelineDeviation = timelineDevation;
+        return;
+      }
+ 
+      const progressDifference = currentWeekIndex - rangeIndex;
+
+      if (progressDifference > 0) {
+        timelineDevation.isOnTime = false;
+        timelineDevation.timeline = {
+          weeks: progressDifference,
+          days: progressDifference * 5
+        };
+
+      } else if (progressDifference === 0) {
+        timelineDevation.isOnTime = true;
+        timelineDevation.timeline = {
+          weeks: 0,
+          days: 0
+        };
+      } else if (progressDifference < 0) {
+        timelineDevation.isOnTime = true;
+        timelineDevation.timeline = {
+          weeks: Math.abs(progressDifference),
+          days: Math.abs(progressDifference) * 5
+        };
+      }
+
+      this.timelineDeviation = timelineDevation;
+      
+    } else {
+      // TODO: Review
+      const dayUnit = 1000 * 60 * 60 * 24;
+
+      const finishDate = this.finishDate.weekNo !== -0xFF ? this.finishDate : this.newFinishDate;
+
+      const taskNaturalDuration = (finishDate.date.getTime() - this.startDate.date.getTime()) / dayUnit + 1 + 0.25;
+
+      let taskActualDuration = 0;
+
+      for (let i = 0; i < taskNaturalDuration; i++) {
+        const newDay = new Date(this.startDate.date.getTime() + (i * dayUnit));
+        // console.log(newDay, newDay.getDay());
+        if (newDay.getDay() !== 0 && newDay.getDay() !== 6) {
+          taskActualDuration += 1;
+        }
+      }
+
+      const progressUnit = 1 / taskActualDuration;
+
+      let accumulatedProgress = progressUnit;
+
+      const ranges = new Array(taskActualDuration);
+      for (let i = 0; i < ranges.length; i++) {
+        ranges[i] = Number.parseFloat(accumulatedProgress.toFixed(3));
+        accumulatedProgress += progressUnit;
+      }
+      const now = new Date();
+      const currentDate = new Date(`${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`);
+
+      const naturalDayDifference = (currentDate.getTime() - this.startDate.date.getTime()) / dayUnit;
+
+     let actualDayDifference = 0;
+
+      console.log(naturalDayDifference);
+
+     for (let i = 0; i < naturalDayDifference; i++) {
+      const newDate = new Date(currentDate.getTime() - (i * dayUnit));
+      if (newDate.getDay() !== 0 && newDate.getDay() !== 6) {
+        actualDayDifference += 1;
+      }
+     }
+
+     const currentDateIndex = actualDayDifference;
+     let rangeIndex = -1;
+     let previousRange = 0;
+
+     for (let i = 0; i < ranges.length; i++) {
+      if (i === 0) {
+        previousRange = -0.1;
+      } else {
+        previousRange = ranges[i - 1];
+      }
+
+      if (this.progress > previousRange && progressUnit <= ranges[i]) {
+        rangeIndex = 1;
+      }
+     }
+
+     if (currentDateIndex > ranges.length) {
+      timelineDevation.isOnTime = false;
+      timelineDevation.timeline = {
+        days: currentDateIndex - rangeIndex,
+        weeks: 1 // TODO: Change
+      };
+      this.timelineDeviation = timelineDevation;
+      return;
+     }
+
+     const progressDifference = currentDateIndex - rangeIndex;
+     if (progressDifference > 0) {
+      timelineDevation.isOnTime = false;
+      timelineDevation.timeline = {
+        days: progressDifference,
+        weeks: 1 // TODO: Change
+      };
+      this.timelineDeviation = timelineDevation;
+     } else if (progressDifference === 0) {
+      timelineDevation.isOnTime = true;
+      timelineDevation.timeline = {
+        days: 0,
+        weeks: 0
+      };
+      this.timelineDeviation = timelineDevation;
+     } else if (progressDifference < 0) {
+      timelineDevation.isOnTime = true;
+      timelineDevation.timeline = {
+        days: Math.abs(progressDifference),
+        weeks: 1 // TODO: Change
+      };
+
+      this.timelineDeviation = timelineDevation;
+     }
+
+
+     return;
+
+    }
+  }
+
+  public checkRemaining(): boolean {
+
+    if (this.targetCount !== -0xFF && this.completedCount !== -0xFF) {
+      const completed = this.targetCount - this.completedCount;
+
+      if (this.completedCount === completed) {
+        return true;
+      } else {
+        this.completedCount = completed;
+        return false;
+      }
+    }
+
+    return true;
   }
 }
 

@@ -3,7 +3,7 @@
   March 2024
 */
 
-export function initTitlebar(): void {
+/* export function initTitlebar(): void {
   const minimizeButton = document.getElementById('titlebar-minimize-button');
   const maximizeButton = document.getElementById('titlebar-maximize-button');
   const closeButton = document.getElementById('titlebar-close-button');
@@ -20,3 +20,4 @@ export function initTitlebar(): void {
     window.windowBridge.applyEvent('Main', 'close');
   });
 }
+ */
