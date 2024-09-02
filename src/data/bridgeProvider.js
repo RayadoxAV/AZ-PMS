@@ -23,7 +23,7 @@ class BridgeProvider {
     for (let i = 0; i < cells.length; i++) {
 
       if (typeof cells[i].value === 'string') {
-        const cellValue = `${cells[i].value}`.toLocaleLowerCase();
+        const cellValue = `${cells[i].value}`.toLocaleLowerCase().trim();
         for (let j = 0; j < fields.length; j++) {
           const currentField = fields[j];
 

@@ -744,7 +744,6 @@ class DataExtractor {
       } else {
         Logger.Log('Not managed: Milestone data', 3);
       }
-
       const milestoneStatusColumn = bridge.get('status').match(/[a-z]+|[^a-z]+/gi)[0];
 
       workplanSheet.eachRow((row, rowNumber) => {
