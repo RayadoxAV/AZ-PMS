@@ -1,4 +1,4 @@
-const { ipcRenderer, webFrame, desktopCapturer } = require('electron');
+const { ipcRenderer, webFrame } = require('electron');
 
 const fabMenu = document.getElementById('fab-menu');
 const menuContainer = document.getElementById('menu-container');

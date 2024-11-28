@@ -758,7 +758,6 @@ class DataExtractor {
               // console.log(testCell.style.fill, testCell.address);
 
               if ((testCell.style.fill.fgColor.argb === 'FFD6DCE4')) {
-                console.log('hola');
                 const milestone = new Milestone();
 
                 milestone.name = Util.getValue(workplanSheet, `${milestoneNameColumn}${rowNumber}`, 'string');
@@ -1235,10 +1234,10 @@ class DataExtractor {
           task.remaining = task.target - task.completed;
 
           if (projectId === 'TR-1') {
-            const workedLastWeekColumn = bridge.get(38).match(/[a-z]+|[^a-z]+/gi)[0];
+            const workedLastWeekColumn = bridge.get('worked last week').match(/[a-z]+|[^a-z]+/gi)[0];
             const workedLastWeek = Util.getValue(workplanSheet, `${workedLastWeekColumn}${startRow + i}`, 'number');
 
-            const receivedLastWeekColumn = bridge.get(39).match(/[a-z]+|[^a-z]+/gi)[0];
+            const receivedLastWeekColumn = bridge.get('received last week').match(/[a-z]+|[^a-z]+/gi)[0];
             const receivedLastWeek = Util.getValue(workplanSheet, `${receivedLastWeekColumn}${startRow + i}`, 'number');
 
             task.workedLastWeek = workedLastWeek;

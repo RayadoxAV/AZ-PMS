@@ -195,7 +195,7 @@ function loadProjectData(workplanString) {
 
   fillReport(workplan);
 
-  const isTranslation = workplan.projectId === 'TR-1';
+  const isTranslation = workplan.projectId === 'TR-1' || workplan.projectId === 'TR-5';
 
   if (isTranslation) {
     window.data = {
@@ -601,6 +601,7 @@ function fillSubmissionsReport(workplan) {
 function generateTranslationsWeeklyReport(workplan) {
   const reportContainer = document.createElement('div');
   reportContainer.classList.add('report');
+  reportContainer.classList.add('resizable');
   reportContainer.id = 'tr-report';
 
   const projectStatus = workplan.projectStatus;
@@ -624,8 +625,8 @@ function generateTranslationsWeeklyReport(workplan) {
         <tr>
           <th>Milestones</th>
           <th>Target</th>
+          <th>Completed</th>
           <th>Remaining</th>
-          <th>Worked Last Week</th>
           <th>Progress</th>
         </tr>
       </thead>
@@ -667,8 +668,8 @@ function generateTranslationsWeeklyReport(workplan) {
           `<tr class="milestone">
             <td>${item.name}</td>
             <td>${item.target > 0 ? numberWithCommas(item.target) : ''}</td>
+            <td>${item.completed > 0 ? numberWithCommas(item.completed) : ''}</td>
             <td>${item.remaining === 0 ? '' : numberWithCommas(item.remaining)}</td>
-            <td></td>
             <td>
               <div class="progress-bar ${status}" style="--progress: ${(item.progress * 100).toFixed(2)}%">
                 <span>${(item.progress * 100).toFixed(0)}%</span>
@@ -690,9 +691,9 @@ function generateTranslationsWeeklyReport(workplan) {
         tableHTML +=
           `<tr>
           <td>${item.name}</td>
-          <td>${item.target > 0 ? numberWithCommas(item.target) : ''}</td>
-          <td>${item.target > 0 ? numberWithCommas(item.remaining) : ''}</td>
-          <td></td>
+          <td>${item.target > 0 ? numberWithCommas(item.target) : '0'}</td>
+          <td>${item.target > 0 ? numberWithCommas(item.completed) : '0'}</td>
+          <td>${item.target > 0 ? numberWithCommas(item.remaining) : '0'}</td>
           <td>
             ${item.flag !== 3
             ?
@@ -744,8 +745,8 @@ function generateTranslationsWeeklyReport(workplan) {
         `<tr>
         <td style="height: 20px">${item.name}</td>
         <td>${numberWithCommas(item.completed)}</td>
-        <td>${numberWithCommas(item.receivedLastWeek)}</td>
-        <td>${numberWithCommas(item.workedLastWeek)}</td>
+        <td>${item.receivedLastWeek > 0 ? numberWithCommas(item.receivedLastWeek) : '-'}</td>
+        <td>${item.workedLastWeek > 0 ? numberWithCommas(item.workedLastWeek) : '-'}</td>
         <td>
           <div class="progress-bar difference" style="--progress: ${(item.workedLastWeek / item.receivedLastWeek * 100).toFixed(0)}%;">
             <span>${(item.workedLastWeek / item.receivedLastWeek * 100).toFixed(2)}%</span>

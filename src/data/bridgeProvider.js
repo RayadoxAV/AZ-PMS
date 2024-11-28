@@ -54,36 +54,22 @@ class BridgeProvider {
             i += cells[i]['_mergeCount'];
           }
         }
+      }
+    }
 
+    const optionalFields = Array.from(Util.optionalFields);
 
-        //     for (let j = 0; j < workplanFields.length; j++) {
-        //       const currentField = Util.testFields[workplanFields[j]];
+    for (let i = 0; i < cells.length; i++) {
+      if (typeof cells[i].value === 'string') {
+        const cellValue = `${cells[i].value}`.toLocaleLowerCase().trim();
+        for (let j = 0; j < optionalFields.length; j++) {
+          const currentField = optionalFields[j];
 
-        //       if (currentField === 'remarks [project]' && cellValue === 'remarks') {
-
-        //         if (!bridge.has(7)) {
-
-        //           const [col, row] = cells[i].address.match(/[a-z]+|[^a-z]+/gi);
-
-        //           bridge.set(7, `${col}${parseInt(row) + 1}`);
-        //         }
-        //       } else if (cellValue === currentField) {
-
-        //         if (currentField === 'total progress' || currentField === 'planned progress') {
-        //           const [col, row] = cells[i].address.match(/[a-z]+|[^a-z]+/gi);
-        //           const nextCol = Util.getNextColumn(col, 1);
-
-        //           bridge.set(workplanFields[j], `${nextCol}${row}`);
-        //         } else {
-        //           const [col, row] = cells[i].address.match(/[a-z]+|[^a-z]+/gi);
-        //           bridge.set(workplanFields[j], `${col}${parseInt(row) + 1}`);
-        //         }
-        //       }
-
-        //       if (cellValue === 'remarks' && cells[i]['_mergeCount'] > 0) {
-        //         i += cells[i]['_mergeCount'];
-        //       }
-        //     }
+          if (currentField === cellValue) {
+            const [col, row] = cells[i].address.match(/[a-z]+|[^a-z]+/gi);
+            bridge.set(currentField, `${col}${parseInt(row) + 1}`);
+          }
+        }
       }
     }
 

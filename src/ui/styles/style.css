@@ -256,6 +256,12 @@ div.report {
   width: calc(100% - 15rem);
 }
 
+div.report.resizable {
+  min-height: 282px;
+  resize: horizontal;
+  overflow: auto;
+}
+
 div.report > div.header {
   display: flex;
   flex-direction: row;

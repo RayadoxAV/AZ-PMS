@@ -39,7 +39,12 @@ class Util {
     'last week progress',
     'remarks',
     'risk remarks',
-    'comments'
+    'comments',
+  ]);
+
+  static optionalFields = new Set([
+    'worked last week',
+    'received last week'
   ]);
 
   // static testFields = [

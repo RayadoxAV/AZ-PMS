@@ -664,6 +664,10 @@ class InferenceEngine {
         for (let j = 0; j < milestone.tasks.length; j++) {
           const task = milestone.tasks[j];
 
+          if (task.flag === 5) {
+            continue;
+          }
+
           if (task.flag === 1 || task.status === 2) {
 
             // A task has a completed flag or is completed.
